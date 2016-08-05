@@ -1,0 +1,73 @@
+/*html5*/
+html,body{height:100%;padding:0;margin:0;}
+body{font-size:12px;font-family:"Microsoft YaHei","Helvetica Neue",Helvetica,Arial,sans-serif;}
+.wrap{position:absolute;left:0;width:100%;top:50px;bottom:3px;}
+#mainframe{height:100%;width:100%}
+
+/* button like link */
+.buttonlink{color:#000;}
+.buttonlink:link,.buttonlink:visited,.buttonlink:hover,.buttonlink:active{text-decoration: none;}
+
+/* add sorting icons to gridview sort links */
+a.asc:after, a.desc:after {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    padding-left: 5px;
+}
+
+a.asc:after {
+    content: /*"\e113"*/ "\e151";
+}
+
+a.desc:after {
+    content: /*"\e114"*/ "\e152";
+}
+
+.sort-numerical a.asc:after {
+    content: "\e153";
+}
+
+.sort-numerical a.desc:after {
+    content: "\e154";
+}
+
+.sort-ordinal a.asc:after {
+    content: "\e155";
+}
+
+.sort-ordinal a.desc:after {
+    content: "\e156";
+}
+
+.grid-view th {
+    white-space: nowrap;
+}
+
+.hint-block {
+    display: block;
+    margin-top: 5px;
+    color: #999;
+}
+
+.error-summary {
+    color: #a94442;
+    background: #fdf7f7;
+    border-left: 3px solid #eed3d7;
+    padding: 10px 20px;
+    margin: 0 0 15px 0;
+}
+.m0{margin:0!important;}
+.p0{padding:0!important;}
+.m10tb{margin:10px 0;}
+
+.splaceholder{background-color:#f9f9f9;width:229px;height:220px;}
+.channel{width:200px;height:60px;border:4px solid #fff;background:transparent url(../images/channels.png) no-repeat scroll 0 0;margin:10px;-webkit-transition:all 0.5s ease-in;transition:all 0.5s ease-in;}
+.channel-wx_pub{background-position:27px 7px;}
+.channel-alipay_pc_direct{background-position:23px -130px;}
+.channel-upacp_pc{background-position:4px -272px;}
+.channel.current{border-color:#c7254e}
