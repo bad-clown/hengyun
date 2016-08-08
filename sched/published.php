@@ -11,13 +11,20 @@ $Path = \Yii::$app->request->hostInfo;
 
 ?>
 
-<div class="grid-view">
-	<table class="table table-striped table-bordered" id="newOrder">
+<div class="breadcrumbBox">
+	<ul class="breadcrumb">
+		<li><a href="javascript:;">调度中心</a></li>
+		<li class="active">报价管理</li>
+	</ul>
+</div>
+
+<div class="listBox">
+	<table class="table table-striped table-hover" id="newOrder">
 		<thead>
 			<tr>
+				<th>状态</th>
 				<th>订单号</th>
 				<th>提货时间</th>
-				<th>状态</th>
 				<th>起点</th>
 				<th>终点</th>
 				<th>总件数</th>
@@ -31,6 +38,26 @@ $Path = \Yii::$app->request->hostInfo;
 		<tbody>
 		</tbody>
 	</table>
+
+
+
+	<!-- <table class="table table-striped table-bordered" id="order">
+		<thead>
+			<tr>
+				<th>订单号</th>
+				<th>提货时间</th>
+				<th>状态</th>
+				<th>起点</th>
+				<th>终点</th>
+				<th>总件数</th>
+				<th>总吨数</th>
+				<th>几装几卸</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table> -->
 </div>
 <style type="text/css">
 .overlay{position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: #000;opacity: .5;z-index: 9;display: none;}
@@ -158,7 +185,7 @@ $(function() {
 							var bidPrice = priceType[o.bid["bidPriceType"]]+"："+o.bid["bidPrice"]+'元<br>报价时间：'+FormatTime(o.bid["bidTime"]);
 						}
 						var t = FormatTime(o.deliverTime);
-						var h = '<tr><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+status[o.status]+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" class="orderDetails" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td><a class="btn btn-xs btn-primary btn-block j-price" href="javascript:;" data-key="'+o._id+'" title="">报价</a></td></tr>';
+						var h = '<tr><td>'+status[o.status]+'</td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" class="orderDetails" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td><a class="btn-info" href="javascript:;">查看详情</a><a class="btn-primary j-price" href="javascript:;" data-key="'+o._id+'" title="">报价</a><a class="btn-info" href="javascript:;">撮合</a></td></tr>';
 						c.append(h)
 					})
 				}

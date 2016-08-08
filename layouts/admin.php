@@ -62,18 +62,18 @@ $isContentPage = !isset($this->context->notContentPage);
         <div class="menu-list">
             <ul>
                 <li>
-                    <a href="javascript:;" class="cur">调度中心<span class="badge">13</span></a>
+                    <a href="javascript:;" class="cur">调度中心<span class="badge" id="total-cnt">0</span></a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="/sched/order-web/new?sort=-time">发布管理<span class="badge">1</span></a>
+                            <a href="/sched/order-web/new?sort=-time">发布管理<span class="badge" id="new-cnt">0</span></a>
                         </li>
                         <li>
-                            <a href="/sched/order-web/published-list">报价管理<span class="badge">3</span></a>
+                            <a href="/sched/order-web/published-list">报价管理<span class="badge" id="bid-cnt">0</span></a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="/sched/order-web/processed">订单管理</a>
+                    <a href="/sched/order-web/processed-list">订单管理</a>
                 </li>
                 <li>
                     <a href="#">账单管理</a>
@@ -90,7 +90,7 @@ $isContentPage = !isset($this->context->notContentPage);
             </ul>
         </div>
     </div>
-    <div class="content">
+    <div class="main">
         <div class="topbar">
             <div class="search">
                 <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
@@ -100,23 +100,22 @@ $isContentPage = !isset($this->context->notContentPage);
                 <a href="#">158...8888</a> | <a href="#">安全退出</a>
             </div>
         </div>
-        <?= $content ?>
+        <div class="content">
+            <?= $content ?>
+        </div>
     </div>
 </div>
 
 
 <?php $this->endBody() ?>
 <?php if (isset($this->blocks['bottomcode'])): ?>
-<?= $this->blocks['bottomcode'] ?>
-
-
-
-
-<?php  endif; ?>
 <script  type="text/javascript" src="<?= $Path;?>/static/bootstrap-material-design/dist/js/ripples.min.js"></script>
 <script  type="text/javascript" src="<?= $Path;?>/static/bootstrap-material-design/dist/js/material.min.js"></script>
 <script  type="text/javascript" src="<?= $Path;?>/static/snackbarjs/dist/snackbar.min.js"></script>
 <script  type="text/javascript" src="<?= $Path;?>/static/js/index.js"></script>
+<?= $this->blocks['bottomcode'] ?>
+<?php  endif; ?>
+
 </body>
 </html>
 <?php $this->endPage() ?>

@@ -13,29 +13,57 @@ h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
 a,a:hover,a:link,a:visited{text-decoration:none;color: #333;}
 body,textarea,input,button,select,keygen,legend{font:12px/1.14 Microsoft Yahei,Verdana,"\5FAE\8F6F\96C5\9ED1","\9ED1\4F53";color:#333;outline:0;}
 body{background-color: #f5f5f5;}
+/* --- 清除浮动 --- */
+.clearfix{zoom:1;}
+.clearfix:after{content:"\200B";height:0;display:block;clear:both;visibility:hidden;}
+
+#mainframe{width: 100%;height: 1000px;margin-top: 20px;}
 
 /* 侧导航 */
-.wrapper .menu{position: fixed;top: 0;left: 0;bottom: 0;width: 270px;background-color: #3b3a3f;overflow-x: hidden;overflow-y: auto;}
+.wrapper .menu{position: fixed;top: 0;left: 0;bottom: 0;width: 270px;background-color: #3b3a3f;overflow-x: hidden;overflow-y: auto;z-index: 999;}
 .menu .title{font-size: 18px;color: #2bb0bf;text-align: center;padding: 25px 0;}
 .menu .title a{font-size: 18px;color: #2bb0bf;text-align: center;line-height: 36px;}
 .menu .title a span{font-size: 30px;}
 .menu-list li{font-size: 17px;color: #fff;}
 .menu-list li a{display: block;height: 70px;line-height: 70px;font-size: 17px;color: #fff;padding-left: 60px;background: url(/static/images/menu-icon.png) no-repeat 18px center;}
 .menu-list li a:hover,.menu-list li a.cur{color: #2bb0bf;background: url(/static/images/menu-icon-hover.png) #353439 no-repeat 18px center;}
-.menu-list .badge{background-color: #ef4f51;margin-left: 40px;}
+.menu-list .badge{background-color: #ef4f51;margin-left: 40px;display: none;}
 /* 侧导航-子导航 */
 .menu-list .sub-menu li a{background: #353439;}
 
 /* 搜索 */
 .topbar{background-color: #fff;height: 90px;-webkit-box-shadow: 0 4px 4px #c4c4c4;-moz-box-shadow: 0 4px 4px #c4c4c4;box-shadow: 0 4px 4px #c4c4c4;padding-top: 1px;}
-.search{position: relative;margin-left: 30px;margin-top: 19px;}
+.search{position: relative;margin-left: 30px;margin-top: 19px;float: left;}
 .search .search-text{width: 674px;height: 50px;line-height: 50px;border-radius: 50px;padding-left: 54px;font-size: 14px;color: #464646;border: 1px solid #efefef;background-color: #f5f5f5;}
 .search .glyphicon-search{position: absolute;top: 16px;left: 25px;font-size: 18px;color: #828282;}
 /* 登录信息 */
-.username{position: absolute;top: 35px;right: 12px;font-size: 14px;color: #c1c1c1;}
+.username{float: right;margin-top: 35px;margin-right: 12px;font-size: 14px;color: #c1c1c1;}
 .username a{color: #464646;margin: 0 20px;}
 
 
 /* 主体 */
-.wrapper .content{margin-left: 270px;background-color: #f5f5f5;}
-#mainframe{width: 100%;height: 1000px;margin-top: 20px;}
+.main{margin-left: 270px;background-color: #f5f5f5;min-width: 1000px;}
+.content{margin: 25px;background-color: #fff;-webkit-box-shadow: 0 1px 4px #c4c4c4;-moz-box-shadow: 0 1px 4px #c4c4c4;box-shadow: 0 1px 4px #c4c4c4;padding:0 20px 20px;}
+
+/* 路径位置 */
+.breadcrumbBox{position: relative;height: 75px;border-bottom: 1px solid #e0e0e0;margin-bottom: 20px;}
+.breadcrumb{position: absolute;top: 0;left: 0;height: 75px;line-height: 75px; padding: 0 10px;margin-bottom: 0;background: none;color: #9e9e9e;font-size: 18px;border-bottom: 2px solid #2bb0bf;border-radius: 0;}
+.breadcrumb .active{color: #2bb0bf;}
+.breadcrumb > li + li:before{color: #9e9e9e;}
+.breadcrumbBox .batch{position: absolute;top: 0;right: 20px;height: 75px;line-height: 75px;font-size: 18px;color: #2bb0bf;}
+
+/* 发布管理 */
+/* .table-striped > tbody > tr:nth-of-type(even){background-color: #f9f9f9;} */
+.listBox .table{width: 100%;}
+.listBox .table tbody td{vertical-align: middle;border-top: 1px solid #e0e0e0;}
+.listBox .table th{background-color: #f5f5f5;color: #464646;font-size: 14px;text-align: left;height: 50px;line-height: 50px;font-weight: 700;}
+.listBox .form-group{padding-bottom: 0;margin: 0;}
+.listBox .checkbox .checkbox-material{margin-right: 10px;}
+.listBox .btn-info,.listBox .btn-primary,.listBox .btn-danger{background:none;border:1px solid #2bb0bf;color: #2bb0bf;display: inline-block;width: 68px;height: 36px;line-height: 36px;text-align: center;border-radius: 3px;margin-right: 8px;}
+.form-group .checkbox label, .form-group .radio label, .form-group label{color: #ef4f4f;}
+
+/* 发布订单详情 */
+.order-detail{}
+.order-detail .form-group{float: left;width: 25%;margin-right: 8%;}
+.order-detail .form-group .checkbox label, .order-detail .form-group .radio label, .order-detail .form-group label{color: #9e9e9e;}
+.order-detail .form-control{color: #2bb0bf;}
