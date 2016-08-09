@@ -18,7 +18,8 @@ $Path = \Yii::$app->request->hostInfo;
 		<li><a href="javascript:;">调度中心</a></li>
 		<li class="active">发布管理</li>
 	</ul>
-	<a href="javascript:;" class="batch">批量操作</a>
+	<a href="javascript:;" class="batch-control">批量操作</a>
+	<a href="javascript:;" class="batch-cancel">取消</a>
 </div>
 
 <div class="listBox">
@@ -39,26 +40,19 @@ $Path = \Yii::$app->request->hostInfo;
 		<tbody>
 		</tbody>
 	</table>
+</div>
 
-
-
-	<!-- <table class="table table-striped table-bordered" id="order">
-		<thead>
-			<tr>
-				<th>订单号</th>
-				<th>提货时间</th>
-				<th>状态</th>
-				<th>起点</th>
-				<th>终点</th>
-				<th>总件数</th>
-				<th>总吨数</th>
-				<th>几装几卸</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table> -->
+<div class="pub-control batch-pub">
+	<div class="form-group">
+		<div class="checkbox">
+			<label><input type="checkbox" id="checkAll">全选</label>
+		</div>
+	</div>
+	<div class="control-btns">
+		<a href="javascript:;" class="btn-pub" id="J_Pubbatch">发布</a>
+		<a href="javascript:;" class="btn-del" id="J_Delbatch">删除</a>
+	</div>
+	<div class="pub-label"><span>已选：发布</span></div>
 </div>
 
 
@@ -128,7 +122,7 @@ $(function() {
 					c.empty();
 					$.each(data.data, function(i,o) {
 						var t = FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox"><span class="checkbox-material"><span class="check"></span></span>'+status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" class="orderBtn" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td><a class="btn-info" href="http://120.26.50.11:9000/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-primary j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" class="orderBtn" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-info" href="http://120.26.50.11:9000/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-primary j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
 				}
@@ -148,6 +142,7 @@ $(function() {
 				if(data.code == "0") {
 					alert('发布成功！');
 					getData()
+					_bagde()
 				}
 			}
 		})
@@ -184,10 +179,107 @@ $(function() {
 					if(data.code == '0') {
 						alert('删除成功！')
 						getData()
+						_bagde()
 					}
 				}
 			})
 		}
+	})
+
+	$('#J_Pubbatch').on('click', function() {
+		var dataId = [];
+		$('#order .checkbox input[type="checkbox"]').each(function(i, o) {
+			if($(o).is(':checked')){
+				dataId.push($(o).data('num'));
+			}
+		})
+
+		if(dataId.length) {
+			$.ajax({
+				type : "POST",
+				url : "<?= $Path;?>/sched/order/publish-batch",
+				data : {
+					id : dataId
+				},
+				dataType : "json",
+				success : function(data) {
+					// console.log(data);
+					if(data.code == "0") {
+						alert('发布成功！');
+						getData()
+						_bagde()
+					}
+				}
+			})
+		}
+		else {
+			alert('未选中订单！')
+		}
+	})
+
+	$('#J_Delbatch').on('click', function() {
+		var dataId = [];
+		$('#order .checkbox input[type="checkbox"]').each(function(i, o) {
+			if($(o).is(':checked')){
+				dataId.push($(o).data('num'));
+			}
+		})
+
+		if(dataId.length) {
+			$.ajax({
+				type : "POST",
+				url : "<?= $Path;?>/sched/order/del-batch",
+				data : {
+					id : dataId
+				},
+				dataType : "json",
+				success : function(data) {
+					// console.log(data);
+					if(data.code == "0") {
+						alert('删除成功！');
+						getData()
+						_bagde()
+					}
+				}
+			})
+		}
+		else {
+			alert('未选中订单！')
+		}
+	})
+
+	$('#checkAll').on('change', function() {
+		if($(this).is(':checked')) {
+			$('#order .checkbox').find('input[type="checkbox"]').prop('checked', true)
+		}
+		else {
+			$('#order .checkbox').find('input[type="checkbox"]').prop('checked', false)
+		}
+	})
+
+	$('.batch-control').on('click', function() {
+		$('.listBox').css('padding-bottom', 60)
+		$('.breadcrumb').html('<li><a href="javascript:;">调度中心</a></li><li><a href="<?= $Path;?>/sched/order-web/new?sort=-time">发布管理</a></li><li class="active">批量操作</li>');
+		$('.checkbox-material').show();
+		$('.batch-cancel').show();
+		$('.batch-pub').css({
+			'top' : $(window).scrollTop() + $(window).height() - 195,
+			'display' : 'block'
+		});
+	})
+
+	$('.batch-cancel').on('click', function() {
+		$('.listBox').css('padding-bottom', 0)
+		$('.breadcrumb').html('<li><a href="javascript:;">调度中心</a></li><li class="active">发布管理</li>');
+		$('.checkbox-material').hide();
+		$('.batch-cancel').hide();
+		$('.batch-pub').hide();
+	})
+
+	$(window).on('scroll', function() {
+		$('.pub-control').css({
+			'top' : $(window).scrollTop() + $(window).height() - 195
+		})
 	})
 
 	$('.close-btn').on('click', function() {

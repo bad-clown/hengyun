@@ -62,7 +62,7 @@ $isContentPage = !isset($this->context->notContentPage);
         <div class="menu-list">
             <ul>
                 <li>
-                    <a href="javascript:;" class="cur">调度中心<span class="badge" id="total-cnt">0</span></a>
+                    <a href="/sched/order-web/new?sort=-time" class="cur">调度中心<span class="badge" id="total-cnt">0</span></a>
                     <ul class="sub-menu">
                         <li>
                             <a href="/sched/order-web/new?sort=-time">发布管理<span class="badge" id="new-cnt">0</span></a>
@@ -97,7 +97,7 @@ $isContentPage = !isset($this->context->notContentPage);
                 <i class="glyphicon glyphicon-search"></i>
             </div>
             <div class="username">
-                <a href="#">158...8888</a> | <a href="#">安全退出</a>
+                <a href="#">158...8888</a> | <a href="<?= $Path;?>/user/logout-web" data-method="post">安全退出</a>
             </div>
         </div>
         <div class="content">

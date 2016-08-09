@@ -11,42 +11,27 @@ $Path = \Yii::$app->request->hostInfo;
 
 ?>
 
-
-
 <div class="breadcrumbBox">
 	<ul class="breadcrumb">
 		<li><a href="javascript:;">调度中心</a></li>
-		<li><a href="javascript:;">发布管理</a></li>
+		<li><a href="<?= $Path;?>/sched/order-web/new?sort=-time">发布管理</a></li>
 		<li class="active">查看详情</li>
 	</ul>
 	<a href="<?= $Path;?>/sched/order-web/new?sort=-time" class="batch">返回</a>
 </div>
 
-<div class="order-detail clearfix" id="J-order-detail">
-	<table>
-		<thead>
-			<tr>
-				<th>header</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>data</td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="form-group label-floating">
-		<label class="control-label" for="focusedInput1">手机</label>
-		<input class="form-control" id="focusedInput1" type="text">
+<div class="order-detail">
+	<div id="J-order-detail" class="clearfix"></div>
+	<div class="goods-label"><span class="label label-default">货物明细</span></div>
+	<div id="J-goods-detail" class="goods-detail clearfix"></div>
+</div>
+
+<div class="pub-control">
+	<div class="control-btns">
+		<a href="javascript:;" class="btn-pub">发布</a>
+		<a href="javascript:;" class="btn-del">删除</a>
 	</div>
-	<div class="form-group label-floating">
-		<label class="control-label" for="focusedInput1">手机</label>
-		<input class="form-control" id="focusedInput1" type="text">
-	</div>
-	<div class="form-group label-floating">
-		<label class="control-label" for="focusedInput1">手机</label>
-		<input class="form-control" id="focusedInput1" type="text">
-	</div>
+	<div class="pub-label"><span>已选：发布</span></div>
 </div>
 
 <?php $this->beginBlock("bottomcode");  ?>
@@ -54,13 +39,48 @@ $Path = \Yii::$app->request->hostInfo;
 $(function() {
 	$.ajax({
 		type : "GET",
-		url : "<?= $Path;?>/sched/order/detail?id=57a2dfa46a9ce6e67a8b456e",
+		url : "<?= $Path;?>/sched/order/detail?id=<?= $_id;?>",
 		dataType : "json",
 		success : function(data) {
-			var html = '<div class="form-group label-floating"><label class="control-label" for="focusedInput1">订单号</label><input class="form-control" value="'+ data.orderNo +'" id="focusedInput1" type="text"></div><div class="form-group label-floating"><label class="control-label" for="focusedInput2">总件数</label><input class="form-control" value="'+ data.goodsCnt +'件" id="focusedInput2" type="text"></div><div class="form-group label-floating"><label class="control-label" for="focusedInput3">总吨数</label><input class="form-control" value="'+ data.totalWeight +'吨" id="focusedInput3" type="text"></div><div class="form-group label-floating"><label class="control-label" for="focusedInput4">几装几卸</label><input class="form-control" value="'+ data.pickupDrop +'" id="focusedInput4" type="text"></div><div class="form-group label-floating"><label class="control-label" for="focusedInput5">货最长</label><input class="form-control" value="'+ data.goodsMaxLen +'" id="focusedInput5" type="text"></div><div class="form-group label-floating"><label class="control-label" for="focusedInput6">货最宽</label><input class="form-control" value="'+ data.goodsMaxWidth +'" id="focusedInput6" type="text"></div><div class="form-group label-floating"><label class="control-label" for="focusedInput7">起点</label><input class="form-control" value="'+ data.provinceFrom+data.cityFrom+data.districtFrom +'" id="focusedInput7" type="text"></div><div class="form-group label-floating"><label class="control-label" for="focusedInput8">终点</label><input class="form-control" value="'+ data.provinceTo+data.cityTo+data.districtTo +'" id="focusedInput8" type="text"></div><div class="form-group label-floating"><label class="control-label" for="focusedInput9">提货时间</label><input class="form-control" value="'+ data.deliverTime +'" id="focusedInput9" type="text"></div><div class="form-group label-floating"><label class="control-label" for="focusedInput10">简介</label><input class="form-control" value="'+ data.note +'" id="focusedInput10" type="text"></div>'
+			var $order = $('#J-order-detail');
+			var $goods = $('#J-goods-detail');
 
+			var orderHTML = '<div class="form-group label-floating"><label class="control-label">订单号</label><input class="form-control" readonly="readonly" value="'+ data.orderNo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">总件数</label><input class="form-control" readonly="readonly" value="'+ data.goodsCnt +'件" type="text"></div><div class="form-group label-floating"><label class="control-label">总吨数</label><input class="form-control" readonly="readonly" value="'+ data.totalWeight +'吨" type="text"></div><div class="form-group label-floating"><label class="control-label">几装几卸</label><input class="form-control" readonly="readonly" value="'+ data.pickupDrop +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货最长</label><input class="form-control" readonly="readonly" value="'+ data.goodsMaxLen +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货最宽</label><input class="form-control" readonly="readonly" value="'+ data.goodsMaxWidth +'" type="text"></div><div class="form-group label-floating"><label class="control-label">起点</label><input class="form-control" readonly="readonly" value="'+ data.provinceFrom+data.cityFrom+data.districtFrom +'" type="text"></div><div class="form-group label-floating"><label class="control-label">终点</label><input class="form-control" readonly="readonly" value="'+ data.provinceTo+data.cityTo+data.districtTo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">提货时间</label><input class="form-control" readonly="readonly" value="'+ data.deliverTime +'" type="text"></div><div class="form-group label-floating form-group-last"><label class="control-label">简介</label><input class="form-control" readonly="readonly" value="'+ data.note +'" type="text"></div>';
 
-			$('#J-order-detail').html(html)
+			$.each(data.goods, function(i, o) {
+				var goodsHTML = '<div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 名称</label><input class="form-control" readonly="readonly" value="'+ o["category"].name +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 重量</label><input class="form-control" readonly="readonly" value="'+ o.count+o["category"].unit +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 提货详细地址</label><input class="form-control" readonly="readonly" value="'+ o.addressFrom +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 送达详细地址</label><input class="form-control" readonly="readonly" value="'+ o.addressTo +'" type="text"></div>';
+				$goods.append(goodsHTML)
+			})
+
+			$order.html(orderHTML)
+		}
+	})
+
+	$('.btn-pub').on('click', function() {
+		$.ajax({
+			type : "GET",
+			url : "<?= $Path;?>/sched/order/publish?orderId=<?= $_id;?>",
+			success : function(data) {
+				if(data.code == "0") {
+					alert('发布成功！');
+					window.location.href = '<?= $Path;?>/sched/order-web/new?sort=-time'
+				}
+			}
+		})
+	})
+	$('.btn-del').on('click', function() {
+		if(confirm("确定删除？")) {
+			$.ajax({
+				type : "GET",
+				url : "<?= $Path;?>/sched/order-web/del-order?id=<?= $_id;?>",
+				dataType : "json",
+				success : function(data) {
+					if(data.code == '0') {
+						alert('删除成功！')
+						window.location.href = '<?= $Path;?>/sched/order-web/new?sort=-time'
+					}
+				}
+			})
 		}
 	})
 })

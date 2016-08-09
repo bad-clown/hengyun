@@ -185,7 +185,7 @@ $(function() {
 							var bidPrice = priceType[o.bid["bidPriceType"]]+"："+o.bid["bidPrice"]+'元<br>报价时间：'+FormatTime(o.bid["bidTime"]);
 						}
 						var t = FormatTime(o.deliverTime);
-						var h = '<tr><td>'+status[o.status]+'</td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" class="orderDetails" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td><a class="btn-info" href="javascript:;">查看详情</a><a class="btn-primary j-price" href="javascript:;" data-key="'+o._id+'" title="">报价</a><a class="btn-info" href="javascript:;">撮合</a></td></tr>';
+						var h = '<tr><td>'+status[o.status]+'</td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" class="orderDetails" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td width="250"><a class="btn-info" href="javascript:;">查看详情</a><a class="btn-primary j-price" href="javascript:;" data-key="'+o._id+'" title="">报价</a><a class="btn-info" href="javascript:;">撮合</a></td></tr>';
 						c.append(h)
 					})
 				}
