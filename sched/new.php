@@ -85,19 +85,6 @@ $Path = \Yii::$app->request->hostInfo;
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript">
 $(function() {
-	function Digit(n) {
-		return n < 10 ? "0"+n : n;
-	}
-	function FormatTime(n) {
-		var nS= new Date(parseInt(n) * 1000),
-			year=Digit(nS.getFullYear()),
-			month=Digit(nS.getMonth()+1),
-			date=Digit(nS.getDate()),
-			hour=Digit(nS.getHours()),
-			minute=Digit(nS.getMinutes());
-		return year+"年"+month+"月"+date+"日 "+hour+":"+minute;
-	}
-
 	function getData() {
 		var status = {
 			100 : "新发布",
@@ -116,12 +103,11 @@ $(function() {
 			url : "<?= $Path;?>/sched/order/new",
 			dataType : "json",
 			success : function(data) {
-				// console.log(data)
 				if(data.code == "0") {
 					var c = $('#order').find('tbody');
 					c.empty();
 					$.each(data.data, function(i,o) {
-						var t = FormatTime(o.deliverTime);
+						var t = _global.FormatTime(o.deliverTime);
 						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" class="orderBtn" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-info" href="http://120.26.50.11:9000/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-primary j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
@@ -142,7 +128,7 @@ $(function() {
 				if(data.code == "0") {
 					alert('发布成功！');
 					getData()
-					_bagde()
+					_global.badge();
 				}
 			}
 		})
@@ -179,7 +165,7 @@ $(function() {
 					if(data.code == '0') {
 						alert('删除成功！')
 						getData()
-						_bagde()
+						_global.badge();
 					}
 				}
 			})
@@ -207,7 +193,7 @@ $(function() {
 					if(data.code == "0") {
 						alert('发布成功！');
 						getData()
-						_bagde()
+						_global.badge();
 					}
 				}
 			})
@@ -238,7 +224,7 @@ $(function() {
 					if(data.code == "0") {
 						alert('删除成功！');
 						getData()
-						_bagde()
+						_global.badge();
 					}
 				}
 			})
