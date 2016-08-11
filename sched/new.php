@@ -13,33 +13,35 @@ $Path = \Yii::$app->request->hostInfo;
 
 
 
-<div class="breadcrumbBox">
-	<ul class="breadcrumb">
-		<li><a href="javascript:;">调度中心</a></li>
-		<li class="active">发布管理</li>
-	</ul>
-	<a href="javascript:;" class="batch-control">批量操作</a>
-	<a href="javascript:;" class="batch-cancel">取消</a>
-</div>
+<div class="content">
+	<div class="breadcrumbBox">
+		<ul class="breadcrumb">
+			<li><a href="javascript:;">调度中心</a></li>
+			<li class="active">发布管理</li>
+		</ul>
+		<a href="javascript:;" class="batch-control">批量操作</a>
+		<a href="javascript:;" class="batch-cancel">取消</a>
+	</div>
 
-<div class="listBox">
-	<table class="table table-striped table-hover" id="order">
-		<thead>
-			<tr>
-				<th>状态</th>
-				<th>订单号</th>
-				<th>提货时间</th>
-				<th>起点</th>
-				<th>终点</th>
-				<th>总件数</th>
-				<th>总吨数</th>
-				<th>几装几卸</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
+	<div class="listBox">
+		<table class="table table-striped table-hover" id="order">
+			<thead>
+				<tr>
+					<th>状态</th>
+					<th>订单号</th>
+					<th>提货时间</th>
+					<th>起点</th>
+					<th>终点</th>
+					<th>总件数</th>
+					<th>总吨数</th>
+					<th>几装几卸</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <div class="pub-control batch-pub">
@@ -55,33 +57,6 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="pub-label"><span>已选：发布</span></div>
 </div>
 
-
-<style type="text/css">
-.overlay{position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: #000;opacity: .5;z-index: 9;display: none;}
-.popup{position: fixed;top: 50px;left: 50%;width: 700px;height: 350px;background: #fff;z-index: 10;padding: 30px;margin-left: -350px;display: none;}
-.popup .table{margin-bottom: 0;}
-.popup .close-btn{position: absolute;right: 10px;top: 10px;}
-</style>
-<div class="details-pop popup">
-	<a href="javascrip:;" class="glyphicon glyphicon-remove close-btn"></a>
-	<div class="grid-view">
-		<div style="height: 308px;overflow-y: auto;overflow-x:hidden;">
-			<table class="table table-striped table-bordered" id="orderDetails">
-				<thead>
-					<tr>
-						<th>提货地址</th>
-						<th>卸货地址</th>
-						<th>数量</th>
-						<th>分类</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
-<div class="overlay"></div>
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript">
 $(function() {
@@ -108,7 +83,7 @@ $(function() {
 					c.empty();
 					$.each(data.data, function(i,o) {
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" class="orderBtn" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-info" href="http://120.26.50.11:9000/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-primary j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-info" href="<?= $Path;?>/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-primary j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
 				}
@@ -130,26 +105,6 @@ $(function() {
 					getData()
 					_global.badge();
 				}
-			}
-		})
-	})
-
-	$(document).on('click', '.orderBtn', function() {
-		var k = $(this).data('key');
-		$.ajax({
-			type : "GET",
-			url : "<?= $Path;?>/sched/order-web/goods-detail?orderNo="+k,
-			dataType : "json",
-			success : function(data) {
-				var c = $('#orderDetails').find('tbody');
-				c.empty();
-				$.each(data, function(i, o) {
-					var h = '<tr><td>'+ o.addressFrom +'</td><td>'+ o.addressTo +'</td><td>'+ o.count + o.category["unit"]+'</td><td>'+ o.category["name"] +'</td></tr>';
-
-					c.append(h)
-					$('.details-pop:eq(0)').show();
-					$('.overlay:eq(0)').show();
-				})
 			}
 		})
 	})

@@ -11,27 +11,29 @@ $Path = \Yii::$app->request->hostInfo;
 
 ?>
 
-<div class="breadcrumbBox">
-	<ul class="breadcrumb">
-		<li><a href="javascript:;">调度中心</a></li>
-		<li><a href="<?= $Path;?>/sched/order-web/new?sort=-time">发布管理</a></li>
-		<li class="active">查看详情</li>
-	</ul>
-	<a href="<?= $Path;?>/sched/order-web/new?sort=-time" class="batch">返回</a>
-</div>
-
-<div class="order-detail">
-	<div id="J-order-detail" class="clearfix"></div>
-	<div class="goods-label"><span class="label label-default">货物明细</span></div>
-	<div id="J-goods-detail" class="goods-detail clearfix"></div>
-</div>
-
-<div class="pub-control">
-	<div class="control-btns">
-		<a href="javascript:;" class="btn-pub">发布</a>
-		<a href="javascript:;" class="btn-del">删除</a>
+<div class="content">
+	<div class="breadcrumbBox">
+		<ul class="breadcrumb">
+			<li><a href="javascript:;">调度中心</a></li>
+			<li><a href="<?= $Path;?>/sched/order-web/new?sort=-time">发布管理</a></li>
+			<li class="active">查看详情</li>
+		</ul>
+		<a href="<?= $Path;?>/sched/order-web/new?sort=-time" class="back-control">返回</a>
 	</div>
-	<div class="pub-label"><span>已选：发布</span></div>
+
+	<div class="order-detail">
+		<div id="J-order-detail" class="clearfix"></div>
+		<div class="goods-label"><span class="label label-default">货物明细</span></div>
+		<div id="J-goods-detail" class="goods-detail clearfix"></div>
+	</div>
+
+	<div class="pub-control">
+		<div class="control-btns">
+			<a href="javascript:;" class="btn-pub">发布</a>
+			<a href="javascript:;" class="btn-del">删除</a>
+		</div>
+		<div class="pub-label"><span>已选：发布</span></div>
+	</div>
 </div>
 
 <?php $this->beginBlock("bottomcode");  ?>

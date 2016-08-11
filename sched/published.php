@@ -10,34 +10,35 @@ use app\modules\admin\logic\DictionaryLogic;
 $Path = \Yii::$app->request->hostInfo;
 
 ?>
+<div class="content">
+	<div class="breadcrumbBox">
+		<ul class="breadcrumb">
+			<li><a href="javascript:;">调度中心</a></li>
+			<li class="active">报价管理</li>
+		</ul>
+	</div>
 
-<div class="breadcrumbBox">
-	<ul class="breadcrumb">
-		<li><a href="javascript:;">调度中心</a></li>
-		<li class="active">报价管理</li>
-	</ul>
-</div>
-
-<div class="listBox">
-	<table class="table table-striped table-hover" id="newOrder">
-		<thead>
-			<tr>
-				<th>状态</th>
-				<th>订单号</th>
-				<th>提货时间</th>
-				<th>起点</th>
-				<th>终点</th>
-				<th>总件数</th>
-				<th>总吨数</th>
-				<th>几装几卸</th>
-				<th>报价人数</th>
-				<th>货主的价格</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
+	<div class="listBox">
+		<table class="table table-striped table-hover" id="newOrder">
+			<thead>
+				<tr>
+					<th>状态</th>
+					<th>订单号</th>
+					<th>提货时间</th>
+					<th>起点</th>
+					<th>终点</th>
+					<th>总件数</th>
+					<th>总吨数</th>
+					<th>几装几卸</th>
+					<th>报价人数</th>
+					<th>货主的价格</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
 </div>
 
 <div class="price-pop popup">
@@ -54,37 +55,14 @@ $Path = \Yii::$app->request->hostInfo;
 			<div class="priceBox clearfix">
 				<div class="form-group">
 					<select name="priceType" id="priceType" class="form-control">
-						<option>单价</option>
-						<option>一口价</option>
+						<option value="0">单价</option>
+						<option value="1">一口价</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<input type="text" name="price" id="price" class="form-control" placeholder="请输入给货主的报价">
 					<label class="label-unit">元 / 吨</label>
 				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="details-pop popup">
-	<a href="javascrip:void(0);" class="glyphicon glyphicon-remove close-btn"></a>
-	<div class="popup-header"></div>
-	<div class="popup-main">
-		<div class="grid-view">
-			<div style="height: 308px;overflow-y: auto;overflow-x:hidden;">
-				<table class="table table-striped table-bordered" id="orderDetails">
-					<thead>
-						<tr>
-							<th>提货地址</th>
-							<th>卸货地址</th>
-							<th>数量</th>
-							<th>分类</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
 			</div>
 		</div>
 	</div>
@@ -112,29 +90,9 @@ $Path = \Yii::$app->request->hostInfo;
 							<th>操作</th>
 						</tr>
 					</thead>
-					<tbody>
-					</tbody>
+					<tbody></tbody>
 				</table>
 			</div>
-		</div>
-	</div>
-</div>
-
-<div class="pricelist-pop popup">
-	<a href="javascrip:;" class="glyphicon glyphicon-remove close-btn"></a>
-	<div class="grid-view">
-		<div style="height: 308px;overflow-y: auto;overflow-x:hidden;">
-			<table class="table table-striped table-bordered" id="priceOrder">
-				<thead>
-					<tr>
-						<th>报价</th>
-						<th>报价时间</th>
-						<th>电话</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
 		</div>
 	</div>
 </div>
@@ -144,7 +102,7 @@ $Path = \Yii::$app->request->hostInfo;
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript">
 $(function() {
-
+	var _bidUrl = "", _driverUrl = "";
 	function getData() {
 		var status = {
 			100 : "新发布",
@@ -161,7 +119,7 @@ $(function() {
 		var priceType = {0 : '单价', 1 : '一口价'}
 		$.ajax({
 			type : "GET",
-			url : "<?= $Path;?>/sched/order/published-and-wait-confirm-list",
+			url : "<?= $Path;?>/sched/order/bid-order-list",
 			dataType : "json",
 			success : function(data) {
 				// console.log(data)
@@ -173,16 +131,37 @@ $(function() {
 							var bidCnt = '暂无司机报价';
 						}
 						else {
-							var bidCnt = '<a href="javascript:;" class="j-price-list" data-key="'+o._id+'">'+o.bidCnt+'人</a>'
+							var bidCnt = '<a href="javascript:;" data-key="'+o._id+'">'+o.bidCnt+'人</a>'
 						}
 						if(!o.bid["bidPrice"] || !o.bid["bidTime"]) {
 							var bidPrice = '还未给货主报价';
+							var bidTxt = '报价';
+							var bidMod = false;
 						}
 						else {
 							var bidPrice = priceType[o.bid["bidPriceType"]]+"："+o.bid["bidPrice"]+'元<br>合计：'+o.realTotalMoney+'<br>'+_global.FormatTime(o.bid["bidTime"]);
+							var bidTxt = '修改报价';
+							var bidMod = 'mod';
 						}
+
+						if((!o.bid["bidPrice"] || !o.bid["bidTime"]) || !o.bidCnt || o.status != 300) {
+							var driverCls = 'has-driver';
+							var driverTxt = '撮合';
+						}
+						else {
+							if(!o.dealt) {
+								var driverTxt = '撮合';
+								var driverMod = false;
+							}
+							else {
+								var driverTxt = '修改撮合';
+								var driverMod = true;
+							}
+							var driverCls = 'j-driver';
+						}
+
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td>'+status[o.status]+'</td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" class="orderDetails" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+o.realTotalWeight+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td width="250"><a class="btn-info" href="javascript:;">查看详情</a><a class="btn-primary j-price" href="javascript:;" data-key="'+o._id+'" title="">报价</a><a class="btn-primary  j-driver" data-key="'+o._id+'" href="javascript:;">撮合</a></td></tr>';
+						var h = '<tr><td>'+status[o.status]+'</td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td width="250"><a class="btn-info" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-primary j-price" href="javascript:;" data-key="'+o._id+'" data-mod="'+bidMod+'">'+bidTxt+'</a><a href="javascript:;" class="btn-primary '+driverCls+'" data-key="'+o._id+'" data-mod="'+driverMod+'">'+driverTxt+'</a></td></tr>';
 
 						c.append(h)
 					})
@@ -198,6 +177,12 @@ $(function() {
 		$('#j-submit-price').data('key', $(this).data('key'));
 		$('.price-pop:eq(0)').show()
 		$('.overlay:eq(0)').show()
+		if($(this).data('mod')) {
+			_bidUrl = "<?= $Path;?>/sched/order/mod-bid";
+		}
+		else {
+			_bidUrl = "<?= $Path;?>/sched/order/bid";
+		}
 	})
 
 	$('#j-submit-price').on('click', function() {
@@ -213,7 +198,7 @@ $(function() {
 
 		$.ajax({
 			type : "GET",
-			url : "<?= $Path;?>/sched/order/bid",
+			url : _bidUrl,
 			data : {
 				orderId : k,
 				price : p,
@@ -233,50 +218,6 @@ $(function() {
 		})
 	})
 
-	$(document).on('click', '.orderDetails', function() {
-		var k = $(this).data('key');
-		$.ajax({
-			type : "GET",
-			url : "<?= $Path;?>/sched/order-web/goods-detail?orderNo="+k,
-			dataType : "json",
-			success : function(data) {
-				console.log(data)
-				var c = $('#orderDetails').find('tbody');
-				c.empty();
-				$.each(data, function(i, o) {
-					var h = '<tr><td>'+ o.addressFrom +'</td><td>'+ o.addressTo +'</td><td>'+ o.count + o.category["unit"]+'</td><td>'+ o.category["name"] +'</td></tr>';
-
-					c.append(h)
-					$('.details-pop:eq(0)').show();
-					$('.overlay:eq(0)').show();
-				})
-			}
-		})
-	})
-
-	$(document).on('click', '.j-price-list', function() {
-		var k = $(this).data('key');
-		var priceType = {0 : '单价', 1 : '一口价'}
-		$.ajax({
-			type : "GET",
-			url : "<?= $Path;?>/sched/order/bid-list?orderId="+k,
-			dataType : "json",
-			success : function(data) {
-				if(data.code == '0') {
-					var c = $('#priceOrder').find('tbody');
-					c.empty();
-					$.each(data.data, function(i, o) {
-						var h = '<tr><td>'+priceType[o.bidPriceType]+'：'+o.bidPrice+'元</td><td>'+_global.FormatTime(o.bidTime)+'</td><td>'+o.phone+'</td></tr>'
-
-						c.append(h)
-						$('.pricelist-pop:eq(0)').show();
-						$('.overlay:eq(0)').show();
-					})
-				}
-			}
-		})
-	})
-
 	$(document).on('click', '.j-driver', function() {
 		var k = $(this).data('key');
 		var priceType = {0 : '单价', 1 : '一口价'}
@@ -288,28 +229,47 @@ $(function() {
 				var c = $('#driverOrder').find('tbody');
 				c.empty();
 				$.each(data.data, function(i, o) {
-					var h = '<tr><td>'+priceType[o.bidPriceType]+'：'+o.bidPrice+'元</td><td>'+o.realTotalMoney+'元</td><td>'+_global.FormatTime(o.bidTime)+'</td><td>'+o.phone+'</td><td><input type="radio" name="driverId" data-key="'+o.driverId+'" /></td></tr>'
+					if(o.win) {
+						var trCls = 'has';
+						var aHtml = '<a href="javascript:void(0);" class="suc-driver-control">已撮合</a>';
+					}
+					else {
+						var trCls = '';
+						var aHtml = '<a href="javascript:void(0);" class="driver-control" data-key="'+o.driverId+'">撮合</a>';
+					}
+					var h = '<tr class="'+trCls+'"><td>'+priceType[o.bidPriceType]+'：'+o.bidPrice+'元</td><td>'+o.realTotalMoney+'元</td><td>'+_global.FormatTime(o.bidTime)+'</td><td>'+o.phone+'</td><td>'+aHtml+'</td></tr>';
 
 					c.append(h)
 				})
-				$('#driverSubmit').data('key', k);
+				$('#j-submit-driver').data('key', k);
 				$('.driver-pop:eq(0)').show();
 				$('.overlay:eq(0)').show();
 			}
 		})
+		if($(this).data('mod')) {
+			_driverUrl = "<?= $Path;?>/sched/order/mod-driver";
+		}
+		else {
+			_driverUrl = "<?= $Path;?>/sched/order/mod-driver";
+		}
 	})
 
-	$('#driverSubmit').on('click', function() {
-		var orderId = $(this).data('key'), driverId = null;;
-		var driverIdList = $("input[name='driverId']");
-		driverIdList.each(function(i, o) {
-			if(o.checked) {driverId = $(o).data("key");}
-		})
+	$(document).on('click', '.driver-control', function() {
+		$('.driver-control').removeClass('has-driver-control');
+		$('#driverOrder').find('tr').removeClass('has');
+		$(this).parents('tr').addClass('has');
+		$(this).addClass('has-driver-control');
+		$('#j-submit-driver').data('driverId', $(this).data('key'));
+	})
+
+
+	$('#j-submit-driver').on('click', function() {
+		var orderId = $(this).data('key'), driverId = $(this).data('driverId');
 		if(!driverId) {alert('请先选择司机！');return false;};
 
 		$.ajax({
 			type : "GET",
-			url : "<?= $Path;?>/sched/order/choose-driver",
+			url : _driverUrl,
 			data : {
 				orderId : orderId,
 				driverId : driverId

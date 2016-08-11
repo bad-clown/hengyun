@@ -100,9 +100,7 @@ $isContentPage = !isset($this->context->notContentPage);
                 <a href="#">158...8888</a> | <a href="<?= $Path;?>/user/logout-web" data-method="post">安全退出</a>
             </div>
         </div>
-        <div class="content">
-            <?= $content ?>
-        </div>
+        <?= $content ?>
     </div>
 </div>
 
