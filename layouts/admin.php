@@ -122,7 +122,22 @@ if($isContentPage){
 <script  type="text/javascript" src="<?= $Path;?>/static/js/index.js"></script>
 <?= $this->blocks['bottomcode'] ?>
 <?php  endif; ?>
+<script type="text/javascript">
+$(function() {
+    $('#mainframe').height($(window).height() - 115)
+    if(window._global) {return}
+    window._global = {};
+    _global.badge = function() {
+        $.getJSON('http://120.26.50.11:9000/sched/order-web/order-cnt', function(data) {
+            if(data.total){$('#total-cnt').show().html(data.total);}
+            if(data.new){$('#new-cnt').show().html(data.new);}
+            if(data.bid){$('#bid-cnt').show().html(data.bid);}
+        })
+    }
+    _global.badge();
 
+});
+</script>
 </body>
 </html>
 <?php $this->endPage() ?>

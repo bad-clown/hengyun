@@ -202,10 +202,7 @@ $(function() {
 		$('.breadcrumb').html('<li><a href="javascript:;">调度中心</a></li><li><a href="<?= $Path;?>/sched/order-web/new?sort=-time">发布管理</a></li><li class="active">批量操作</li>');
 		$('.checkbox-material').show();
 		$('#batch-cancel').show();
-		$('.batch-pub').css({
-			'top' : $(window).scrollTop() + $(window).height() - 195,
-			'display' : 'block'
-		});
+		$('.batch-pub').show();
 	})
 
 	$('#batch-cancel').on('click', function() {
@@ -215,11 +212,6 @@ $(function() {
 		$('.batch-pub').hide();
 	})
 
-	$(window).on('scroll', function() {
-		$('.pub-control').css({
-			'top' : $(window).scrollTop() + $(window).height() - 195
-		})
-	})
 
 	$('.close-btn').on('click', function() {
 		$('#orderDetails').find('tbody').empty()

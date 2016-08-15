@@ -17,7 +17,7 @@ body{background-color: #f5f5f5;}
 .clearfix{zoom:1;}
 .clearfix:after{content:"\200B";height:0;display:block;clear:both;visibility:hidden;}
 
-#mainframe{width: 100%;height: 1000px;margin-top: 20px;}
+#mainframe{width: 100%;margin-top: 20px;min-height: 450px;}
 
 /* 侧导航 */
 .wrapper .menu{position: fixed;top: 0;left: 0;bottom: 0;width: 270px;background-color: #3b3a3f;overflow-x: hidden;overflow-y: auto;z-index: 999;}
@@ -74,7 +74,7 @@ body{background-color: #f5f5f5;}
 .goods-detail .form-group{width: 20%;margin-right: 5%;}
 .goods-label{margin: 30px 0;}
 .goods-label .label,.goods-label .label.label-default{font-size: 16px;color: #2bb0bf;background-color: #f5f5f5;padding: 15px 25px;}
-.pub-control{position: absolute;bottom: 0;left: 0;width: 100%;height: 80px;background-color: #2bb0bf;z-index: 99;}
+.pub-control{position: fixed;bottom: 0;left: 0;width: 100%;height: 80px;background-color: #2bb0bf;z-index: 99;}
 .pub-control .pub-label,.pub-control .control-btns{float: right;font-size: 16px;color: #fefefe;margin-top: 22px;}
 .pub-control .pub-label{padding: 8px 30px;}
 .pub-control .control-btns{border-left: 2px solid #fff;padding: 0 30px;}

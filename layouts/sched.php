@@ -122,7 +122,11 @@ if($isContentPage){
 <script  type="text/javascript" src="<?= $Path;?>/static/js/index.js"></script>
 <?= $this->blocks['bottomcode'] ?>
 <?php  endif; ?>
-
+<script type="text/javascript">
+$(function() {
+    $('#mainframe').height($(window).height() - 115)
+})
+</script>
 </body>
 </html>
 <?php $this->endPage() ?>
