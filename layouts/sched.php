@@ -79,21 +79,6 @@ if($isContentPage){
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="/finance/order-web/order-list" target="mainframe">订单管理</a>
-                </li>
-                <li>
-                    <a href="#">账单管理</a>
-                </li>
-                <li>
-                    <a href="/user/admin?sort=-time" target="mainframe">用户管理</a>
-                </li>
-                <li>
-                    <a href="/admin/goods-category" target="mainframe">货物类型管理</a>
-                </li>
-                <li>
-                    <a href="/admin/truck-cat" target="mainframe">货车类型管理</a>
-                </li>
             </ul>
         </div>
     </div>

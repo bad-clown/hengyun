@@ -69,10 +69,30 @@ if($isContentPage){
         <div class="menu-list">
             <ul>
                 <li>
+                    <a href="/sched/order-web/new?sort=-time" target="mainframe" class="cur">调度中心<span class="badge" id="total-cnt">0</span></a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="/sched/order-web/new?sort=-time" target="mainframe">发布管理<span class="badge" id="new-cnt">0</span></a>
+                        </li>
+                        <li>
+                            <a href="/sched/order-web/published-list" target="mainframe">报价管理<span class="badge" id="bid-cnt">0</span></a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
                     <a href="/finance/order-web/order-list" target="mainframe">订单管理</a>
                 </li>
                 <li>
                     <a href="#">账单管理</a>
+                </li>
+                <li>
+                    <a href="/user/admin?sort=-time" target="mainframe">用户管理</a>
+                </li>
+                <li>
+                    <a href="/admin/goods-category" target="mainframe">货物类型管理</a>
+                </li>
+                <li>
+                    <a href="/admin/truck-cat" target="mainframe">货车类型管理</a>
                 </li>
             </ul>
         </div>
