@@ -58,58 +58,7 @@ if($isContentPage){
 <?php
 }else{ // is not contentpage
 ?>
-<div class="wrapper">
-    <div class="menu">
-        <div class="title">
-            <a href="#">
-                <span>享运</span><br>
-                享运物流后台系统
-            </a>
-        </div>
-        <div class="menu-list">
-            <ul>
-                <li>
-                    <a href="/sched/order-web/new?sort=-time" target="mainframe" class="cur">调度中心<span class="badge" id="total-cnt">0</span></a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="/sched/order-web/new?sort=-time" target="mainframe">发布管理<span class="badge" id="new-cnt">0</span></a>
-                        </li>
-                        <li>
-                            <a href="/sched/order-web/published-list" target="mainframe">报价管理<span class="badge" id="bid-cnt">0</span></a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="/finance/order-web/order-list" target="mainframe">订单管理</a>
-                </li>
-                <li>
-                    <a href="#">账单管理</a>
-                </li>
-                <li>
-                    <a href="/user/admin?sort=-time" target="mainframe">用户管理</a>
-                </li>
-                <li>
-                    <a href="/admin/goods-category" target="mainframe">货物类型管理</a>
-                </li>
-                <li>
-                    <a href="/admin/truck-cat" target="mainframe">货车类型管理</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="main">
-        <div class="topbar">
-            <div class="search">
-                <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-                <i class="glyphicon glyphicon-search"></i>
-            </div>
-            <div class="username">
-                <a href="#">158...8888</a> | <a href="<?= $Path;?>/user/logout-web" data-method="post">安全退出</a>
-            </div>
-        </div>
-        <?= $content ?>
-    </div>
-</div>
+<?= $content ?>
 <?php
 }// end if is not contentpage
 ?>

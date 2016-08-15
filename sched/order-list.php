@@ -34,25 +34,37 @@ $Path = \Yii::$app->request->hostInfo;
 								</a>
 								<ul class="dropdown-menu">
 									<li>
-										<a href="javascript:void(0)">全部</a>
+										<a href="javascript:void(0)" data-status="-1">全部</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)">待确认</a>
+										<a href="javascript:void(0)" data-status="100">新发布</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)">待派车</a>
+										<a href="javascript:void(0)" data-status="200">待确认</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)">待提货</a>
+										<a href="javascript:void(0)" data-status="300">待派车</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)">在途中</a>
+										<a href="javascript:void(0)" data-status="400">待提货</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)">已送达</a>
+										<a href="javascript:void(0)" data-status="500">在途中</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)">已完成</a>
+										<a href="javascript:void(0)" data-status="600">已送达</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" data-status="700">已完成</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" data-status="800">已拒绝</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" data-status="900">已过期</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" data-status="1000">已失效</a>
 									</li>
 								</ul>
 							</li>
@@ -80,7 +92,7 @@ $Path = \Yii::$app->request->hostInfo;
 <script type="text/javascript" src="/assets/8c065db/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(function() {
-	var actPage = 1;
+	var actPage = 1, actStatus = -1;
 	var PageTotal = {
 		init : function(d) {
 			this.current = actPage, 	//当前页
@@ -161,27 +173,44 @@ $(function() {
 			type : "GET",
 			url : "<?= $Path;?>/finance/order/list",
 			data : {
-				page : actPage
+				page : actPage,
+				status : actStatus
 			},
 			dataType : "json",
 			success : function(d) {
-				var data = d.data
-				PageTotal.init(data)
-				var c = $('#order').find('tbody');
-				c.empty();
-				$.each(data, function(i,o) {
-					var t = _global.FormatTime(o.publishTime);
-					var h = '<tr><td align="center">'+status[o.status]+'</td><td>'+t+'</td><td>'+o.orderNo+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>合计：'+o["driver"]["bid"]["realTotalMoney"]+'元</td><td>合计：'+o["driver"]["bid"]["realTotalMoney"]+'元</td><td width="170"><a class="btn-info" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+				var data = d.data,
+					c = $('#order').find('tbody');
+				if(data.list.length) {
+					PageTotal.init(data)
+					c.empty();
+					$.each(data.list, function(i,o) {
+						var t = _global.FormatTime(o.publishTime);
+						var driverTotal = o.driver ? o["driver"]["bid"]["realTotalMoney"]+'元' : "暂无报价";
+						var bidTotal = o.realTotalMoney ? o.realTotalMoney+'元' : "暂无报价";
+						var h = '<tr><td align="center">'+status[o.status]+'</td><td>'+t+'</td><td>'+o.orderNo+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>合计：'+driverTotal+'</td><td>合计：'+bidTotal+'</td><td width="170"><a class="btn-info" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						c.append(h)
+					})
+				}
+				else {
+					$('.pagination').empty()
+					c.empty();
+					var h = '<tr><td align="center" colspan="8">暂无数据</td></tr>';
 					c.append(h)
-				})
+
+				}
 			}
 		})
 	}
 	getData()
 
-
 	$(document).on("click", '.pagination a', function() {
 		actPage = $(this).data("page");
+		getData()
+	})
+
+	$('.dropdown-menu a').on('click', function() {
+		actPage = 1;
+		actStatus = $(this).data('status');
 		getData()
 	})
 })

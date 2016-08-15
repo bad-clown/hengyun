@@ -13,14 +13,14 @@ $Path = \Yii::$app->request->hostInfo;
 
 
 
-<div class="content">
+<div class="content mb60">
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
 			<li><a href="javascript:;">调度中心</a></li>
 			<li class="active">发布管理</li>
 		</ul>
-		<a href="javascript:;" class="batch-control">批量操作</a>
-		<a href="javascript:;" class="batch-cancel">取消</a>
+		<a href="javascript:;" class="btn-control" id="batch-control">批量操作</a>
+		<a href="javascript:;" class="btn-cancel" id="batch-cancel">取消</a>
 	</div>
 
 	<div class="listBox">
@@ -42,20 +42,20 @@ $Path = \Yii::$app->request->hostInfo;
 			</tbody>
 		</table>
 	</div>
+	<div class="pub-control batch-pub">
+		<div class="form-group">
+			<div class="checkbox">
+				<label><input type="checkbox" id="checkAll">全选</label>
+			</div>
+		</div>
+		<div class="control-btns">
+			<a href="javascript:;" class="btn-pub" id="J_Pubbatch">发布</a>
+			<a href="javascript:;" class="btn-del" id="J_Delbatch">删除</a>
+		</div>
+		<div class="pub-label"><span>已选：发布</span></div>
+	</div>
 </div>
 
-<div class="pub-control batch-pub">
-	<div class="form-group">
-		<div class="checkbox">
-			<label><input type="checkbox" id="checkAll">全选</label>
-		</div>
-	</div>
-	<div class="control-btns">
-		<a href="javascript:;" class="btn-pub" id="J_Pubbatch">发布</a>
-		<a href="javascript:;" class="btn-del" id="J_Delbatch">删除</a>
-	</div>
-	<div class="pub-label"><span>已选：发布</span></div>
-</div>
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript">
@@ -198,22 +198,20 @@ $(function() {
 		}
 	})
 
-	$('.batch-control').on('click', function() {
-		$('.listBox').css('padding-bottom', 60)
+	$('#batch-control').on('click', function() {
 		$('.breadcrumb').html('<li><a href="javascript:;">调度中心</a></li><li><a href="<?= $Path;?>/sched/order-web/new?sort=-time">发布管理</a></li><li class="active">批量操作</li>');
 		$('.checkbox-material').show();
-		$('.batch-cancel').show();
+		$('#batch-cancel').show();
 		$('.batch-pub').css({
 			'top' : $(window).scrollTop() + $(window).height() - 195,
 			'display' : 'block'
 		});
 	})
 
-	$('.batch-cancel').on('click', function() {
-		$('.listBox').css('padding-bottom', 0)
+	$('#batch-cancel').on('click', function() {
 		$('.breadcrumb').html('<li><a href="javascript:;">调度中心</a></li><li class="active">发布管理</li>');
 		$('.checkbox-material').hide();
-		$('.batch-cancel').hide();
+		$('#batch-cancel').hide();
 		$('.batch-pub').hide();
 	})
 

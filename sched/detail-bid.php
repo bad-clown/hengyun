@@ -32,9 +32,6 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="order-detail bid-order-detail shipper-info">
 		<div class="shipper-label"><span class="label label-default">用户信息</span></div>
 	</div>
-</div>
-
-<div class="content">
 	<div class="order-detail bid-order-detail trucklist-info">
 		<div class="shipper-label"><span class="label label-default">车辆信息</span></div>
 	</div>
