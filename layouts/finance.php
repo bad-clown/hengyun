@@ -28,7 +28,7 @@ $isContentPage = !isset($this->context->notContentPage);
 <!--[if lt IE 7]><html class="lt-ie9 lt-ie8 lt-ie7"  lang="<?= $language    ?>"><![endif]-->
 <!--[if IE 7]><html class="lt-ie9 lt-ie8"  lang="<?= $language   ?>"><![endif]-->
 <!--[if IE 8]><html class="lt-ie9"  lang="<?= $language   ?>"><![endif]-->
-<!--[if gt IE 8]><!--><html  lang="<?= $language   ?>"><!--<![endif]-->
+<!--[if gt IE 8]><!--><html lang="<?= $language   ?>"><!--<![endif]-->
 <head>
 <meta charset="<?= Yii::$app->charset ?>"/>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,6 +36,7 @@ $isContentPage = !isset($this->context->notContentPage);
 <meta name="renderer" content="webkit">
 <?= Html::csrfMetaTags() ?>
 <title><?= Dictionary::indexKeyValue("App","SystemName") ?><?= (isset($this->context->title) && (!empty($this->context->title)))?"-".$this->context->title:"" ?></title>
+<script type="text/javascript">var $_Path="<?= $Path;?>";</script>
 <!--[if lt IE 9]><!-->
 <script type="text/javascript" src="<?= Url::to(["/static/js/oldbrowsers.js"])?>"></script>
 <!--<![endif]-->
@@ -72,21 +73,12 @@ if($isContentPage){
                     <a href="/finance/order-web/order-list" target="mainframe">订单管理</a>
                 </li>
                 <li>
-                    <a href="#">账单管理</a>
+                    <a href="/finance/bill-shipper-web/list" target="mainframe">账单管理</a>
                 </li>
             </ul>
         </div>
     </div>
     <div class="main">
-        <div class="topbar">
-            <div class="search">
-                <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-                <i class="glyphicon glyphicon-search"></i>
-            </div>
-            <div class="username">
-                <a href="#">158...8888</a> | <a href="<?= $Path;?>/user/logout-web" data-method="post">安全退出</a>
-            </div>
-        </div>
         <?= $content ?>
     </div>
 </div>
@@ -102,11 +94,21 @@ if($isContentPage){
 <script  type="text/javascript" src="<?= $Path;?>/static/js/index.js"></script>
 <?= $this->blocks['bottomcode'] ?>
 <?php  endif; ?>
+<?php
+if(!$isContentPage){
+?>
 <script type="text/javascript">
 $(function() {
-    $('#mainframe').height($(window).height() - 115)
-})
+    $('html').addClass('no-scroll')
+    $('#mainframe').height($(window).height())
+    $(window).on('resize', function() {
+        $('#mainframe').height($(window).height())
+    })
+});
 </script>
+<?php
+}
+?>
 </body>
 </html>
 <?php $this->endPage() ?>

@@ -11,7 +11,15 @@ $Path = \Yii::$app->request->hostInfo;
 
 ?>
 
-
+<div class="topbar">
+    <div class="search">
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <i class="glyphicon glyphicon-search"></i>
+    </div>
+    <div class="username">
+        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+    </div>
+</div>
 
 <div class="content mb60">
 	<div class="breadcrumbBox">
@@ -86,6 +94,7 @@ $(function() {
 						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-info" href="<?= $Path;?>/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-primary j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
+					_global.badge();
 				}
 			}
 		})

@@ -11,6 +11,15 @@ $Path = \Yii::$app->request->hostInfo;
 
 ?>
 
+<div class="topbar">
+    <div class="search">
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <i class="glyphicon glyphicon-search"></i>
+    </div>
+    <div class="username">
+        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+    </div>
+</div>
 <div class="content">
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">

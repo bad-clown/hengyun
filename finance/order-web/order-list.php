@@ -11,15 +11,24 @@ $Path = \Yii::$app->request->hostInfo;
 
 ?>
 
+<div class="topbar">
+    <div class="search">
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <i class="glyphicon glyphicon-search"></i>
+    </div>
+    <div class="username">
+        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+    </div>
+</div>
 <div class="content">
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
 			<li class="active">订单管理</li>
 		</ul>
-		<div class="btn-control">
+		<!-- <div class="btn-control">
 			<span class="glyphicon glyphicon-plus"></span>
 			<a href="javascript:;">新增订单</a>
-		</div>
+		</div> -->
 	</div>
 
 	<div class="listBox orderList">
@@ -187,7 +196,7 @@ $(function() {
 						var t = _global.FormatTime(o.publishTime);
 						var driverTotal = o.driver ? o["driver"]["bid"]["realTotalMoney"]+'元' : "暂无报价";
 						var bidTotal = o.realTotalMoney ? o.realTotalMoney+'元' : "暂无报价";
-						var h = '<tr><td align="center">'+status[o.status]+'</td><td>'+t+'</td><td>'+o.orderNo+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>合计：'+driverTotal+'</td><td>合计：'+bidTotal+'</td><td width="170"><a class="btn-info" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+t+'</td><td>'+o.orderNo+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>合计：'+driverTotal+'</td><td>合计：'+bidTotal+'</td><td width="170"><a class="btn-info" href="<?= $Path;?>/finance/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
 				}
@@ -212,6 +221,23 @@ $(function() {
 		actPage = 1;
 		actStatus = $(this).data('status');
 		getData()
+	})
+
+	$(document).on('click', '.j-delete', function() {
+		var k = $(this).data('key');
+		if(confirm("确定删除？")) {
+			$.ajax({
+				type : "GET",
+				url : "<?= $Path;?>/finance/order/del-order?id="+k,
+				dataType : "json",
+				success : function(data) {
+					if(data.code == '0') {
+						alert('删除成功！')
+						getData()
+					}
+				}
+			})
+		}
 	})
 })
 </script>

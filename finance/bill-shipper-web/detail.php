@@ -24,8 +24,7 @@ $Path = \Yii::$app->request->hostInfo;
 <div class="content">
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
-			<li><a href="javascript:;">调度中心</a></li>
-			<li><a href="<?= $Path;?>/sched/order-web/published-list">报价管理</a></li>
+			<li><a href="<?= $Path;?>/finance/order-web/order-list">订单管理</a></li>
 			<li class="active">查看详情</li>
 		</ul>
 		<a href="<?= $Path;?>/sched/order-web/published-list" class="back-control">返回</a>
@@ -45,13 +44,13 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="order-detail bid-order-detail trucklist-info">
 		<div class="shipper-label"><span class="label label-default">车辆信息</span></div>
 	</div>
-	<div class="bid-control">
+	<!-- <div class="bid-control">
 		<div class="control-btns">
 			<a href="javascript:;" class="btn-price j-price">修改报价</a>
 			<a href="javascript:;" class="btn-driver j-driver">撮合</a>
 		</div>
 		<div class="bid-label"><span></span></div>
-	</div>
+	</div> -->
 </div>
 
 <div class="price-pop popup">
@@ -128,7 +127,7 @@ $(function() {
 		900 : "已过期",
 		1000 : "已失效"
 	};
-	$.ajax({
+	/*$.ajax({
 		type : "GET",
 		url : "<?= $Path;?>/sched/order/detail?id=<?= $_id;?>",
 		dataType : "json",
@@ -213,7 +212,7 @@ $(function() {
 				})
 			}
 		}
-	})
+	})*/
 
 	$(document).on('click', '.j-price', function() {
 		var tr = $(this).parents('tr:eq(0)');

@@ -16,12 +16,10 @@ $(function() {
 		return year+"年"+month+"月"+date+"日 "+hour+":"+minute;
 	}
 	_global.badge = function() {
-		/*$.getJSON('http://120.26.50.11:9000/sched/order-web/order-cnt', function(data) {
-			if(data.total){$('#total-cnt').show().html(data.total);}
-			if(data.new){$('#new-cnt').show().html(data.new);}
-			if(data.bid){$('#bid-cnt').show().html(data.bid);}
-		})*/
+		$.getJSON($_Path+'/sched/order-web/order-cnt', function(data) {
+			if(data.total){$("#total-cnt",parent.document).show().html(data.total);}
+			if(data.new){$("#new-cnt",parent.document).show().html(data.new);}
+			if(data.bid){$("#bid-cnt",parent.document).show().html(data.bid);}
+		})
 	}
-	_global.badge();
-
 });

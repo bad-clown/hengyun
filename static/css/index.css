@@ -13,11 +13,12 @@ h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
 a,a:hover,a:link,a:visited{text-decoration:none;color: #333;}
 body,textarea,input,button,select,keygen,legend{font:12px/1.14 Microsoft Yahei,Verdana,"\5FAE\8F6F\96C5\9ED1","\9ED1\4F53";color:#333;outline:0;}
 body{background-color: #f5f5f5;}
+.no-scroll{overflow-y: hidden;overflow-x:auto;}
 /* --- 清除浮动 --- */
 .clearfix{zoom:1;}
 .clearfix:after{content:"\200B";height:0;display:block;clear:both;visibility:hidden;}
 
-#mainframe{width: 100%;margin-top: 20px;min-height: 450px;}
+#mainframe{width: 100%;/* min-height: 450px; */}
 
 /* 侧导航 */
 .wrapper .menu{position: fixed;top: 0;left: 0;bottom: 0;width: 270px;background-color: #3b3a3f;overflow-x: hidden;overflow-y: auto;z-index: 999;}
@@ -60,7 +61,7 @@ body{background-color: #f5f5f5;}
 .listBox .form-group{padding-bottom: 0;margin: 0;}
 .listBox .checkbox .checkbox-material{margin-right: 10px;}
 .listBox .btn-info,.listBox .btn-primary,.listBox .btn-danger{background:#fff;border:1px solid #2bb0bf;color: #2bb0bf;display: inline-block;width: 68px;height: 36px;line-height: 36px;text-align: center;border-radius: 3px;margin-right: 8px;}
-.listBox .form-group .checkbox label,.listBox .form-group label{color: #ef4f4f;}
+.listBox .form-group .checkbox label,.listBox .form-group label,.listBox .c-ef4f4f{color: #ef4f4f;}
 .listBox .form-group .checkbox .checkbox-material{display: none;}
 .mb60{margin-bottom: 60px;}
 .batch-pub{display: none;}
@@ -131,7 +132,8 @@ body{background-color: #f5f5f5;}
 /* 订单管理 */
 .orderList{}
 .orderList .table th{padding: 6px 8px;vertical-align: middle;}
+.orderList .table .pl24{padding-left: 24px;}
 .orderList .table .navbar-collapse{padding: 0;}
-
+.orderList .table .navbar-nav, .orderList .table .navbar-nav > li{float: none;}
 .orderList .table .nav > li > a{padding: 10px 24px;}
 .orderList .table .dropdown-menu{min-width: 86px;}

@@ -10,6 +10,15 @@ use app\modules\admin\logic\DictionaryLogic;
 $Path = \Yii::$app->request->hostInfo;
 
 ?>
+<div class="topbar">
+    <div class="search">
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <i class="glyphicon glyphicon-search"></i>
+    </div>
+    <div class="username">
+        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+    </div>
+</div>
 <div class="content">
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
@@ -102,7 +111,6 @@ $Path = \Yii::$app->request->hostInfo;
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript">
 $(function() {
-	var _bidUrl = "", _driverUrl = "";
 	function getData() {
 		var status = {
 			100 : "新发布",
@@ -131,37 +139,26 @@ $(function() {
 							var bidCnt = '暂无司机报价';
 						}
 						else {
-							var bidCnt = '<a href="javascript:;" data-key="'+o._id+'">'+o.bidCnt+'人</a>'
+							var bidCnt = '<div class="form-group"><label>'+o.bidCnt+'人</label></div>';
 						}
 						if(!o.bid["bidPrice"] || !o.bid["bidTime"]) {
 							var bidPrice = '还未给货主报价';
-							var bidTxt = '报价';
-							var bidMod = false;
+							var bidCls = 'j-price';
 						}
 						else {
 							var bidPrice = priceType[o.bid["bidPriceType"]]+"："+o.bid["bidPrice"]+'元<br>合计：'+o.realTotalMoney+'<br>'+_global.FormatTime(o.bid["bidTime"]);
-							var bidTxt = '修改报价';
-							var bidMod = 'mod';
+							var bidCls = 'has-driver';
 						}
 
-						if((!o.bid["bidPrice"] || !o.bid["bidTime"]) || !o.bidCnt || o.status != 300) {
+						if((!o.bid["bidPrice"] || !o.bid["bidTime"]) || !o.bidCnt || o.status != 300 || o.dealt) {
 							var driverCls = 'has-driver';
-							var driverTxt = '撮合';
 						}
 						else {
-							if(!o.dealt) {
-								var driverTxt = '撮合';
-								var driverMod = false;
-							}
-							else {
-								var driverTxt = '修改撮合';
-								var driverMod = true;
-							}
 							var driverCls = 'j-driver';
 						}
 
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td>'+status[o.status]+'</td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td width="250"><a class="btn-info" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-primary j-price" href="javascript:;" data-key="'+o._id+'" data-mod="'+bidMod+'">'+bidTxt+'</a><a href="javascript:;" class="btn-primary '+driverCls+'" data-key="'+o._id+'" data-mod="'+driverMod+'">'+driverTxt+'</a></td></tr>';
+						var h = '<tr><td><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td width="250"><a class="btn-info" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-primary '+bidCls+'" href="javascript:;" data-key="'+o._id+'">报价</a><a href="javascript:;" class="btn-primary '+driverCls+'" data-key="'+o._id+'">撮合</a></td></tr>';
 
 						c.append(h)
 					})
@@ -177,12 +174,6 @@ $(function() {
 		$('#j-submit-price').data('key', $(this).data('key'));
 		$('.price-pop:eq(0)').show()
 		$('.overlay:eq(0)').show()
-		if($(this).data('mod')) {
-			_bidUrl = "<?= $Path;?>/sched/order/mod-bid";
-		}
-		else {
-			_bidUrl = "<?= $Path;?>/sched/order/bid";
-		}
 	})
 
 	$('#j-submit-price').on('click', function() {
@@ -198,7 +189,7 @@ $(function() {
 
 		$.ajax({
 			type : "GET",
-			url : _bidUrl,
+			url : "<?= $Path;?>/sched/order/bid",
 			data : {
 				orderId : k,
 				price : p,
@@ -246,12 +237,6 @@ $(function() {
 				$('.overlay:eq(0)').show();
 			}
 		})
-		if($(this).data('mod')) {
-			_driverUrl = "<?= $Path;?>/sched/order/mod-driver";
-		}
-		else {
-			_driverUrl = "<?= $Path;?>/sched/order/mod-driver";
-		}
 	})
 
 	$(document).on('click', '.driver-control', function() {
@@ -269,7 +254,7 @@ $(function() {
 
 		$.ajax({
 			type : "GET",
-			url : _driverUrl,
+			url : "<?= $Path;?>/sched/order/driver",
 			data : {
 				orderId : orderId,
 				driverId : driverId

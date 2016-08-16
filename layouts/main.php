@@ -25,10 +25,10 @@ $language =\Yii::$app->language;
 //是否是内容页，默认都是，内容页不需要菜单
 $isContentPage = !isset($this->context->notContentPage);
 ?><?php $this->beginPage() ?><!DOCTYPE html>
-<!--[if lt IE 7]><html class="lt-ie9 lt-ie8 lt-ie7"  lang="<?= $language    ?>"><![endif]-->
-<!--[if IE 7]><html class="lt-ie9 lt-ie8"  lang="<?= $language   ?>"><![endif]-->
-<!--[if IE 8]><html class="lt-ie9"  lang="<?= $language   ?>"><![endif]-->
-<!--[if gt IE 8]><!--><html  lang="<?= $language   ?>"><!--<![endif]-->
+<!--[if lt IE 7]><html class="no-scroll lt-ie9 lt-ie8 lt-ie7"  lang="<?= $language    ?>"><![endif]-->
+<!--[if IE 7]><html class="no-scroll lt-ie9 lt-ie8"  lang="<?= $language   ?>"><![endif]-->
+<!--[if IE 8]><html class="no-scroll lt-ie9"  lang="<?= $language   ?>"><![endif]-->
+<!--[if gt IE 8]><!--><html class="no-scroll" lang="<?= $language   ?>"><!--<![endif]-->
 <head>
 <meta charset="<?= Yii::$app->charset ?>"/>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,6 +36,7 @@ $isContentPage = !isset($this->context->notContentPage);
 <meta name="renderer" content="webkit">
 <?= Html::csrfMetaTags() ?>
 <title><?= Dictionary::indexKeyValue("App","SystemName") ?><?= (isset($this->context->title) && (!empty($this->context->title)))?"-".$this->context->title:"" ?></title>
+<script type="text/javascript">var $_Path="<?= $Path;?>";</script>
 <!--[if lt IE 9]><!-->
 <script type="text/javascript" src="<?= Url::to(["/static/js/oldbrowsers.js"])?>"></script>
 <!--<![endif]-->
@@ -98,15 +99,6 @@ if($isContentPage){
         </div>
     </div>
     <div class="main">
-        <div class="topbar">
-            <div class="search">
-                <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-                <i class="glyphicon glyphicon-search"></i>
-            </div>
-            <div class="username">
-                <a href="#">158...8888</a> | <a href="<?= $Path;?>/user/logout-web" data-method="post">安全退出</a>
-            </div>
-        </div>
         <?= $content ?>
     </div>
 </div>
@@ -116,13 +108,8 @@ if($isContentPage){
 
 <?php $this->endBody() ?>
 <?php if (isset($this->blocks['bottomcode'])): ?>
-<script  type="text/javascript" src="<?= $Path;?>/static/bootstrap-material-design/dist/js/ripples.min.js"></script>
-<script  type="text/javascript" src="<?= $Path;?>/static/bootstrap-material-design/dist/js/material.min.js"></script>
-<script  type="text/javascript" src="<?= $Path;?>/static/snackbarjs/dist/snackbar.min.js"></script>
-<script  type="text/javascript" src="<?= $Path;?>/static/js/index.js"></script>
 <?= $this->blocks['bottomcode'] ?>
 <?php  endif; ?>
-
 </body>
 </html>
 <?php $this->endPage() ?>
