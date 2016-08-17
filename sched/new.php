@@ -32,7 +32,7 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 
 	<div class="listBox">
-		<table class="table table-striped table-hover" id="order">
+		<table class="table table-striped table-hover" id="listContent">
 			<thead>
 				<tr>
 					<th>状态</th>
@@ -50,7 +50,7 @@ $Path = \Yii::$app->request->hostInfo;
 			</tbody>
 		</table>
 	</div>
-	<div class="pub-control batch-pub">
+	<div class="control-panel batch-control">
 		<div class="form-group">
 			<div class="checkbox">
 				<label><input type="checkbox" id="checkAll">全选</label>
@@ -60,7 +60,7 @@ $Path = \Yii::$app->request->hostInfo;
 			<a href="javascript:;" class="btn-pub" id="J_Pubbatch">发布</a>
 			<a href="javascript:;" class="btn-del" id="J_Delbatch">删除</a>
 		</div>
-		<div class="pub-label"><span>已选：发布</span></div>
+		<div class="panel-label"><span>已选：发布</span></div>
 	</div>
 </div>
 
@@ -87,7 +87,7 @@ $(function() {
 			dataType : "json",
 			success : function(data) {
 				if(data.code == "0") {
-					var c = $('#order').find('tbody');
+					var c = $('#listContent').find('tbody');
 					c.empty();
 					$.each(data.data, function(i,o) {
 						var t = _global.FormatTime(o.deliverTime);
@@ -211,16 +211,15 @@ $(function() {
 		$('.breadcrumb').html('<li><a href="javascript:;">调度中心</a></li><li><a href="<?= $Path;?>/sched/order-web/new?sort=-time">发布管理</a></li><li class="active">批量操作</li>');
 		$('.checkbox-material').show();
 		$('#batch-cancel').show();
-		$('.batch-pub').show();
+		$('.batch-control').show();
 	})
 
 	$('#batch-cancel').on('click', function() {
 		$('.breadcrumb').html('<li><a href="javascript:;">调度中心</a></li><li class="active">发布管理</li>');
 		$('.checkbox-material').hide();
 		$('#batch-cancel').hide();
-		$('.batch-pub').hide();
+		$('.batch-control').hide();
 	})
-
 
 	$('.close-btn').on('click', function() {
 		$('#orderDetails').find('tbody').empty()

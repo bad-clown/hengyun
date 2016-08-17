@@ -25,14 +25,14 @@ $Path = \Yii::$app->request->hostInfo;
 		<ul class="breadcrumb">
 			<li class="active">账单管理</li>
 		</ul>
-		<!-- <div class="btn-control">
+		<div class="btn-control">
 			<span class="glyphicon glyphicon-plus"></span>
-			<a href="javascript:;">新增订单</a>
-		</div> -->
+			<a href="<?= $Path;?>/finance/bill-shipper/create">新增账单</a>
+		</div>
 	</div>
 
 	<div class="listBox orderList">
-		<table class="table table-striped table-hover" id="order">
+		<table class="table table-striped table-hover" id="listContent">
 			<thead>
 				<tr>
 					<th width="102">
@@ -103,10 +103,42 @@ $Path = \Yii::$app->request->hostInfo;
 			<tbody>
 			</tbody>
 		</table>
-		<ul class="pagination"></ul>
+		<ul class="pagination" id="listPages"></ul>
 	</div>
 </div>
 
+<div class="shipper-pop popup" style="display: block;">
+	<a href="javascrip:void(0);" class="glyphicon glyphicon-remove close-btn"></a>
+	<div class="popup-header"></div>
+	<div class="popup-main">
+		<div class="popup-breadcrumb">
+			<div class="breadcrumbBox">
+				<ul class="breadcrumb">
+					<li>账单管理</li>
+					<li>新增账单</li>
+					<li class="active">货主选择</li>
+				</ul>
+				<a href="javascript:;" class="btn btn-primary" title="确认">确认</a>
+			</div>
+			<div class="shipperBox clearfix">
+				<table class="table table-striped table-hover" id="shipperData">
+					<thead>
+						<tr>
+							<th>用户名</th>
+							<th>手机号</th>
+							<th>订单数</th>
+							<th>类型</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+				<div><ul class="pagination" id="popupPages"></ul></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="overlay" style="display: block;"></div>
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript" src="/assets/8c065db/js/bootstrap.min.js"></script>
@@ -114,7 +146,8 @@ $Path = \Yii::$app->request->hostInfo;
 $(function() {
 	var actPage = 1, actStatus = -1, minMoney = -1, maxMoney = -1;
 	var PageTotal = {
-		init : function(d) {
+		init : function(obj,d) {
+			this.obj = $(obj),
 			this.current = actPage, 	//当前页
 			this.pageCount = 10, 		//每页显示的数据量
 			this.total = d.pageCnt, 	//总共的页码
@@ -125,7 +158,7 @@ $(function() {
 			this.getData(this.current, this.total)
 		},
 		getData: function(n, t) {
-			$(".pagination").empty();
+			this.obj.empty();
 			if (n == null) {n = 1;}
 			this.current = n;
 			this.page();
@@ -136,11 +169,9 @@ $(function() {
 			this.next = this.current + 1 >= this.total ? this.total : (this.current + 1);
 		},
 		page: function() {
-			$(".pagination").empty();
+			this.obj.empty();
 			var x = 4;
 			this.getPages();
-
-			console.log()
 
 			if(this.total > x) {
 				var index = this.current <= Math.ceil(x / 2) ? 1 : (this.current) >= this.total - Math.ceil(x / 2) ? this.total - x : (this.current - Math.ceil(x / 2));
@@ -153,25 +184,25 @@ $(function() {
 				var end = this.total;
 			}
 			if (this.current > 1) {
-				$(".pagination").append("<li class='prev'><a href='javascript:;' data-page='"+(this.current - 1)+"'>«</a></li>");
+				this.obj.append("<li class='prev'><a href='javascript:;' data-page='"+(this.current - 1)+"'>«</a></li>");
 			}
 			else if(this.current == 1){
-				$(".pagination").append("<li class='prev disabled'><span>«</span></li>");
+				this.obj.append("<li class='prev disabled'><span>«</span></li>");
 			}
 
 			for (var i = index; i <= end; i++) {
 				if (i == this.current) {
-					$(".pagination").append("<li class='active'><a href='javascript:;' data-page='"+(this.current)+"'>"+i+"</a></li>");
+					this.obj.append("<li class='active'><a href='javascript:;' data-page='"+(this.current)+"'>"+i+"</a></li>");
 				} else {
-					$(".pagination").append("<li><a href='javascript:;' data-page='"+i+"'>"+i+"</a></li>");
+					this.obj.append("<li><a href='javascript:;' data-page='"+i+"'>"+i+"</a></li>");
 				}
 			}
 
 			if (this.current < end) {
-				$(".pagination").append("<li class='next'><a href='javascript:;' data-page='"+(this.current + 1)+"'>»</a></li>");
+				this.obj.append("<li class='next'><a href='javascript:;' data-page='"+(this.current + 1)+"'>»</a></li>");
 			}
 			else if(this.current == end){
-				$(".pagination").append("<li class='next disabled'><span>»</span></li>");
+				this.obj.append("<li class='next disabled'><span>»</span></li>");
 			}
 		}
 	};
@@ -195,9 +226,9 @@ $(function() {
 			dataType : "json",
 			success : function(d) {
 				var data = d.data,
-					c = $('#order').find('tbody');
+					c = $('#listContent').find('tbody');
 				if(data.list.length) {
-					PageTotal.init(data)
+					PageTotal.init('#listPages', data)
 					c.empty();
 					$.each(data.list, function(i,o) {
 						var t = _global.FormatTime(o.billTime);
@@ -217,9 +248,45 @@ $(function() {
 	}
 	getData()
 
-	$(document).on("click", '.pagination a', function() {
+	function getShipperData() {
+		$.ajax({
+			type : "GET",
+			url : "<?= $Path;?>/finance/bill-shipper/unpayed-users",
+			data : {
+				page : actPage
+			},
+			dataType : "json",
+			success : function(d) {
+				var data = d.data,
+					c = $('#shipperData').find('tbody');
+				if(data.list.length) {
+					PageTotal.init('#popupPages', data)
+					c.empty();
+					$.each(data.list, function(i,o) {
+						var h = '<tr><td>'+(o.name || "暂无")+'</td><td>'+o.phone+'</td><td>'+o.orderCnt+'单</td><td><span class="pl24">货主（个人）</span></td><td width="100"><a href="javascript:void(0);" class="btn-option" data-key="'+o._id+'">选择</a></td></tr>';
+						c.append(h)
+					})
+				}
+				else {
+					$('.pagination').empty()
+					c.empty();
+					var h = '<tr><td align="center" colspan="7">暂无数据</td></tr>';
+					c.append(h)
+
+				}
+			}
+		})
+	}
+	getShipperData()
+
+	$(document).on("click", '#listPages a', function() {
 		actPage = $(this).data("page");
 		getData()
+	})
+
+	$(document).on("click", '#popupPages a', function() {
+		actPage = $(this).data("page");
+		getShipperData()
 	})
 
 	$('#J_Status a').on('click', function() {

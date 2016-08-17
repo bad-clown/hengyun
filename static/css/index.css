@@ -19,6 +19,8 @@ body{background-color: #f5f5f5;}
 .clearfix:after{content:"\200B";height:0;display:block;clear:both;visibility:hidden;}
 
 #mainframe{width: 100%;/* min-height: 450px; */}
+.pt15{padding-top: 15px;}
+.pb100{padding-bottom: 100px;}
 
 /* 侧导航 */
 .wrapper .menu{position: fixed;top: 0;left: 0;bottom: 0;width: 270px;background-color: #3b3a3f;overflow-x: hidden;overflow-y: auto;z-index: 999;}
@@ -60,33 +62,32 @@ body{background-color: #f5f5f5;}
 .listBox .table th{background-color: #f5f5f5;padding: 20px 8px;color: #464646;font-size: 14px;text-align: left;font-weight: 700;}
 .listBox .form-group{padding-bottom: 0;margin: 0;}
 .listBox .checkbox .checkbox-material{margin-right: 10px;}
-.listBox .btn-info,.listBox .btn-primary,.listBox .btn-danger{background:#fff;border:1px solid #2bb0bf;color: #2bb0bf;display: inline-block;width: 68px;height: 36px;line-height: 36px;text-align: center;border-radius: 3px;margin-right: 8px;}
+.content .btn-info,.content .btn-primary,.content .btn-danger{background:#fff;border:1px solid #2bb0bf;color: #2bb0bf;display: inline-block;width: 68px;height: 36px;line-height: 36px;text-align: center;border-radius: 3px;margin-right: 8px;}
 .listBox .form-group .checkbox label,.listBox .form-group label,.listBox .c-ef4f4f{color: #ef4f4f;}
 .listBox .form-group .checkbox .checkbox-material{display: none;}
 .mb60{margin-bottom: 60px;}
-.batch-pub{display: none;}
 
 /* 发布订单详情 */
-.order-detail{padding-bottom: 100px;}
-.order-detail .form-group{float: left;width: 30%;margin-right: 3%;}
-.order-detail .form-group .checkbox label, .order-detail .form-group .radio label, .order-detail .form-group label{color: #9e9e9e;}
-.order-detail .form-control{color: #2bb0bf;}
-.order-detail .form-group-last{width: 96%;}
+.detail-box .form-group{float: left;width: 30%;margin-right: 3%;}
+.detail-box .form-group .checkbox label, .detail-box .form-group .radio label, .detail-box .form-group label{color: #9e9e9e;}
+.detail-box .form-control{color: #2bb0bf;}
+.detail-box .form-group-last{width: 96%;}
+.detail-label{margin: 30px 0;}
+.detail-label .label,.detail-label .label.label-default{font-size: 16px;color: #2bb0bf;background-color: #f5f5f5;padding: 15px 25px;}
 .goods-detail .form-group{width: 20%;margin-right: 5%;}
-.goods-label{margin: 30px 0;}
-.goods-label .label,.goods-label .label.label-default{font-size: 16px;color: #2bb0bf;background-color: #f5f5f5;padding: 15px 25px;}
-.pub-control{position: fixed;bottom: 0;left: 0;width: 100%;height: 80px;background-color: #2bb0bf;z-index: 99;}
-.pub-control .pub-label,.pub-control .control-btns{float: right;font-size: 16px;color: #fefefe;margin-top: 22px;}
-.pub-control .pub-label{padding: 8px 30px;}
-.pub-control .control-btns{border-left: 2px solid #fff;padding: 0 30px;}
+.control-panel{position: absolute;bottom: 0;left: 0;width: 100%;height: 80px;background-color: #2bb0bf;z-index: 99;}
+.control-panel .panel-label,.control-panel .control-btns{float: right;font-size: 16px;color: #fefefe;margin-top: 22px;}
+.control-panel .panel-label{padding: 8px 30px;}
+.control-panel .control-btns{border-left: 2px solid #fff;padding: 0 30px;}
 .control-btns a{color: #fefefe;display: inline-block;padding: 6px 12px;border: 1px solid #fff;border-radius: 3px;margin: 0 5px;}
 .control-btns .btn-pub{background-color: #fff;color: #2bb0bf;}
-.pub-control .form-group{float: left;margin: 18px 0 0 26px;padding: 0;}
-.pub-control .checkbox .checkbox-material{margin-right: 10px;}
-.pub-control .checkbox .checkbox-material .check{border-color: #fff;}
-.pub-control .form-group .checkbox label,.pub-control .form-group label{color: #fff;}
-.pub-control .checkbox input[type=checkbox]:checked + .checkbox-material .check{color: #fff;border-color: #fff;}
-.pub-control .checkbox input[type=checkbox]:checked + .checkbox-material .check:before{color: #fff;}
+.control-panel .form-group{float: left;margin: 18px 0 0 26px;padding: 0;}
+.control-panel .checkbox .checkbox-material{margin-right: 10px;}
+.control-panel .checkbox .checkbox-material .check{border-color: #fff;}
+.control-panel .form-group .checkbox label,.control-panel .form-group label{color: #fff;}
+.control-panel .checkbox input[type=checkbox]:checked + .checkbox-material .check{color: #fff;border-color: #fff;}
+.control-panel .checkbox input[type=checkbox]:checked + .checkbox-material .check:before{color: #fff;}
+.batch-control{display: none;position: fixed;}
 
 /* 报价管理 */
 .overlay{position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: #000;opacity: .5;z-index: 1000;display: none;}
@@ -105,28 +106,17 @@ body{background-color: #f5f5f5;}
 .priceBox #priceType{width: 275px;margin-right: 40px;color: #2bb0bf!important;}
 .priceBox #price{width: 435px;}
 .priceBox .label-unit{position: absolute;bottom: 15px;right: 0;color: #2bb0bf!important;}
-.driverBox{height: 300px;overflow-y:auto;overflow-x:hidden;}
-.driverBox .table{}
-.driverBox .table thead tr th{text-align: left;background-color: #f5f5f5;font-size: 14px;color: #464646;font-weight: 700;height: 50px;vertical-align: middle;}
-.driverBox .table tbody tr td{height: 50px; vertical-align: middle;font-size: 13px;}
-.driverBox .table tbody tr.has{color: #2bb0bf;}
-.driverBox .driver-control{display: block;width: 70px;height: 32px;line-height: 30px;border: 1px solid #2bb0bf;text-align: center;border-radius: 3px;background-color: #fff;color: #2bb0bf;}
-.driverBox .has-driver-control{background-color: #2bb0bf;color: #fff;}
-.driverBox .suc-driver-control{display: block;width: 70px;height: 32px;line-height: 30px;border: 1px solid #2bb0bf;text-align: center;border-radius: 3px;background-color: #2bb0bf;color: #fff;}
+.driverBox,.shipperBox{height: 300px;overflow-y:auto;overflow-x:hidden;}
+.driverBox .table thead tr th,.shipperBox .table thead tr th{text-align: left;background-color: #f5f5f5;font-size: 14px;color: #464646;font-weight: 700;height: 50px;vertical-align: middle;}
+.driverBox .table tbody tr td,.shipperBox .table tbody tr td{height: 50px; vertical-align: middle;font-size: 13px;}
+.driverBox .table tbody tr.has,.shipperBox .table tbody tr.has{color: #2bb0bf;}
+.driverBox .driver-control,.shipperBox .btn-option{display: block;width: 70px;height: 32px;line-height: 30px;border: 1px solid #2bb0bf;text-align: center;border-radius: 3px;background-color: #fff;color: #2bb0bf;}
+.driverBox .has-driver-control,.shipperBox .has-btn-option{background-color: #2bb0bf;color: #fff;}
+.driverBox .suc-driver-control,.shipperBox .suc-btn-option{display: block;width: 70px;height: 32px;line-height: 30px;border: 1px solid #2bb0bf;text-align: center;border-radius: 3px;background-color: #2bb0bf;color: #fff;}
 .listBox .has-driver,.listBox .has-driver:link,.listBox .has-driver:visited{border-color: #9e9e9e;color: #9e9e9e;background-color: #fff;}
 /* 报价订单详情 */
-.bid-order-detail{padding-bottom: 0;}
-.shipper-info,.trucklist-info{padding-top: 15px;}
-.trucklist-info{padding-top: 15px;padding-bottom: 100px;}
-.bid-order-detail .form-group{width: 17%;}
-.bid-order-detail .form-group-last{width: 97%;}
-.shipper-label{margin-top: 20px;margin-bottom: 20px;}
-.shipper-label .label, .shipper-label .label.label-default{font-size: 16px;color: #2bb0bf;background-color: #f5f5f5;padding: 15px 25px;}
-.bid-control{position: absolute;bottom: 0;left: 0;width: 100%;height: 80px;background-color: #2bb0bf;z-index: 99;}
-.bid-control .bid-label,.bid-control .control-btns{float: right;font-size: 16px;color: #fefefe;margin-top: 22px;}
-.bid-control .bid-label{padding: 8px 30px;}
-.bid-control .control-btns{border-left: 2px solid #fff;padding: 0 30px;}
-.control-btns a{color: #fefefe;display: inline-block;padding: 6px 12px;border: 1px solid #fff;border-radius: 3px;margin: 0 5px;}
+.bid-detail .form-group{width: 17%;}
+.bid-detail .form-group-last{width: 97%;}
 
 
 /* 订单管理 */
@@ -137,3 +127,7 @@ body{background-color: #f5f5f5;}
 .orderList .table .navbar-nav, .orderList .table .navbar-nav > li{float: none;}
 .orderList .table .nav > li > a{padding: 10px 24px;}
 .orderList .table .dropdown-menu{min-width: 86px;}
+
+.detail-box .table th{text-align: left;font-size: 14px;color: #464646;padding: 16px 8px;vertical-align: middle;font-weight: 700;background-color: #f5f5f5;}
+.detail-box .table td{vertical-align: middle;}
+

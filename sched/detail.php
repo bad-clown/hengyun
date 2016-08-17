@@ -30,18 +30,18 @@ $Path = \Yii::$app->request->hostInfo;
 		<a href="<?= $Path;?>/sched/order-web/new?sort=-time" class="back-control">返回</a>
 	</div>
 
-	<div class="order-detail">
-		<div id="J-order-detail" class="clearfix"></div>
-		<div class="goods-label"><span class="label label-default">货物明细</span></div>
-		<div id="J-goods-detail" class="goods-detail clearfix"></div>
+	<div class="detail-box pb100">
+		<div class="clearfix" id="J-order-detail"></div>
+		<div class="detail-label"><span class="label label-default">货物明细</span></div>
+		<div class="goods-detail clearfix" id="J-goods-detail"></div>
 	</div>
 
-	<div class="pub-control">
+	<div class="control-panel">
 		<div class="control-btns">
 			<a href="javascript:;" class="btn-pub">发布</a>
 			<a href="javascript:;" class="btn-del">删除</a>
 		</div>
-		<div class="pub-label"><span>已选：发布</span></div>
+		<div class="panel-label"><span>已选：发布</span></div>
 	</div>
 </div>
 

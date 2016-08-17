@@ -32,7 +32,7 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 
 	<div class="listBox orderList">
-		<table class="table table-striped table-hover" id="order">
+		<table class="table table-striped table-hover" id="listContent">
 			<thead>
 				<tr>
 					<th width="102">
@@ -188,7 +188,7 @@ $(function() {
 			dataType : "json",
 			success : function(d) {
 				var data = d.data,
-					c = $('#order').find('tbody');
+					c = $('#listContent').find('tbody');
 				if(data.list.length) {
 					PageTotal.init(data)
 					c.empty();

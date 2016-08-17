@@ -31,26 +31,26 @@ $Path = \Yii::$app->request->hostInfo;
 		<a href="<?= $Path;?>/sched/order-web/published-list" class="back-control">返回</a>
 	</div>
 
-	<div class="order-detail bid-order-detail">
-		<div id="J-order-detail" class="clearfix"></div>
-		<div class="goods-label"><span class="label label-default">货物明细</span></div>
-		<div id="J-goods-detail" class="goods-detail clearfix"></div>
+	<div class="detail-box bid-detail">
+		<div class="clearfix" id="J-order-detail"></div>
+		<div class="detail-label"><span class="label label-default">货物明细</span></div>
+		<div class="goods-detail clearfix" id="J-goods-detail"></div>
 	</div>
 </div>
 
 <div class="content">
-	<div class="order-detail bid-order-detail shipper-info">
-		<div class="shipper-label"><span class="label label-default">用户信息</span></div>
+	<div class="detail-box bid-detail pt15" id="J-shipper-detail">
+		<div class="detail-label"><span class="label label-default">用户信息</span></div>
 	</div>
-	<div class="order-detail bid-order-detail trucklist-info">
-		<div class="shipper-label"><span class="label label-default">车辆信息</span></div>
+	<div class="detail-box bid-detail pt15 pb100" id="J-trucklist-detail">
+		<div class="detail-label"><span class="label label-default">车辆信息</span></div>
 	</div>
-	<div class="bid-control">
+	<div class="control-panel">
 		<div class="control-btns">
 			<a href="javascript:;" class="btn-price j-price">修改报价</a>
 			<a href="javascript:;" class="btn-driver j-driver">撮合</a>
 		</div>
-		<div class="bid-label"><span></span></div>
+		<div class="panel-label"><span></span></div>
 	</div>
 </div>
 
@@ -135,11 +135,11 @@ $(function() {
 		success : function(data) {
 			var $order = $('#J-order-detail');
 			var $goods = $('#J-goods-detail');
-			var $shipper = $('.shipper-info');
-			var $trucklist = $('.trucklist-info');
+			var $shipper = $('#J-shipper-detail');
+			var $trucklist = $('#J-trucklist-detail');
 			var t = _global.FormatTime(data.deliverTime);
 			var bidPrice,bidPriceTotal,driverBid,driverBidTotal,hasBidWarning="",hasDriverWarning="";
-			$('.bid-label>span').html('状态：'+status[data.status]);
+			$('.panel-label>span').html('状态：'+status[data.status]);
 
 
 			if((!data["bidPrice"] || !data["bidTime"]) || data.status != 300) {

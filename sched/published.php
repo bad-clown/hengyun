@@ -28,7 +28,7 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 
 	<div class="listBox">
-		<table class="table table-striped table-hover" id="newOrder">
+		<table class="table table-striped table-hover" id="listContent">
 			<thead>
 				<tr>
 					<th>状态</th>
@@ -132,7 +132,7 @@ $(function() {
 			success : function(data) {
 				// console.log(data)
 				if(data.code == "0") {
-					var c = $('#newOrder').find('tbody');
+					var c = $('#listContent').find('tbody');
 					c.empty();
 					$.each(data.data, function(i,o) {
 						if(!o.bidCnt) {
