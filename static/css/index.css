@@ -52,6 +52,7 @@ body{background-color: #f5f5f5;}
 .breadcrumbBox .btn-control,.breadcrumbBox .back-control{position: absolute;top: 0;right: 20px;height: 75px;line-height: 75px;font-size: 18px;color: #2bb0bf;}
 .btn-control a{color: #2bb0bf;}
 .breadcrumbBox .btn-cancel{position: absolute;top: 0;right: 120px;height: 75px;line-height: 75px;font-size: 18px;color: #2bb0bf;display: none;}
+.breadcrumbBox .save-control{position: absolute;top: 0;right: 75px;height: 75px;line-height: 75px;font-size: 18px;color: #2bb0bf;}
 .breadcrumb{position: absolute;top: 0;left: 0;height: 75px;line-height: 75px; padding: 0 10px;margin-bottom: 0;background: none;color: #9e9e9e;font-size: 18px;border-bottom: 2px solid #2bb0bf;border-radius: 0;}
 .breadcrumb .active{color: #2bb0bf;}
 .breadcrumb > li + li:before{color: #9e9e9e;}
@@ -107,6 +108,7 @@ body{background-color: #f5f5f5;}
 .priceBox #price{width: 435px;}
 .priceBox .label-unit{position: absolute;bottom: 15px;right: 0;color: #2bb0bf!important;}
 .driverBox,.shipperBox{height: 300px;overflow-y:auto;overflow-x:hidden;}
+.shipperBox{height: 380px;}
 .driverBox .table thead tr th,.shipperBox .table thead tr th{text-align: left;background-color: #f5f5f5;font-size: 14px;color: #464646;font-weight: 700;height: 50px;vertical-align: middle;}
 .driverBox .table tbody tr td,.shipperBox .table tbody tr td{height: 50px; vertical-align: middle;font-size: 13px;}
 .driverBox .table tbody tr.has,.shipperBox .table tbody tr.has{color: #2bb0bf;}
@@ -117,7 +119,6 @@ body{background-color: #f5f5f5;}
 /* 报价订单详情 */
 .bid-detail .form-group{width: 17%;}
 .bid-detail .form-group-last{width: 97%;}
-
 
 /* 订单管理 */
 .orderList{}
@@ -131,3 +132,19 @@ body{background-color: #f5f5f5;}
 .detail-box .table th{text-align: left;font-size: 14px;color: #464646;padding: 16px 8px;vertical-align: middle;font-weight: 700;background-color: #f5f5f5;}
 .detail-box .table td{vertical-align: middle;}
 
+/* 账单管理 */
+.shipperBox .shipperPages{text-align: center;}
+.btn-create-detail{display: inline-block;padding: 15px 25px;font-size: 16px;color: #2bb0bf;}
+.btn-create-detail a{color: #2bb0bf;}
+.shipper-pop{top: 110px;}
+.order-detail-pop{width: 1000px;margin-left: -500px;top: 100px;}
+.orderDetailBox{height: 400px;overflow-y:auto;overflow-x:hidden;}
+.orderDetailBox .table thead tr th{text-align: left;background-color: #f5f5f5;font-size: 14px;color: #464646;font-weight: 700;height: 50px;vertical-align: middle;}
+.orderDetailBox .table tbody tr td{height: 50px; vertical-align: middle;font-size: 13px;}
+.orderDetailBox .table tbody tr.has{color: #2bb0bf;}
+.orderDetailBox .btn-option{display: block;width: 70px;height: 32px;line-height: 30px;border: 1px solid #2bb0bf;text-align: center;border-radius: 3px;background-color: #fff;color: #2bb0bf;}
+.orderDetailBox .has-btn-option{background-color: #2bb0bf;color: #fff;}
+.orderDetailBox .suc-btn-option{display: block;width: 70px;height: 32px;line-height: 30px;border: 1px solid #9e9e9e;text-align: center;border-radius: 3px;background-color: #fff;color: #9e9e9e;}
+
+
+.select-menu:after {right: 5px;top: 3px;font-size: 25px;position: absolute;font-family: 'Material Icons';font-style: normal;font-weight: 400;content: "\e5c5";pointer-events: none;color: #757575;}

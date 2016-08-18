@@ -33,7 +33,7 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="detail-box">
 		<div class="detail-label"><span class="label label-default">账单信息</span></div>
 		<div class="clearfix" id="J-bill-detail"></div>
-		<div class="detail-label"><span class="label label-default">订单明细</span><span class="glyphicon glyphicon-plus"></span><a href="#">添加明细</a></div>
+		<div class="detail-label"><span class="label label-default">订单明细</span></div>
 		<div class="clearfix">
 			<table class="table table-striped table-hover" id="orderList">
 				<thead>
@@ -66,70 +66,13 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 	<div class="control-panel">
 		<div class="control-btns">
-			<a href="javascript:;" class="btn-price j-price">修改报价</a>
-			<a href="javascript:;" class="btn-driver j-driver">撮合</a>
+			<a href="javascript:;" class="btn-price j-price">修改账单</a>
 		</div>
 		<div class="panel-label"><span></span></div>
 	</div>
 </div>
 
-<div class="price-pop popup">
-	<a href="javascrip:void(0);" class="glyphicon glyphicon-remove close-btn"></a>
-	<div class="popup-header"></div>
-	<div class="popup-main">
-		<div class="popup-breadcrumb">
-			<div class="breadcrumbBox">
-				<ul class="breadcrumb">
-					<li class="active">报价给货主</li>
-				</ul>
-				<a href="javascript:;" class="btn btn-primary" id="j-submit-price" title="保存">保存</a>
-			</div>
-			<div class="priceBox clearfix">
-				<div class="form-group">
-					<select name="priceType" id="priceType" class="form-control">
-						<option value="0">单价</option>
-						<option value="1">一口价</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<input type="text" name="price" id="price" class="form-control" placeholder="请输入给货主的报价">
-					<label class="label-unit">元 / 吨</label>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
-<div class="driver-pop popup">
-	<a href="javascrip:void(0);" class="glyphicon glyphicon-remove close-btn"></a>
-	<div class="popup-header"></div>
-	<div class="popup-main">
-		<div class="popup-breadcrumb">
-			<div class="breadcrumbBox">
-				<ul class="breadcrumb">
-					<li class="active">撮合司机</li>
-				</ul>
-				<a href="javascript:;" class="btn btn-primary" id="j-submit-driver" title="保存">保存</a>
-			</div>
-			<div class="driverBox clearfix" id="driverOrder">
-				<table class="table table-striped table-hover">
-					<thead>
-						<tr>
-							<th>报价</th>
-							<th>合计</th>
-							<th>报价时间</th>
-							<th>电话</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="overlay"></div>
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript">
@@ -171,130 +114,6 @@ $(function() {
 			$mail.append(mailHTML);
 
 		}
-	})
-
-	$(document).on('click', '.j-price', function() {
-		var tr = $(this).parents('tr:eq(0)');
-		$('.price-pop > .popup-header').html('<table><tbody><tr><td>起点：'+ $.trim(tr.find('.from').text()) +'</td><td>终点：'+ $.trim(tr.find('.to').text()) +'</td><td>件数：'+ $.trim(tr.find('.cnt').text()) +'</td><td>总吨数：'+ $.trim(tr.find('.weight').text()) +'吨</td><td>几装几卸：'+ $.trim(tr.find('.drop').text()) +'</td></tr></tbody></table>')
-		$('#j-submit-price').data('key', $(this).data('key'));
-		$('.price-pop:eq(0)').show()
-		$('.overlay:eq(0)').show()
-		if($(this).data('mod')) {
-			_bidUrl = "<?= $Path;?>/sched/order/mod-bid";
-		}
-		else {
-			_bidUrl = "<?= $Path;?>/sched/order/bid";
-		}
-	})
-
-	$('#j-submit-price').on('click', function() {
-		var k = $(this).data('key'),
-			p = $.trim($('#price').val()),
-			t = $('#priceType').val();
-		if(!p) {$('#price').focus();return false;}
-		if(isNaN(p)) {
-			alert("请输入数字");
-	　　　　$('#price').focus()
-	　　　　return false;
-		}
-
-		$.ajax({
-			type : "GET",
-			url : _bidUrl,
-			data : {
-				orderId : k,
-				price : p,
-				priceType : t
-			},
-			success : function(data) {
-				if(data.code == "0") {
-					alert('提交成功！')
-					$('.close-btn').click()
-					window.location.reload()
-				}
-				else {
-					alert('提交失败！')
-				}
-			}
-		})
-	})
-
-	$(document).on('click', '.j-driver', function() {
-		if(!$(this).data('status')){return}
-
-		var k = $(this).data('key');
-		var priceType = {0 : '单价', 1 : '一口价'}
-		$.ajax({
-			type : "GET",
-			url : "<?= $Path;?>/sched/order/bid-list?orderId="+k,
-			dataType : "json",
-			success : function(data) {
-				var c = $('#driverOrder').find('tbody');
-				c.empty();
-				$.each(data.data, function(i, o) {
-					if(o.win) {
-						var trCls = 'has';
-						var aHtml = '<a href="javascript:void(0);" class="suc-driver-control">已撮合</a>';
-					}
-					else {
-						var trCls = '';
-						var aHtml = '<a href="javascript:void(0);" class="driver-control" data-key="'+o.driverId+'">撮合</a>';
-					}
-					var h = '<tr class="'+trCls+'"><td>'+priceType[o.bidPriceType]+'：'+o.bidPrice+'元</td><td>'+o.realTotalMoney+'元</td><td>'+_global.FormatTime(o.bidTime)+'</td><td>'+o.phone+'</td><td>'+aHtml+'</td></tr>';
-
-					c.append(h)
-				})
-				$('#j-submit-driver').data('key', k);
-				$('.driver-pop:eq(0)').show();
-				$('.overlay:eq(0)').show();
-			}
-		})
-		if($(this).data('mod')) {
-			_driverUrl = "<?= $Path;?>/sched/order/mod-driver";
-		}
-		else {
-			_driverUrl = "<?= $Path;?>/sched/order/mod-driver";
-		}
-	})
-
-	$(document).on('click', '.driver-control', function() {
-		$('.driver-control').removeClass('has-driver-control');
-		$('#driverOrder').find('tr').removeClass('has');
-		$(this).parents('tr').addClass('has');
-		$(this).addClass('has-driver-control');
-		$('#j-submit-driver').data('driverId', $(this).data('key'));
-	})
-
-
-	$('#j-submit-driver').on('click', function() {
-		var orderId = $(this).data('key'), driverId = $(this).data('driverId');
-		if(!driverId) {alert('请先选择司机！');return false;};
-
-		$.ajax({
-			type : "GET",
-			url : _driverUrl,
-			data : {
-				orderId : orderId,
-				driverId : driverId
-			},
-			success : function(data) {
-				if(data.code == '0') {
-					alert('提交成功！');
-					$('.close-btn').click();
-					window.location.reload()
-				}
-				else {
-					alert('提交失败！');
-				}
-			}
-		})
-	})
-
-	$('.close-btn').on('click', function() {
-		$('#price').val('')
-		$('#orderDetails').find('tbody').empty()
-		$(this).parents('.popup').hide();
-		$('.overlay:eq(0)').hide();
 	})
 })
 </script>

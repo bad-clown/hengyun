@@ -27,7 +27,7 @@ $Path = \Yii::$app->request->hostInfo;
 		</ul>
 		<div class="btn-control">
 			<span class="glyphicon glyphicon-plus"></span>
-			<a href="<?= $Path;?>/finance/bill-shipper/create">新增账单</a>
+			<a href="javascript:;" id="open-create">新增账单</a>
 		</div>
 	</div>
 
@@ -41,7 +41,7 @@ $Path = \Yii::$app->request->hostInfo;
 							<li class="dropdown">
 								<a href="javascript:;" data-target="#" class="dropdown-toggle" data-toggle="dropdown">状态<b class="caret"></b>
 								</a>
-								<ul class="dropdown-menu" id="J_Status">
+								<ul class="dropdown-menu" id="J_StatusFilter">
 									<li>
 										<a href="javascript:void(0)" data-status="-1">全部</a>
 									</li>
@@ -66,7 +66,7 @@ $Path = \Yii::$app->request->hostInfo;
 							<li class="dropdown">
 								<a href="javascript:;" data-target="#" class="dropdown-toggle" data-toggle="dropdown">总金额<b class="caret"></b>
 								</a>
-								<ul class="dropdown-menu" id="J_Money">
+								<ul class="dropdown-menu" id="J_MoneyFilter">
 									<li>
 										<a href="javascript:void(0)" data-min="-1" data-max="-1">全部</a>
 									</li>
@@ -107,7 +107,7 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 </div>
 
-<div class="shipper-pop popup" style="display: block;">
+<div class="shipper-pop popup">
 	<a href="javascrip:void(0);" class="glyphicon glyphicon-remove close-btn"></a>
 	<div class="popup-header"></div>
 	<div class="popup-main">
@@ -118,7 +118,7 @@ $Path = \Yii::$app->request->hostInfo;
 					<li>新增账单</li>
 					<li class="active">货主选择</li>
 				</ul>
-				<a href="javascript:;" class="btn btn-primary" title="确认">确认</a>
+				<a href="javascript:;" class="btn btn-primary" id="shipper-complete" title="确认">确认</a>
 			</div>
 			<div class="shipperBox clearfix">
 				<table class="table table-striped table-hover" id="shipperData">
@@ -133,12 +133,12 @@ $Path = \Yii::$app->request->hostInfo;
 					</thead>
 					<tbody></tbody>
 				</table>
-				<div><ul class="pagination" id="popupPages"></ul></div>
+				<div class="shipperPages"><ul class="pagination" id="popupPages"></ul></div>
 			</div>
 		</div>
 	</div>
 </div>
-<div class="overlay" style="display: block;"></div>
+<div class="overlay"></div>
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript" src="/assets/8c065db/js/bootstrap.min.js"></script>
@@ -268,16 +268,15 @@ $(function() {
 					})
 				}
 				else {
-					$('.pagination').empty()
+					$('#popupPages').empty()
 					c.empty();
-					var h = '<tr><td align="center" colspan="7">暂无数据</td></tr>';
+					var h = '<tr><td align="center" colspan="5">暂无数据</td></tr>';
 					c.append(h)
 
 				}
 			}
 		})
 	}
-	getShipperData()
 
 	$(document).on("click", '#listPages a', function() {
 		actPage = $(this).data("page");
@@ -289,17 +288,31 @@ $(function() {
 		getShipperData()
 	})
 
-	$('#J_Status a').on('click', function() {
+	$('#J_StatusFilter a').on('click', function() {
 		actPage = 1;
 		actStatus = $(this).data('status');
 		getData()
 	})
 
-	$('#J_Money a').on('click', function() {
+	$('#J_MoneyFilter a').on('click', function() {
 		actPage = 1;
 		minMoney = $(this).data('min');
 		maxMoney = $(this).data('max');
 		getData()
+	})
+
+	$(document).on('click', '.btn-option', function() {
+		$('.btn-option').removeClass('has-btn-option');
+		$('#shipperData').find('tr').removeClass('has');
+		$(this).parents('tr').addClass('has');
+		$(this).addClass('has-btn-option');
+		$('#shipper-complete').prop('href', '<?= $Path;?>/finance/bill-shipper-web/create?shipperId='+$(this).data('key'));
+	})
+
+	$('#open-create').on('click', function() {
+		$('.shipper-pop').show();
+		$('.overlay').show();
+		getShipperData()
 	})
 
 	$(document).on('click', '.j-delete', function() {
@@ -317,6 +330,11 @@ $(function() {
 				}
 			})
 		}
+	})
+
+	$('.close-btn').on('click', function() {
+		$(this).parents('.popup').hide();
+		$('.overlay:eq(0)').hide();
 	})
 })
 </script>
