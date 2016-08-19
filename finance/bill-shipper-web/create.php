@@ -196,7 +196,6 @@ $(function() {
 	    istime: true,
 	    istoday: false,
 	    choose: function(dates){
-	    	console.log(dates)
 	    	$('#billTime').change()
         }
 	});
@@ -263,11 +262,12 @@ $(function() {
 		}
 
 		if(orderList.length<1) {alert('未选订单明细');return;}
+		var billTime = Date.parse($('input[name="billTime"]').val()) /1000;
 
 		var data = {
 			shipperId : '<?= $shipperId;?>',
 			status : $('select[name="status"]').val(),
-			billTime : $('input[name="billTime"]').val(),
+			billTime : billTime,
 			totalMoney : $('input[name="totalMoney"]').val(),
 			orderCnt : $('input[name="orderCnt"]').val(),
 			title : $('input[name="title"]').val(),
@@ -289,9 +289,10 @@ $(function() {
 			success : function(data) {
 				if(data.code == '0') {
 					alert('保存成功！');
+					window.location.href="<?= $Path;?>/finance/bill-shipper-web/list";
 				}
 				else {
-					alert('保存失败！请检查');
+					alert('保存失败，请检查账单后重试！');
 				}
 			},
 			erroe : function() {

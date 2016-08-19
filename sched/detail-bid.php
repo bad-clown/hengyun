@@ -66,7 +66,7 @@ $Path = \Yii::$app->request->hostInfo;
 				<a href="javascript:;" class="btn btn-primary" id="j-submit-price" title="保存">保存</a>
 			</div>
 			<div class="priceBox clearfix">
-				<div class="form-group">
+				<div class="form-group select-menu mr40">
 					<select name="priceType" id="priceType" class="form-control">
 						<option value="0">单价</option>
 						<option value="1">一口价</option>
