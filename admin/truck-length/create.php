@@ -8,12 +8,9 @@ use app\modules\admin\models\Job;
 use app\modules\admin\models\Dictionary;
 use app\modules\admin\logic\DictionaryLogic;
 $Path = \Yii::$app->request->hostInfo;
-$this->title = Yii::t('app', 'Update {modelClass}: ', [
-    'modelClass' => 'Truck Cat',
-]) . $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Truck Cats'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => (string)$model->_id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->title = Yii::t('app', 'Create Truck Length');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Truck Lengths'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="topbar">
@@ -29,14 +26,14 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 <div class="content">
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
-			<li><a href="<?= $Path;?>/admin/goods-category">货车类型管理</a></li>
-			<li class="active">新增货车类型</li>
+			<li><a href="<?= $Path;?>/admin/truck-length">车长管理</a></li>
+			<li class="active">新增车长</li>
 		</ul>
 		<!-- <a href="javascript:;" id="j-save-control" class="save-control">保存</a>
 		<a href="<?= $Path;?>/admin/goods-category" class="back-control">返回</a> -->
 	</div>
 
-	<div class="truck-cat-update">
+	<div class="truck-length-create">
 
 	    <?= $this->render('_form', [
 	        'model' => $model,

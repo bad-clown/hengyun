@@ -196,7 +196,7 @@ $(function() {
 						var t = _global.FormatTime(o.publishTime);
 						var driverTotal = o.driver ? o["driver"]["bid"]["realTotalMoney"]+'元' : "暂无报价";
 						var bidTotal = o.realTotalMoney ? o.realTotalMoney+'元' : "暂无报价";
-						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+t+'</td><td>'+o.orderNo+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>合计：'+driverTotal+'</td><td>合计：'+bidTotal+'</td><td width="170"><a class="btn-info" href="<?= $Path;?>/finance/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+t+'</td><td>'+o.orderNo+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>合计：'+driverTotal+'</td><td>合计：'+bidTotal+'</td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
 				}

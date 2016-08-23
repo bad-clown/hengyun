@@ -80,32 +80,6 @@ if($isContentPage){
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="/finance/order-web/order-list" target="mainframe">订单管理</a>
-                </li>
-                <li>
-                    <a href="/finance/bill-shipper-web/list" target="mainframe">账单管理</a>
-                </li>
-                <li>
-                    <a href="/admin/user-web/managers" target="mainframe" class="cur">用户管理</a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="/admin/user-web/managers" target="mainframe">后台管理员</a>
-                        </li>
-                        <li>
-                            <a href="/admin/user-web/app-users" target="mainframe">APP用户</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="/admin/goods-category" target="mainframe">货物类型管理</a>
-                </li>
-                <li>
-                    <a href="/admin/truck-cat" target="mainframe">货车类型管理</a>
-                </li>
-                <li>
-                    <a href="/admin/truck-length" target="mainframe">车长管理</a>
-                </li>
             </ul>
         </div>
     </div>
@@ -116,7 +90,6 @@ if($isContentPage){
 <?php
 }// end if is not contentpage
 ?>
-
 <?php $this->endBody() ?>
 <?php if (isset($this->blocks['bottomcode'])): ?>
 <script  type="text/javascript" src="<?= $Path;?>/static/bootstrap-material-design/dist/js/ripples.min.js"></script>
@@ -134,11 +107,6 @@ $(function() {
     $('#mainframe').height($(window).height())
     $(window).on('resize', function() {
         $('#mainframe').height($(window).height())
-    })
-    $.getJSON($_Path+'/sched/order-web/order-cnt', function(data) {
-        if(data.total){$("#total-cnt").show().html(data.total);}
-        if(data.new){$("#new-cnt").show().html(data.new);}
-        if(data.bid){$("#bid-cnt").show().html(data.bid);}
     })
 });
 </script>

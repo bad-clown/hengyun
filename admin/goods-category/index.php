@@ -42,7 +42,26 @@ $Path = \Yii::$app->request->hostInfo;
                     'name',
                     'unit',
 
-                    ['class' => 'yii\grid\ActionColumn'],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{update} {delete}',
+                        'buttons' => [
+                            'delete' => function ($url, $model) {
+                                return Html::a('删除', $url, [
+                                    'class' => 'btn btn-xs btn-danger',
+                                    'data-method' => 'post',
+                                    'data-confirm' => '确定删除该职位？',
+                                    'title' => Yii::t('yii', 'Delete'),
+                                    ]);
+                            },
+                            'update' => function ($url, $model) {
+                                return Html::a('更新', $url, [
+                                    'class' => 'btn btn-xs btn-info',
+                                    'title' => Yii::t('yii', 'Update'),
+                                    ]);
+                            },
+                        ],
+                    ],
                 ],
             ]); ?>
         </div>

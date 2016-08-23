@@ -12,4 +12,4 @@
 
 use yii\helpers\Url;
 ?>
-<iframe src="<?= Url::to(['/user/admin'])?>" frameborder="0" name="mainframe" id="mainframe" ></iframe>
+<iframe src="<?= Url::to(['/admin/user-web/managers'])?>" frameborder="0" name="mainframe" id="mainframe" ></iframe>

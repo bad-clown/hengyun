@@ -37,10 +37,6 @@ $Path = \Yii::$app->request->hostInfo;
 		<div class="clearfix" id="J-bill-detail"></div>
 		<div class="detail-label">
 			<span class="label label-default">订单明细</span>
-			<div class="btn-create-detail btn-disabled">
-				<span class="glyphicon glyphicon-plus"></span>
-				<a href="javascript:;">添加明细</a>
-			</div>
 		</div>
 		<div class="clearfix">
 			<table class="table table-striped table-hover" id="orderList">
@@ -55,7 +51,6 @@ $Path = \Yii::$app->request->hostInfo;
 						<th>几装几卸</th>
 						<th>司机报价</th>
 						<th>后台报价</th>
-						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -80,43 +75,6 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 </div>
 
-<div class="order-detail-pop popup">
-	<a href="javascrip:void(0);" class="glyphicon glyphicon-remove close-btn"></a>
-	<div class="popup-header"></div>
-	<div class="popup-main">
-		<div class="popup-breadcrumb">
-			<div class="breadcrumbBox">
-				<ul class="breadcrumb">
-					<li>账单管理</li>
-					<li>查看详情</li>
-					<li class="active">添加明细</li>
-				</ul>
-				<a href="javascript:;" class="btn btn-primary" id="order-complete" title="确认">确认</a>
-			</div>
-			<div class="orderDetailBox clearfix">
-				<table class="table table-striped table-hover" id="orderDetailList">
-					<thead>
-						<tr>
-							<th>订单号</th>
-							<th>提货时间</th>
-							<th>起点</th>
-							<th>终点</th>
-							<th>总件数</th>
-							<th>总吨数</th>
-							<th>几装几卸</th>
-							<th>司机报价</th>
-							<th>后台报价</th>
-							<th>操作</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="overlay"></div>
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript" src="<?= $Path;?>/static/laydate/laydate.js"></script>
@@ -140,7 +98,7 @@ $(function() {
 			var $order = $('#orderList').find('tbody');
 			var billTime = _global.FormatTime(data.billTime, 1);
 
-			var billHTML = '<div class="form-group label-floating select-menu"><label for="status" class="control-label">账单状态</label><select id="status" name="status" class="form-control" disabled="disabled"><option value="0">未支付</option><option value="1">支付中</option><option value="2">已支付</option></select></div><div class="form-group label-floating"><label class="control-label">账单编号</label><input class="form-control" readonly="readonly" name="billNo" value="'+ data.billNo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">开票时间</label><input class="form-control" readonly="readonly" name="billTime" value="'+ billTime +'"></div><div class="form-group label-floating"><label class="control-label">开票总金额</label><input class="form-control" readonly="readonly" name="totalMoney" value="'+ data.totalMoney +'" type="text"></div><div class="form-group label-floating"><label class="control-label">订单个数</label><input class="form-control" readonly="readonly" name="orderCnt" value="'+ data.orderCnt +'个" type="text"></div>';
+			var billHTML = '<div class="form-group label-floating select-menu"><label for="status" class="control-label">账单状态</label><select id="status" name="status" class="form-control" disabled="disabled"><option value="0">未支付</option><option value="1">支付中</option><option value="2">已支付</option></select></div><div class="form-group label-floating"><label class="control-label">账单编号</label><input class="form-control" readonly="readonly" name="billNo" value="'+ data.billNo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">开票时间</label><input class="form-control" readonly="readonly" name="billTime" value="'+ billTime +'"></div><div class="form-group label-floating"><label class="control-label">开票总金额</label><input class="form-control" readonly="readonly" name="totalMoney" value="'+ data.totalMoney +'" type="text"></div><div class="form-group label-floating"><label class="control-label">订单个数</label><input class="form-control" readonly="readonly" name="orderCnt" value="'+ data.orderCnt +'" type="text"></div>';
 
 			$bill.append(billHTML);
 
@@ -148,7 +106,7 @@ $(function() {
 
 			$.each(data.orderList, function(i, o) {
 				var deliverTime = _global.FormatTime(o.deliverTime);
-				var orderHTML = '<tr data-key="'+o._id+'"><td>'+o.orderNo+'</td><td>'+deliverTime+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>'+o.goodsCnt+'件</td><td>'+(o.realTotalWeight || 0)+'</td><td>'+o.pickupDrop+'</td><td>'+o["driverBid"]["realTotalMoney"]+'</td><td>'+o.realTotalMoney+'</td><td width="100"><a class="btn-danger btn-disabled" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+				var orderHTML = '<tr data-key="'+o._id+'"><td>'+o.orderNo+'</td><td>'+deliverTime+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>'+o.goodsCnt+'件</td><td>'+(o.realTotalWeight || 0)+'</td><td>'+o.pickupDrop+'</td><td>'+o["driverBid"]["realTotalMoney"]+'</td><td>'+o.realTotalMoney+'</td></tr>';
 				$order.append(orderHTML);
 			})
 
@@ -163,27 +121,15 @@ $(function() {
 		}
 	})
 
-	$.ajax({
-		type : "GET",
-		url : "<?= $Path;?>/finance/bill-shipper/unpayed-orders?userId=<?= $_id;?>",
-		dataType : "json",
-		success : function(data) {
-			console.log(data)
-		}
-	})
-
 	$('#j-mod-bill').on('click', function() {
 		$('#j-save-control').show()
 		$('#j-cancel-control').show()
 		$('#j-back-control').hide()
-		$('.btn-create-detail').removeClass('btn-disabled')
-		$('.btn-create-detail>a').attr('id', 'create-order-detail')
-		$('.btn-danger').removeClass('btn-disabled')
 
 		$('select[name="status"]').removeAttr('disabled')
  		$('input[name="billTime"]').attr('id', 'billTime')
-		$('input[name="title"]').attr('readonly', 'readonly')
-		$('input[name="tfn"]').attr('readonly', 'readonly')
+		$('input[name="title"]').removeAttr('readonly', 'readonly')
+		$('input[name="tfn"]').removeAttr('readonly', 'readonly')
 		$('input[name="address"]').removeAttr('readonly')
 		$('input[name="tel"]').removeAttr('readonly')
 		$('input[name="bank"]').removeAttr('readonly')
@@ -198,9 +144,6 @@ $(function() {
 		$('#j-save-control').hide()
 		$('#j-cancel-control').hide()
 		$('#j-back-control').show()
-		$('.btn-create-detail').addClass('btn-disabled')
-		$('.btn-create-detail>a').removeAttr('id')
-		$('.btn-danger').addClass('btn-disabled')
 
 		$('select[name="status"]').attr('disabled', 'disabled')
  		$('input[name="billTime"]').removeAttr('id')
@@ -234,17 +177,14 @@ $(function() {
 		for(var i=0;i<$orderList.length;i++) {
 			orderList.push($orderList.eq(i).data('key'));
 		}
-
-		if(orderList.length<1) {alert('未选订单明细');return;}
 		var billTime = Date.parse($('input[name="billTime"]').val()) /1000;
 
 		var data = {
-			id : '<?= $_id;?>',
 			status : $('select[name="status"]').val(),
 			billNo : $('input[name="billNo"]').val(),
 			billTime : billTime,
 			totalMoney : $('input[name="totalMoney"]').val(),
-			orderCnt : $('input[name="orderCnt"]').val(),
+			orderCnt : parseInt($('input[name="orderCnt"]').val()),
 			title : $('input[name="title"]').val(),
 			tfn : $('input[name="tfn"]').val(),
 			address : $('input[name="address"]').val(),
@@ -256,17 +196,17 @@ $(function() {
 			orderList : orderList || []
 		}
 
-		console.log(data)
+		// console.log(data)
 
-		/*$.ajax({
+		$.ajax({
 			type : "post",
-			url : "<?= $Path;?>/finance/bill-shipper/modify",
+			url : "<?= $Path;?>/finance/bill-shipper/modify?id=<?= $_id;?>",
 			data : data,
 			dataType : 'json',
 			success : function(data) {
 				if(data.code == '0') {
 					alert('保存成功！');
-					window.location.href="<?= $Path;?>/finance/bill-shipper-web/list";
+					window.location.reload();
 				}
 				else {
 					alert('保存失败，请检查账单后重试！');
@@ -275,43 +215,9 @@ $(function() {
 			erroe : function() {
 				alert("保存失败，请检查网络后重试！");
 			}
-		})*/
-	})
-
-	$('#order-complete').on('click', function() {
-		var $orderList = $('#orderList').find('tbody');
-		var $orderDetailList = $('#orderDetailList').find('tr');
-
-		$orderDetailList.each(function(i, o) {
-			if($(o).hasClass('has')) {
-				var $td = $(o).find('td');
-				var html = '<tr data-key="'+$(o).data("key")+'"><td>'+$td.eq(0).text()+'</td><td>'+$td.eq(1).text()+'</td><td>'+$td.eq(2).text()+'</td><td>'+$td.eq(3).text()+'</td><td>'+$td.eq(4).text()+'</td><td>'+$td.eq(5).text()+'</td><td>'+$td.eq(6).text()+'</td><td class="totalMoney">'+$td.eq(7).text()+'</td><td>'+$td.eq(8).text()+'</td><td width="100"><a class="btn-danger j-delete" href="javascript:;" data-key="'+$(o).data("key")+'">删除</a></td></tr>';
-				$orderList.append(html);
-				$(o).removeClass('has');
-				$(o).find('a').removeClass('has-btn-option btn-option').addClass('suc-btn-option').html('已添加');
-			}
 		})
-
-		var $td = $orderList.find(".totalMoney");
-		var totalMoney = 0;
-		for(var n=0;n<$td.length;n++) {
-			totalMoney += parseFloat($td.eq(n).text());
-		}
-		$('input[name="totalMoney"]').val(totalMoney)
-		$('input[name="orderCnt"]').val($orderList.find("tr").length+'个')
-		$('input[name="totalMoney"]').change()
-		$('input[name="orderCnt"]').change()
-		$('.close-btn').click();
 	})
 
-	$(document).on('click', '.j-delete', function() {
-		if(confirm("确定删除？")) {
-			var k = $(this).data('key');
-			var tr = $('#orderDetailList').find('.key'+k);
-			$(this).parents('tr').remove();
-			tr.find('a').data('has', false).removeClass('has-btn-option suc-btn-option').addClass('btn-option').html('未选中');
-		}
-	})
 
 	$(document).on('click', '#create-order-detail', function() {
 		$('.order-detail-pop').show();

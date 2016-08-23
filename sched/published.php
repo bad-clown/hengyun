@@ -158,7 +158,7 @@ $(function() {
 						}
 
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td width="250"><a class="btn-info" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-primary '+bidCls+'" href="javascript:;" data-key="'+o._id+'">报价</a><a href="javascript:;" class="btn-primary '+driverCls+'" data-key="'+o._id+'">撮合</a></td></tr>';
+						var h = '<tr><td><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-default '+bidCls+'" href="javascript:;" data-key="'+o._id+'">报价</a><a href="javascript:;" class="btn-default '+driverCls+'" data-key="'+o._id+'">撮合</a></td></tr>';
 
 						c.append(h)
 					})

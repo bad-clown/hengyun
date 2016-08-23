@@ -234,7 +234,7 @@ $(function() {
 			totalMoney += parseFloat($td.eq(n).text());
 		}
 		$('input[name="totalMoney"]').val(totalMoney)
-		$('input[name="orderCnt"]').val($orderList.find("tr").length+'个')
+		$('input[name="orderCnt"]').val($orderList.find("tr").length)
 		$('input[name="totalMoney"]').change()
 		$('input[name="orderCnt"]').change()
 		$('.close-btn').click();

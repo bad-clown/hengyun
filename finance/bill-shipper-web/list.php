@@ -232,7 +232,7 @@ $(function() {
 					c.empty();
 					$.each(data.list, function(i,o) {
 						var t = _global.FormatTime(o.billTime);
-						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.billNo+'</td><td>'+t+'</td><td><span class="pl24">'+o.totalMoney+'元</span></td><td>'+o.orderCnt+'单</td><td>'+o.title+'</td><td width="170"><a class="btn-info" href="<?= $Path;?>/finance/bill-shipper-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.billNo+'</td><td>'+t+'</td><td><span class="pl24">'+o.totalMoney+'元</span></td><td>'+o.orderCnt+'单</td><td>'+o.title+'</td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/bill-shipper-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
 				}
