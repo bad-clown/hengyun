@@ -33,8 +33,16 @@ $Path = \Yii::$app->request->hostInfo;
 		<a href="<?= $Path;?>/finance/bill-shipper-web/list" id="j-back-control" class="back-control">返回</a> -->
 	</div>
 
-	<div class="detail-box">
+	<div class="detail-box pb100">
 		<div class="clearfix" id="J-user-detail"></div>
+	</div>
+
+	<div class="control-panel">
+		<div class="control-btns">
+			<a href="javascript:;" class="btn-pub">通过</a>
+			<a href="javascript:;" class="btn-del">不通过</a>
+		</div>
+		<div class="panel-label"><span></span></div>
 	</div>
 </div>
 
@@ -63,7 +71,11 @@ $(function() {
 		success : function(data) {
 			var $user = $('#J-user-detail');
 
-			var userHTML = '<div class="form-group label-floating"><label for="status" class="control-label">状态</label><input class="form-control" readonly="readonly" name="status" value="'+ status[data.authStatus] +'" type="text"></div><div class="form-group label-floating"><label class="control-label">手机号</label><input class="form-control" readonly="readonly" name="phone" value="'+ data.phone +'" type="text"></div><div class="form-group label-floating"><label class="control-label">类型</label><input class="form-control" readonly="readonly" name="type" value="'+ type[data.type] +'"></div><div class="form-group label-floating"><label class="control-label">用户名</label><input class="form-control" readonly="readonly" name="username" value="'+ (data.username||"暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">真实姓名</label><input class="form-control" readonly="readonly" name="name" value="'+ (data.name||"暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">身份证号</label><input class="form-control" readonly="readonly" name="id" value="'+ (data.id||"暂无") +'" type="text"></div>';
+			var avatar = data.avatar ? "<img src='<?= $Path;?>"+data.avatar+"' />" : '未上传';
+			var idFront = data.idFront ? "<img src='<?= $Path;?>"+data.idFront+"' />" : '未上传';
+			var idBack = data.idBack ? "<img src='<?= $Path;?>"+data.idBack+"' />" : '未上传';
+
+			var userHTML = '<div class="form-group label-floating"><label for="status" class="control-label">状态</label><input class="form-control" readonly="readonly" name="status" value="'+ status[data.authStatus] +'" type="text"></div><div class="form-group label-floating"><label class="control-label">手机号</label><input class="form-control" readonly="readonly" name="phone" value="'+ data.phone +'" type="text"></div><div class="form-group label-floating"><label class="control-label">类型</label><input class="form-control" readonly="readonly" name="type" value="'+ type[data.type] +'"></div><div class="form-group label-floating"><label class="control-label">用户名</label><input class="form-control" readonly="readonly" name="username" value="'+ (data.username||"暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">真实姓名</label><input class="form-control" readonly="readonly" name="name" value="'+ (data.name||"暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">身份证号</label><input class="form-control" readonly="readonly" name="id" value="'+ (data.id||"暂无") +'" type="text"></div><div class="form-group pictureBox"><label class="control-label">头像</label><div class="input-group"><input type="file" id="inputFile4" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+avatar+'</div></div><div class="form-group pictureBox"><label class="control-label">身份证正面</label><div class="input-group"><input type="file" id="inputFile4" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idFront+'</div></div><div class="form-group pictureBox"><label class="control-label">身份证反面</label><div class="input-group"><input type="file" id="inputFile4" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idBack+'</div></div>';
 
 			$user.append(userHTML);
 
