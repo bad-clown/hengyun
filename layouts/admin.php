@@ -5,7 +5,7 @@
  * @File: admin.php
  * $Id: admin.php v 1.0 2016-06-22 14:20:42 maxing $
  * $Author: maxing xm.crazyboy@gmail.com $
- * $Last modified: 2016-06-23 16:33:01 $
+ * $Last modified: 2016-08-25 11:26:03 $
  * @brief
  *
  ******************************************************************/
@@ -45,10 +45,10 @@ $isContentPage = !isset($this->context->notContentPage);
 <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!-- Bootstrap Material Design -->
-<link href="<?= $Path;?>/static/bootstrap-material-design/dist/css/bootstrap-material-design.css" rel="stylesheet">
-<link href="<?= $Path;?>/static/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
-<link href="<?= $Path;?>/static/snackbarjs/dist/snackbar.min.css" rel="stylesheet">
-<link href="<?= $Path;?>/static/css/index.css" rel="stylesheet">
+<link href="/static/bootstrap-material-design/dist/css/bootstrap-material-design.css" rel="stylesheet">
+<link href="/static/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
+<link href="/static/snackbarjs/dist/snackbar.min.css" rel="stylesheet">
+<link href="/static/css/index.css" rel="stylesheet">
 </head>
 <body <?= isset($_GET["fullscreen"])?' class="fullscreen" ':"" ?> >
 
@@ -60,35 +60,38 @@ if($isContentPage){
 }else{ // is not contentpage
 ?>
 <div class="wrapper">
-    <div class="menu">
+    <div class="side-nav">
         <div class="title">
             <a href="#">
                 <span>享运</span><br>
                 享运物流后台系统
             </a>
         </div>
-        <div class="menu-list">
+        <div class="nav-list" id="j-nav">
             <ul>
                 <li>
-                    <a href="/sched/order-web/new?sort=-time" target="mainframe" class="cur">调度中心<span class="badge" id="total-cnt">0</span></a>
-                    <ul class="sub-menu">
+                    <a href="javascript:;" target="mainframe" class="sched-nav select-menu">调度中心<span class="badge" id="total-cnt">0</span></a>
+                    <ul class="sub-nav" style="display: none;">
                         <li>
                             <a href="/sched/order-web/new?sort=-time" target="mainframe">发布管理<span class="badge" id="new-cnt">0</span></a>
                         </li>
                         <li>
-                            <a href="/sched/order-web/published-list" target="mainframe">报价管理<span class="badge" id="bid-cnt">0</span></a>
+                            <a href="/sched/order-web/bid-list" target="mainframe">报价管理<span class="badge" id="bid-cnt">0</span></a>
+                        </li>
+                        <li>
+                            <a href="/sched/order-web/transport-list" target="mainframe">运输管理<span class="badge" id="trans-cnt">0</span></a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="/finance/order-web/order-list" target="mainframe">订单管理</a>
+                    <a href="/finance/order-web/order-list" target="mainframe" class="nav">订单管理</a>
                 </li>
                 <li>
-                    <a href="/finance/bill-shipper-web/list" target="mainframe">账单管理</a>
+                    <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">账单管理</a>
                 </li>
                 <li>
-                    <a href="/admin/user-web/managers" target="mainframe" class="cur">用户管理</a>
-                    <ul class="sub-menu">
+                    <a href="javascript:;" target="mainframe" class="user-nav select-menu">用户管理</a>
+                    <ul class="sub-nav" style="display: none;">
                         <li>
                             <a href="/admin/user-web/managers" target="mainframe">后台管理员</a>
                         </li>
@@ -98,13 +101,13 @@ if($isContentPage){
                     </ul>
                 </li>
                 <li>
-                    <a href="/admin/goods-category" target="mainframe">货物类型管理</a>
+                    <a href="/admin/goods-category" target="mainframe" class="nav">货物类型管理</a>
                 </li>
                 <li>
-                    <a href="/admin/truck-cat" target="mainframe">货车类型管理</a>
+                    <a href="/admin/truck-cat" target="mainframe" class="nav">货车类型管理</a>
                 </li>
                 <li>
-                    <a href="/admin/truck-length" target="mainframe">车长管理</a>
+                    <a href="/admin/truck-length" target="mainframe" class="nav">车长管理</a>
                 </li>
             </ul>
         </div>
@@ -119,10 +122,10 @@ if($isContentPage){
 
 <?php $this->endBody() ?>
 <?php if (isset($this->blocks['bottomcode'])): ?>
-<script  type="text/javascript" src="<?= $Path;?>/static/bootstrap-material-design/dist/js/ripples.min.js"></script>
-<script  type="text/javascript" src="<?= $Path;?>/static/bootstrap-material-design/dist/js/material.min.js"></script>
-<script  type="text/javascript" src="<?= $Path;?>/static/snackbarjs/dist/snackbar.min.js"></script>
-<script  type="text/javascript" src="<?= $Path;?>/static/js/index.js"></script>
+<script  type="text/javascript" src="/static/bootstrap-material-design/dist/js/ripples.min.js"></script>
+<script  type="text/javascript" src="/static/bootstrap-material-design/dist/js/material.min.js"></script>
+<script  type="text/javascript" src="/static/snackbarjs/dist/snackbar.min.js"></script>
+<script  type="text/javascript" src="/static/js/index.js"></script>
 <?= $this->blocks['bottomcode'] ?>
 <?php  endif; ?>
 <?php
@@ -135,11 +138,42 @@ $(function() {
     $(window).on('resize', function() {
         $('#mainframe').height($(window).height())
     })
-    $.getJSON($_Path+'/sched/order-web/order-cnt', function(data) {
-        if(data.total){$("#total-cnt").show().html(data.total);}
-        if(data.new){$("#new-cnt").show().html(data.new);}
-        if(data.bid){$("#bid-cnt").show().html(data.bid);}
+
+    function orderCnt() {
+        $.getJSON($_Path+'/sched/order-web/order-cnt', function(data) {
+            if(data.total){$("#total-cnt").show().html(data.total);}
+            if(data.new){$("#new-cnt").show().html(data.new);}
+            if(data.bid){$("#bid-cnt").show().html(data.bid);}
+            if(data.trans){$("#trans-cnt").show().html(data.trans);}
+        })
+    }
+    setInterval(function() {
+        orderCnt()
+    }, 10000)
+
+    $('#j-nav .nav').on('click', function() {
+        $('.sub-nav').hide();
+        $('#j-nav a').removeClass('cur');
+        $(this).addClass('cur');
     })
+
+    $('.user-nav,.sched-nav').on('click', function() {
+        if($(this).hasClass('cur')) {
+            $(this).removeClass('cur')
+            $(this).next('.sub-nav').hide();
+        }
+        else {
+            $('#j-nav .nav').removeClass('cur')
+            $(this).addClass('cur')
+            $(this).next('.sub-nav').show();
+        }
+    })
+
+    $('.sub-nav a').on('click', function() {
+        $('.sub-nav a').removeClass('cur')
+        $(this).addClass('cur');
+    })
+
 });
 </script>
 <?php

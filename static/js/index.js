@@ -23,9 +23,10 @@ $(function() {
 	}
 	_global.badge = function() {
 		$.getJSON($_Path+'/sched/order-web/order-cnt', function(data) {
-			if(data.total){$("#total-cnt",parent.document).show().html(data.total);}
-			if(data.new){$("#new-cnt",parent.document).show().html(data.new);}
-			if(data.bid){$("#bid-cnt",parent.document).show().html(data.bid);}
+			if(data.total){$("#total-cnt",parent.document).show().html(data.total);}else{$("#total-cnt",parent.document).hide().html("");}
+			if(data.new){$("#new-cnt",parent.document).show().html(data.new);}else{$("#new-cnt",parent.document).hide().html("");}
+			if(data.bid){$("#bid-cnt",parent.document).show().html(data.bid);}else{$("#bid-cnt",parent.document).hide().html("");}
+			if(data.trans){$("#trans-cnt",parent.document).show().html(data.trans);}else{$("#trans-cnt",parent.document).hide().html("");}
 		})
 	}
 });

@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="content">
     <div class="breadcrumbBox">
         <ul class="breadcrumb">
-            <li><a href="<?= $Path;?>/user/admin?sort=-time">用户管理</a></li>
+            <li><a href="<?= $Path;?>/admin/user-web/managers">用户管理</a></li>
             <li class="active">后台管理员</li>
         </ul>
         <div class="btn-control">
@@ -171,7 +171,7 @@ $(function() {
                     $.each(data.list, function(i,o) {
                         var block = o.isBlocked ? '启用' : '禁用';
                         var t = _global.FormatTime(o.created_at);
-                        var h = '<tr><td>'+ o.phone +'</td><td align="center">'+type[o.type]+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="#">编辑</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+                        var h = '<tr><td>'+ o.phone +'</td><td align="center">'+type[o.type]+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/update?id='+o._id+'">编辑</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
                         c.append(h)
                     })
                 }
@@ -202,7 +202,7 @@ $(function() {
         if(confirm("确定删除该用户吗？")) {
             $.ajax({
                 type : "GET",
-                url : "<?= $Path;?>/admin/user/delete??id="+k,
+                url : "<?= $Path;?>/admin/user/delete?id="+k,
                 dataType : "json",
                 success : function(data) {
                     if(data.code == '0') {

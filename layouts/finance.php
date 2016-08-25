@@ -60,20 +60,20 @@ if($isContentPage){
 }else{ // is not contentpage
 ?>
 <div class="wrapper">
-    <div class="menu">
+    <div class="side-nav">
         <div class="title">
             <a href="#">
                 <span>享运</span><br>
                 享运物流后台系统
             </a>
         </div>
-        <div class="menu-list">
+        <div class="nav-list" id="j-nav">
             <ul>
                 <li>
-                    <a href="/finance/order-web/order-list" target="mainframe">订单管理</a>
+                    <a href="/finance/order-web/order-list" target="mainframe" class="nav cur">订单管理</a>
                 </li>
                 <li>
-                    <a href="/finance/bill-shipper-web/list" target="mainframe">账单管理</a>
+                    <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">账单管理</a>
                 </li>
             </ul>
         </div>
@@ -103,6 +103,10 @@ $(function() {
     $('#mainframe').height($(window).height())
     $(window).on('resize', function() {
         $('#mainframe').height($(window).height())
+    })
+    $('#j-nav .nav').on('click', function() {
+        $('#j-nav .nav').removeClass('cur');
+        $(this).addClass('cur');
     })
 });
 </script>

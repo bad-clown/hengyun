@@ -336,6 +336,10 @@ $(function() {
 		$(this).parents('.popup').hide();
 		$('.overlay:eq(0)').hide();
 	})
+
+	setInterval(function() {
+		getData()
+	}, 30000)
 })
 </script>
 <?php $this->endBlock();  ?>

@@ -25,21 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="content">
     <div class="breadcrumbBox">
         <ul class="breadcrumb">
-            <li><a href="<?= $Path;?>/user/admin?sort=-time">用户管理</a></li>
+            <li><a href="<?= $Path;?>/admin/user-web/managers">用户管理</a></li>
             <li class="active">后台管理员</li>
         </ul>
-        <div class="btn-control">
-            <span class="glyphicon glyphicon-plus"></span>
-            <?= Html::a(Yii::t('user', 'Create a user account'), ['create']) ?>
-        </div>
     </div>
 
     <div class="listBox orderList">
-        <?php if (Yii::$app->getSession()->hasFlash('admin_user')): ?>
-            <div class="alert alert-success">
-                <p><?= Yii::$app->getSession()->getFlash('admin_user') ?></p>
-            </div>
-        <?php endif; ?>
         <table class="table table-striped table-hover" id="listContent">
             <thead>
                 <tr>
@@ -71,6 +62,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                     </th>
                     <th>手机号</th>
+                    <th style="text-align:center;">姓名</th>
+                    <th style="text-align:center;">用户名</th>
                     <th width="102">
                     <div class="navbar-collapse collapse navbar-inverse-collapse">
                         <ul class="nav navbar-nav">
@@ -92,7 +85,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         </ul>
                     </div>
                     </th>
-                    <th style="text-align:center;">用户名</th>
                     <th style="text-align:center;">注册时间</th>
                     <th>操作</th>
                 </tr>
@@ -206,7 +198,7 @@ $(function() {
                     $.each(data.list, function(i,o) {
                         var block = o.isBlocked ? '启用' : '禁用';
                         var t = _global.FormatTime(o.created_at);
-                        var h = '<tr><td align="center">'+status[o.authStatus]+'</td><td>'+ o.phone +'</td><td align="center">'+type[o.type]+(role[o.role] || "")+'</td><td align="center">'+(o.username || "暂无")+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/app-user-detail?id='+o._id+'">查看详情</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+                        var h = '<tr><td align="center">'+status[o.authStatus]+'</td><td>'+ o.phone +'</td><td align="center">'+(o.name || "暂无")+'</td><td align="center">'+(o.nickname || "暂无")+'</td><td align="center">'+type[o.type]+(role[o.role] || "")+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/app-user-detail?id='+o._id+'">查看详情</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
                         c.append(h)
                     })
                 }

@@ -48,7 +48,7 @@ $Path = \Yii::$app->request->hostInfo;
                         'buttons' => [
                             'delete' => function ($url, $model) {
                                 return Html::a('删除', $url, [
-                                    'class' => 'btn btn-xs btn-danger',
+                                    'class' => 'btn-xs btn-raised btn-danger',
                                     'data-method' => 'post',
                                     'data-confirm' => '确定删除该职位？',
                                     'title' => Yii::t('yii', 'Delete'),
@@ -56,7 +56,7 @@ $Path = \Yii::$app->request->hostInfo;
                             },
                             'update' => function ($url, $model) {
                                 return Html::a('更新', $url, [
-                                    'class' => 'btn btn-xs btn-info',
+                                    'class' => 'btn-xs btn-raised btn-info',
                                     'title' => Yii::t('yii', 'Update'),
                                     ]);
                             },

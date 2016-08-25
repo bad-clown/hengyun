@@ -33,23 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <a href="<?= $Path;?>/admin/user-web/managers" class="back-control">返回</a>
     </div>
 
-    <div class="create-box clearfix">
-        <div class="form-group">
-            <label class="control-label">手机号</label>
-            <input class="form-control" name="phone" value="" type="text">
-        </div>
-        <div class="form-group">
-            <label class="control-label">初始密码</label>
-            <input class="form-control" name="password" value="" type="password">
-        </div>
-        <div class="form-group">
-            <label class="control-label">类型</label>
-            <select name="type" class="form-control">
-                <option value="admin">管理员</option>
-                <option value="sched">调度员</option>
-                <option value="finance">账务员</option>
-            </select>
-        </div>
+    <div class="create-box clearfix" id="J-user-detail">
     </div>
 </div>
 
@@ -57,6 +41,19 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript">
 $(function() {
+	$.ajax({
+		type : "GET",
+		url : "<?= $Path;?>/admin/user/detail?id=<?= $_id;?>",
+		dataType : "json",
+		success : function(data) {
+			var $user = $('#J-user-detail');
+			var userHTML = '<div class="form-group"><label class="control-label">手机号</label><input class="form-control" name="phone" value="'+data.phone+'" type="text"></div><div class="form-group"><label class="control-label">密码</label><input class="form-control" name="password" value="" type="password"></div><div class="form-group"><label class="control-label">类型</label><select name="type" class="form-control"><option value="admin">管理员</option><option value="sched">调度员</option><option value="finance">账务员</option></select></div>';
+            $user.append(userHTML);
+            $('select[name="type"]').val(data.type).triggerHandler("change");
+		}
+	})
+
+
     $('#j-save-control').on('click', function() {
         var phone = $("input[name='phone']").val();
         var password = $("input[name='password']").val();
@@ -79,15 +76,15 @@ $(function() {
         }
         $.ajax({
             type : "post",
-            url : '<?= $Path;?>/admin/user/create',
+            url : '<?= $Path;?>/admin/user/update?id=<?= $_id;?>',
             data : data,
             success : function(data) {
                 if(data.code == '0') {
-                    alert('创建成功！')
+                    alert('更新成功！')
                     window.location.href = "<?= $Path;?>/admin/user-web/managers";
                 }
                 else {
-                    alert('创建失败！')
+                    alert('更新失败！')
                 }
             }
         })

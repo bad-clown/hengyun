@@ -200,10 +200,10 @@ $(function() {
 
 	$('#checkAll').on('change', function() {
 		if($(this).is(':checked')) {
-			$('#order .checkbox').find('input[type="checkbox"]').prop('checked', true)
+			$('#listContent .checkbox').find('input[type="checkbox"]').prop('checked', true)
 		}
 		else {
-			$('#order .checkbox').find('input[type="checkbox"]').prop('checked', false)
+			$('#listContent .checkbox').find('input[type="checkbox"]').prop('checked', false)
 		}
 	})
 

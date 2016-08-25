@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'buttons' => [
                                 'delete' => function ($url, $model) {
                                     return Html::a('删除', $url, [
-                                        'class' => 'btn btn-xs btn-danger',
+                                        'class' => 'btn-xs btn-danger',
                                         'data-method' => 'post',
                                         'data-confirm' => '确定删除该职位？',
                                         'title' => Yii::t('yii', 'Delete'),
@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },
                                 'update' => function ($url, $model) {
                                     return Html::a('更新', $url, [
-                                        'class' => 'btn btn-xs btn-info',
+                                        'class' => 'btn-xs btn-info',
                                         'title' => Yii::t('yii', 'Update'),
                                         ]);
                                 },

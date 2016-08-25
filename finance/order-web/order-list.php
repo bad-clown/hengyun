@@ -239,6 +239,10 @@ $(function() {
 			})
 		}
 	})
+
+	setInterval(function() {
+		getData()
+	}, 30000)
 })
 </script>
 <?php $this->endBlock();  ?>

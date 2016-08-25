@@ -60,23 +60,26 @@ if($isContentPage){
 }else{ // is not contentpage
 ?>
 <div class="wrapper">
-    <div class="menu">
+    <div class="side-nav">
         <div class="title">
             <a href="#">
                 <span>享运</span><br>
                 享运物流后台系统
             </a>
         </div>
-        <div class="menu-list">
+        <div class="nav-list">
             <ul>
                 <li>
-                    <a href="/sched/order-web/new?sort=-time" target="mainframe" class="cur">调度中心<span class="badge" id="total-cnt">0</span></a>
-                    <ul class="sub-menu">
+                    <a href="javascript:;" target="mainframe" class="cur">调度中心<span class="badge" id="total-cnt">0</span></a>
+                    <ul class="sub-nav">
                         <li>
                             <a href="/sched/order-web/new?sort=-time" target="mainframe">发布管理<span class="badge" id="new-cnt">0</span></a>
                         </li>
                         <li>
-                            <a href="/sched/order-web/published-list" target="mainframe">报价管理<span class="badge" id="bid-cnt">0</span></a>
+                            <a href="/sched/order-web/bid-list" target="mainframe">报价管理<span class="badge" id="bid-cnt">0</span></a>
+                        </li>
+                        <li>
+                            <a href="/sched/order-web/transport-list" target="mainframe">运输管理<span class="badge" id="trans-cnt">0</span></a>
                         </li>
                     </ul>
                 </li>
@@ -107,6 +110,21 @@ $(function() {
     $('#mainframe').height($(window).height())
     $(window).on('resize', function() {
         $('#mainframe').height($(window).height())
+    })
+    function orderCnt() {
+        $.getJSON($_Path+'/sched/order-web/order-cnt', function(data) {
+            if(data.total){$("#total-cnt").show().html(data.total);}
+            if(data.new){$("#new-cnt").show().html(data.new);}
+            if(data.bid){$("#bid-cnt").show().html(data.bid);}
+            if(data.trans){$("#trans-cnt").show().html(data.trans);}
+        })
+    }
+    setInterval(function() {
+        orderCnt()
+    }, 10000)
+    $('.sub-nav a').on('click', function() {
+        $('.sub-nav a').removeClass('cur')
+        $(this).addClass('cur');
     })
 });
 </script>
