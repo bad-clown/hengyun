@@ -54,19 +54,7 @@ $Path = \Yii::$app->request->hostInfo;
 <script type="text/javascript">
 $(function() {
 	function getData() {
-		var status = {
-			100 : "新发布",
-			200 : "待确认",
-			300 : "待派车",
-			400 : "待提货",
-			500 : "在途中",
-			600 : "已送达",
-			700 : "已完成",
-			800 : "已拒绝",
-			900 : "已过期",
-			1000 : "已失效"
-		};
-		var priceType = {0 : '单价', 1 : '一口价'}
+
 		$.ajax({
 			type : "GET",
 			url : "<?= $Path;?>/sched/order/transport-list",
@@ -81,20 +69,21 @@ $(function() {
 							var driverBid = '暂无司机报价';
 						}
 						else {
-							var driverBid = priceType[o.driverBid["bidPriceType"]]+"："+o.driverBid["bidPrice"]+'元<br>合计：'+o.driverBid["realTotalMoney"]+'<br>'+_global.FormatTime(o.driverBid["bidTime"]);;
+							var driverBid = Sched.priceType[o.driverBid["bidPriceType"]]+"："+o.driverBid["bidPrice"]+'元<br>合计：'+o.driverBid["realTotalMoney"]+'<br>'+_global.FormatTime(o.driverBid["bidTime"]);;
 						}
 						if(!o.bid["bidPrice"] || !o.bid["bidTime"]) {
 							var bidPrice = '还未给货主报价';
 						}
 						else {
-							var bidPrice = priceType[o.bid["bidPriceType"]]+"："+o.bid["bidPrice"]+'元<br>合计：'+o.realTotalMoney+'<br>'+_global.FormatTime(o.bid["bidTime"]);
+							var bidPrice = Sched.priceType[o.bid["bidPriceType"]]+"："+o.bid["bidPrice"]+'元<br>合计：'+o.realTotalMoney+'<br>'+_global.FormatTime(o.bid["bidTime"]);
 						}
 
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+driverBid+'</td><td>'+bidPrice+'</td><td width="100"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail-trans?id='+o._id+'">查看详情</a></td></tr>';
+						var h = '<tr><td><div class="form-group"><label>'+Sched.status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+driverBid+'</td><td>'+bidPrice+'</td><td width="100"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail-trans?id='+o._id+'">查看详情</a></td></tr>';
 
 						c.append(h)
 					})
+					_global.badge();
 				}
 			}
 		})

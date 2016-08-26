@@ -112,26 +112,11 @@ $Path = \Yii::$app->request->hostInfo;
 <script type="text/javascript">
 $(function() {
 	function getData() {
-		var status = {
-			100 : "新发布",
-			200 : "待确认",
-			300 : "待派车",
-			400 : "待提货",
-			500 : "在途中",
-			600 : "已送达",
-			700 : "已完成",
-			800 : "已拒绝",
-			900 : "已过期",
-			1000 : "已失效",
-			1100 : "已取消"
-		};
-		var priceType = {0 : '单价', 1 : '一口价'}
 		$.ajax({
 			type : "GET",
 			url : "<?= $Path;?>/sched/order/bid-order-list",
 			dataType : "json",
 			success : function(data) {
-				// console.log(data)
 				if(data.code == "0") {
 					var c = $('#listContent').find('tbody');
 					c.empty();
@@ -147,7 +132,7 @@ $(function() {
 							var bidCls = 'j-price';
 						}
 						else {
-							var bidPrice = priceType[o.bid["bidPriceType"]]+"："+o.bid["bidPrice"]+'元<br>合计：'+o.realTotalMoney+'<br>'+_global.FormatTime(o.bid["bidTime"]);
+							var bidPrice = Sched.priceType[o.bid["bidPriceType"]]+"："+o.bid["bidPrice"]+'元<br>合计：'+o.realTotalMoney+'<br>'+_global.FormatTime(o.bid["bidTime"]);
 							var bidCls = 'has-driver';
 						}
 
@@ -163,6 +148,7 @@ $(function() {
 
 						c.append(h)
 					})
+					_global.badge();
 				}
 			}
 		})
@@ -212,7 +198,6 @@ $(function() {
 
 	$(document).on('click', '.j-driver', function() {
 		var k = $(this).data('key');
-		var priceType = {0 : '单价', 1 : '一口价'}
 		$.ajax({
 			type : "GET",
 			url : "<?= $Path;?>/sched/order/bid-list?orderId="+k,
@@ -229,7 +214,7 @@ $(function() {
 						var trCls = '';
 						var aHtml = '<a href="javascript:void(0);" class="driver-control" data-key="'+o.driverId+'">撮合</a>';
 					}
-					var h = '<tr class="'+trCls+'"><td>'+priceType[o.bidPriceType]+'：'+o.bidPrice+'元</td><td>'+o.realTotalMoney+'元</td><td>'+_global.FormatTime(o.bidTime)+'</td><td>'+o.phone+'</td><td>'+aHtml+'</td></tr>';
+					var h = '<tr class="'+trCls+'"><td>'+Sched.priceType[o.bidPriceType]+'：'+o.bidPrice+'元</td><td>'+o.realTotalMoney+'元</td><td>'+_global.FormatTime(o.bidTime)+'</td><td>'+o.phone+'</td><td>'+aHtml+'</td></tr>';
 
 					c.append(h)
 				})

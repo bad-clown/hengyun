@@ -69,18 +69,6 @@ $Path = \Yii::$app->request->hostInfo;
 <script type="text/javascript">
 $(function() {
 	function getData() {
-		var status = {
-			100 : "新发布",
-			200 : "待确认",
-			300 : "待派车",
-			400 : "待提货",
-			500 : "在途中",
-			600 : "已送达",
-			700 : "已完成",
-			800 : "已拒绝",
-			900 : "已过期",
-			1000 : "已失效"
-		};
 		$.ajax({
 			type : "GET",
 			url : "<?= $Path;?>/sched/order/new",
@@ -91,7 +79,7 @@ $(function() {
 					c.empty();
 					$.each(data.data, function(i,o) {
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-default j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+ Sched.status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-default j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
 					_global.badge();
@@ -153,7 +141,6 @@ $(function() {
 				},
 				dataType : "json",
 				success : function(data) {
-					// console.log(data);
 					if(data.code == "0") {
 						alert('发布成功！');
 						getData()
@@ -184,7 +171,6 @@ $(function() {
 				},
 				dataType : "json",
 				success : function(data) {
-					// console.log(data);
 					if(data.code == "0") {
 						alert('删除成功！');
 						getData()

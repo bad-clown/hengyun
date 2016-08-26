@@ -74,7 +74,8 @@ $(function() {
 			success : function(data) {
 				if(data.code == "0") {
 					alert('发布成功！');
-					window.location.href = '<?= $Path;?>/sched/order-web/new?sort=-time'
+					_global.badge();
+					window.location.href = '<?= $Path;?>/sched/order-web/new?sort=-time';
 				}
 			}
 		})
@@ -88,6 +89,7 @@ $(function() {
 				success : function(data) {
 					if(data.code == '0') {
 						alert('删除成功！')
+						_global.badge();
 						window.location.href = '<?= $Path;?>/sched/order-web/new?sort=-time'
 					}
 				}

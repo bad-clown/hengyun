@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <ul class="breadcrumb">
             <li><a href="<?= $Path;?>/admin/user-web/managers">用户管理</a></li>
             <li><a href="<?= $Path;?>/admin/user-web/managers">后台管理员</a></li>
-            <li class="active">新增后台管理员</li>
+            <li class="active">修改后台管理员</li>
         </ul>
         <a href="javascript:;" id="j-save-control" class="save-control">保存</a>
         <a href="<?= $Path;?>/admin/user-web/managers" class="back-control">返回</a>

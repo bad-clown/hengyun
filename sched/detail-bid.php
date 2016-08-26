@@ -49,6 +49,7 @@ $Path = \Yii::$app->request->hostInfo;
 		<div class="control-btns">
 			<a href="javascript:;" class="btn-price j-price">修改报价</a>
 			<a href="javascript:;" class="btn-driver j-driver">撮合</a>
+			<a href="javascript:;" class="btn-driver j-cancel">取消订单</a>
 		</div>
 		<div class="panel-label"><span></span></div>
 	</div>
@@ -116,18 +117,7 @@ $Path = \Yii::$app->request->hostInfo;
 <script type="text/javascript">
 $(function() {
 	var _bidUrl = "", _driverUrl = "";
-	var status = {
-		100 : "新发布",
-		200 : "待确认",
-		300 : "待派车",
-		400 : "待提货",
-		500 : "在途中",
-		600 : "已送达",
-		700 : "已完成",
-		800 : "已拒绝",
-		900 : "已过期",
-		1000 : "已失效"
-	};
+
 	$.ajax({
 		type : "GET",
 		url : "<?= $Path;?>/sched/order/detail?id=<?= $_id;?>",
@@ -139,7 +129,7 @@ $(function() {
 			var $trucklist = $('#J-trucklist-detail');
 			var t = _global.FormatTime(data.deliverTime);
 			var bidPrice,bidPriceTotal,driverBid,driverBidTotal,hasBidWarning="",hasDriverWarning="";
-			$('.panel-label>span').html('状态：'+status[data.status]);
+			$('.panel-label>span').html('状态：'+Sched.status[data.status]);
 
 
 			if((!data["bidPrice"] || !data["bidTime"]) || data.status != 300) {
@@ -184,7 +174,7 @@ $(function() {
 				var driverHTML = '<div class="clearfix"><div class="form-group label-floating"><label class="control-label">司机姓名</label><input class="form-control" readonly="readonly" value="'+ (data["driver"]["info"]["name"] || "暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">司机手机</label><input class="form-control" readonly="readonly" value="'+ (data["driver"]["info"]["phone"] || "暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">身份证号</label><input class="form-control" readonly="readonly" value="'+ (data["driver"]["info"]["id"] || "暂无") +'" type="text"></div></div>';
 			}
 
-			var orderHTML = '<div class="form-group label-floating"><label class="control-label">状态</label><input class="form-control" readonly="readonly" value="'+ status[data.status] +'" type="text"></div><div class="form-group label-floating '+hasBidWarning+'"><label class="control-label">后台报价</label><input class="form-control" readonly="readonly" value="'+ bidPrice +'" type="text"></div><div class="form-group label-floating '+hasBidWarning+'"><label class="control-label">后台报价合计</label><input class="form-control" readonly="readonly" value="'+ bidPriceTotal +'" type="text"></div><div class="form-group label-floating '+hasDriverWarning+'"><label class="control-label">司机报价</label><input class="form-control" readonly="readonly" value="'+ driverBid +'" type="text"></div><div class="form-group label-floating '+hasDriverWarning+'"><label class="control-label">司机报价合计</label><input class="form-control" readonly="readonly" value="'+ driverBidTotal +'" type="text"></div><div class="form-group label-floating"><label class="control-label">总件数</label><input class="form-control" readonly="readonly" value="'+ data.goodsCnt +'件" type="text"></div><div class="form-group label-floating"><label class="control-label">总吨数</label><input class="form-control" readonly="readonly" value="'+ data.totalWeight +'吨" type="text"></div><div class="form-group label-floating"><label class="control-label">几装几卸</label><input class="form-control" readonly="readonly" value="'+ data.pickupDrop +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货最长</label><input class="form-control" readonly="readonly" value="'+ data.goodsMaxLen +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货最宽</label><input class="form-control" readonly="readonly" value="'+ data.goodsMaxWidth +'" type="text"></div><div class="form-group label-floating"><label class="control-label">订单号</label><input class="form-control" readonly="readonly" value="'+ data.orderNo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">起点</label><input class="form-control" readonly="readonly" value="'+ data.provinceFrom+data.cityFrom+data.districtFrom +'" type="text"></div><div class="form-group label-floating"><label class="control-label">终点</label><input class="form-control" readonly="readonly" value="'+ data.provinceTo+data.cityTo+data.districtTo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">提货时间</label><input class="form-control" readonly="readonly" value="'+ t +'" type="text"></div><div class="form-group label-floating form-group-last"><label class="control-label">简介</label><input class="form-control" readonly="readonly" value="'+ data.note +'" type="text"></div>';
+			var orderHTML = '<div class="form-group label-floating"><label class="control-label">状态</label><input class="form-control" readonly="readonly" value="'+ Sched.status[data.status] +'" type="text"></div><div class="form-group label-floating '+hasBidWarning+'"><label class="control-label">后台报价</label><input class="form-control" readonly="readonly" value="'+ bidPrice +'" type="text"></div><div class="form-group label-floating '+hasBidWarning+'"><label class="control-label">后台报价合计</label><input class="form-control" readonly="readonly" value="'+ bidPriceTotal +'" type="text"></div><div class="form-group label-floating '+hasDriverWarning+'"><label class="control-label">司机报价</label><input class="form-control" readonly="readonly" value="'+ driverBid +'" type="text"></div><div class="form-group label-floating '+hasDriverWarning+'"><label class="control-label">司机报价合计</label><input class="form-control" readonly="readonly" value="'+ driverBidTotal +'" type="text"></div><div class="form-group label-floating"><label class="control-label">总件数</label><input class="form-control" readonly="readonly" value="'+ data.goodsCnt +'件" type="text"></div><div class="form-group label-floating"><label class="control-label">总吨数</label><input class="form-control" readonly="readonly" value="'+ data.totalWeight +'吨" type="text"></div><div class="form-group label-floating"><label class="control-label">几装几卸</label><input class="form-control" readonly="readonly" value="'+ data.pickupDrop +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货最长</label><input class="form-control" readonly="readonly" value="'+ data.goodsMaxLen +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货最宽</label><input class="form-control" readonly="readonly" value="'+ data.goodsMaxWidth +'" type="text"></div><div class="form-group label-floating"><label class="control-label">订单号</label><input class="form-control" readonly="readonly" value="'+ data.orderNo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">起点</label><input class="form-control" readonly="readonly" value="'+ data.provinceFrom+data.cityFrom+data.districtFrom +'" type="text"></div><div class="form-group label-floating"><label class="control-label">终点</label><input class="form-control" readonly="readonly" value="'+ data.provinceTo+data.cityTo+data.districtTo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">提货时间</label><input class="form-control" readonly="readonly" value="'+ t +'" type="text"></div><div class="form-group label-floating form-group-last"><label class="control-label">简介</label><input class="form-control" readonly="readonly" value="'+ data.note +'" type="text"></div>';
 
 			$.each(data.goods, function(i, o) {
 				var goodsHTML = '<div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 名称</label><input class="form-control" readonly="readonly" value="'+ o["category"].name +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 重量</label><input class="form-control" readonly="readonly" value="'+ o.count+o["category"].unit +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 提货详细地址</label><input class="form-control" readonly="readonly" value="'+ o.addressFrom +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 送达详细地址</label><input class="form-control" readonly="readonly" value="'+ o.addressTo +'" type="text"></div>';
@@ -216,8 +206,6 @@ $(function() {
 	})
 
 	$(document).on('click', '.j-price', function() {
-		var tr = $(this).parents('tr:eq(0)');
-		$('.price-pop > .popup-header').html('<table><tbody><tr><td>起点：'+ $.trim(tr.find('.from').text()) +'</td><td>终点：'+ $.trim(tr.find('.to').text()) +'</td><td>件数：'+ $.trim(tr.find('.cnt').text()) +'</td><td>总吨数：'+ $.trim(tr.find('.weight').text()) +'吨</td><td>几装几卸：'+ $.trim(tr.find('.drop').text()) +'</td></tr></tbody></table>')
 		$('#j-submit-price').data('key', $(this).data('key'));
 		$('.price-pop:eq(0)').show()
 		$('.overlay:eq(0)').show()
@@ -265,7 +253,6 @@ $(function() {
 		if(!$(this).data('status')){return}
 
 		var k = $(this).data('key');
-		var priceType = {0 : '单价', 1 : '一口价'}
 		$.ajax({
 			type : "GET",
 			url : "<?= $Path;?>/sched/order/bid-list?orderId="+k,
@@ -282,7 +269,7 @@ $(function() {
 						var trCls = '';
 						var aHtml = '<a href="javascript:void(0);" class="driver-control" data-key="'+o.driverId+'">撮合</a>';
 					}
-					var h = '<tr class="'+trCls+'"><td>'+priceType[o.bidPriceType]+'：'+o.bidPrice+'元</td><td>'+o.realTotalMoney+'元</td><td>'+_global.FormatTime(o.bidTime)+'</td><td>'+o.phone+'</td><td>'+aHtml+'</td></tr>';
+					var h = '<tr class="'+trCls+'"><td>'+Sched.priceType[o.bidPriceType]+'：'+o.bidPrice+'元</td><td>'+o.realTotalMoney+'元</td><td>'+_global.FormatTime(o.bidTime)+'</td><td>'+o.phone+'</td><td>'+aHtml+'</td></tr>';
 
 					c.append(h)
 				})
@@ -295,7 +282,7 @@ $(function() {
 			_driverUrl = "<?= $Path;?>/sched/order/mod-driver";
 		}
 		else {
-			_driverUrl = "<?= $Path;?>/sched/order/mod-driver";
+			_driverUrl = "<?= $Path;?>/sched/order/driver";
 		}
 	})
 
@@ -330,6 +317,26 @@ $(function() {
 				}
 			}
 		})
+	})
+
+	$('.j-cancel').on('click', function() {
+		if(confirm("确定取消订单吗？")) {
+			$.ajax({
+				type : 'get',
+				url : '<?= $Path;?>/sched/order/cancel?id=<?= $_id;?>',
+				cache : false,
+				async : true,
+				timeout : 20000,
+				success : function(data) {
+					_global.badge();
+					alert('订单取消成功！')
+					window.location.href = '<?= $Path;?>/sched/order-web/bid-list';
+				},
+				error : function() {
+					alert("取消订单失败，请检查网络后重试！");
+				}
+			})
+		}
 	})
 
 	$('.close-btn').on('click', function() {

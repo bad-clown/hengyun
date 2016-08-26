@@ -102,68 +102,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <script type="text/javascript">
 $(function() {
     var actPage = 1, actStatus = "", actType = "";
-    var PageTotal = {
-        init : function(d) {
-            this.current = actPage,     //当前页
-            this.pageCount = 10,        //每页显示的数据量
-            this.total = d.pageCnt,     //总共的页码
-            this.first = 1,             //首页
-            this.last = 0,              //尾页
-            this.pre = 0,               //上一页
-            this.next = 0,              //下一页
-            this.getData(this.current, this.total)
-        },
-        getData: function(n, t) {
-            $(".pagination").empty();
-            if (n == null) {n = 1;}
-            this.current = n;
-            this.page();
-        },
-        getPages: function() {
-            this.last = this.total;
-            this.pre = this.current - 1 <= 0 ? 1 : (this.current - 1);
-            this.next = this.current + 1 >= this.total ? this.total : (this.current + 1);
-        },
-        page: function() {
-            $(".pagination").empty();
-            var x = 4;
-            this.getPages();
-
-            console.log()
-
-            if(this.total > x) {
-                var index = this.current <= Math.ceil(x / 2) ? 1 : (this.current) >= this.total - Math.ceil(x / 2) ? this.total - x : (this.current - Math.ceil(x / 2));
-
-                var end = this.current <= Math.ceil(x / 2) ? (x + 1) : (this.current + Math.ceil(x / 2)) >= this.total ? this.total : (this.current + Math.ceil(x / 2));
-            }
-            else {
-                var index = 1;
-
-                var end = this.total;
-            }
-            if (this.current > 1) {
-                $(".pagination").append("<li class='prev'><a href='javascript:;' data-page='"+(this.current - 1)+"'>«</a></li>");
-            }
-            else if(this.current == 1){
-                $(".pagination").append("<li class='prev disabled'><span>«</span></li>");
-            }
-
-            for (var i = index; i <= end; i++) {
-                if (i == this.current) {
-                    $(".pagination").append("<li class='active'><a href='javascript:;' data-page='"+(this.current)+"'>"+i+"</a></li>");
-                } else {
-                    $(".pagination").append("<li><a href='javascript:;' data-page='"+i+"'>"+i+"</a></li>");
-                }
-            }
-
-            if (this.current < end) {
-                $(".pagination").append("<li class='next'><a href='javascript:;' data-page='"+(this.current + 1)+"'>»</a></li>");
-            }
-            else if(this.current == end){
-                $(".pagination").append("<li class='next disabled'><span>»</span></li>");
-            }
-        }
-    };
 
     function getData() {
         var type = {
@@ -193,7 +131,7 @@ $(function() {
                 var data = d.data,
                     c = $('#listContent').find('tbody');
                 if(data.list.length) {
-                    PageTotal.init(data)
+                    PageTotal.init('.pagination', data, actPage)
                     c.empty();
                     $.each(data.list, function(i,o) {
                         var block = o.isBlocked ? '启用' : '禁用';
