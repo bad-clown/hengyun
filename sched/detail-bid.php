@@ -25,10 +25,10 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
 			<li><a href="javascript:;">调度中心</a></li>
-			<li><a href="<?= $Path;?>/sched/order-web/published-list">报价管理</a></li>
+			<li><a href="<?= $Path;?>/sched/order-web/bid-list">报价管理</a></li>
 			<li class="active">查看详情</li>
 		</ul>
-		<a href="<?= $Path;?>/sched/order-web/published-list" class="back-control">返回</a>
+		<a href="<?= $Path;?>/sched/order-web/bid-list" class="back-control">返回</a>
 	</div>
 
 	<div class="detail-box bid-detail">

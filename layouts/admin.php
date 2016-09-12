@@ -109,6 +109,9 @@ if($isContentPage){
                 <li>
                     <a href="/admin/truck-length" target="mainframe" class="nav">车长管理</a>
                 </li>
+                <li>
+                    <a href="/admin/sched-router" target="mainframe" class="nav">调度路线管理</a>
+                </li>
             </ul>
         </div>
     </div>

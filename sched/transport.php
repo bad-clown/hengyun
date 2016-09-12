@@ -23,7 +23,7 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
 			<li><a href="javascript:;">调度中心</a></li>
-			<li class="active">报价管理</li>
+			<li class="active">运输管理</li>
 		</ul>
 	</div>
 
