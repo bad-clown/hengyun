@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 			<li class="active">修改车长</li>
 		</ul>
 		<!-- <a href="javascript:;" id="j-save-control" class="save-control">保存</a> -->
-		<a href="<?= $Path;?>/admin/truck-length" class="back-control">返回</a>
+		<a href="<?= $Path;?>/admin/truck-length" class="btn back-control">返回</a>
 	</div>
 
 	<div class="truck-length-update">

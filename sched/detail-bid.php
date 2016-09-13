@@ -17,7 +17,6 @@ $Path = \Yii::$app->request->hostInfo;
         <i class="glyphicon glyphicon-search"></i>
     </div>
     <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
     </div>
 </div>
 
@@ -28,7 +27,7 @@ $Path = \Yii::$app->request->hostInfo;
 			<li><a href="<?= $Path;?>/sched/order-web/bid-list">报价管理</a></li>
 			<li class="active">查看详情</li>
 		</ul>
-		<a href="<?= $Path;?>/sched/order-web/bid-list" class="back-control">返回</a>
+		<a href="<?= $Path;?>/sched/order-web/bid-list" class="btn back-control">返回</a>
 	</div>
 
 	<div class="detail-box bid-detail">
@@ -69,7 +68,7 @@ $Path = \Yii::$app->request->hostInfo;
 			<div class="priceBox clearfix">
 				<div class="form-group select-menu mr40">
 					<select name="priceType" id="priceType" class="form-control">
-						<option value="0">单价</option>
+						<option value="0">单价</option>.
 						<option value="1">一口价</option>
 					</select>
 				</div>

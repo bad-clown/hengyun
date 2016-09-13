@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<li class="active">新增货车类型</li>
 		</ul>
 		<!-- <a href="javascript:;" id="j-save-control" class="save-control">保存</a> -->
-		<a href="<?= $Path;?>/admin/truck-cat" class="back-control">返回</a>
+		<a href="<?= $Path;?>/admin/truck-cat" class="btn back-control">返回</a>
 	</div>
 
 	<div class="truck-cat-create">

@@ -28,10 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <li><a href="<?= $Path;?>/admin/user-web/managers">用户管理</a></li>
             <li class="active">后台管理员</li>
         </ul>
-        <div class="btn-control">
+        <a href="<?= $Path;?>/admin/user-web/create" class="btn btn-control">
             <span class="glyphicon glyphicon-plus"></span>
-            <?= Html::a(Yii::t('user', 'Create a user account'), ['create']) ?>
-        </div>
+            创建用户
+        </a>
     </div>
 
     <div class="listBox orderList">

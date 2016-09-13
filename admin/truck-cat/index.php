@@ -26,10 +26,10 @@ $Path = \Yii::$app->request->hostInfo;
         <ul class="breadcrumb">
             <li class="active">货车类型管理</li>
         </ul>
-        <div class="btn-control">
+        <a href="<?= $Path;?>/admin/truck-cat/create" class="btn btn-control">
             <span class="glyphicon glyphicon-plus"></span>
-            <?= Html::a(Yii::t('app', '新增货车类型'), ['create']) ?>
-        </div>
+            新增货车类型
+        </a>
     </div>
 
     <div class="listBox orderList">

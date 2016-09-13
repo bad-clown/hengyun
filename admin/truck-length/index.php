@@ -27,10 +27,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <ul class="breadcrumb">
             <li class="active">车长管理</li>
         </ul>
-        <div class="btn-control">
+        <a href="<?= $Path;?>/admin/truck-length/create" class="btn btn-control">
             <span class="glyphicon glyphicon-plus"></span>
-            <?= Html::a(Yii::t('app', '新增车长'), ['create']) ?>
-        </div>
+            新增车长
+        </a>
     </div>
 
     <div class="listBox orderList">

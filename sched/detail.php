@@ -27,7 +27,7 @@ $Path = \Yii::$app->request->hostInfo;
 			<li><a href="<?= $Path;?>/sched/order-web/new?sort=-time">发布管理</a></li>
 			<li class="active">查看详情</li>
 		</ul>
-		<a href="<?= $Path;?>/sched/order-web/new?sort=-time" class="back-control">返回</a>
+		<a href="<?= $Path;?>/sched/order-web/new?sort=-time" class="btn back-control">返回</a>
 	</div>
 
 	<div class="detail-box pb100">

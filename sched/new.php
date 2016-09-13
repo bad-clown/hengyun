@@ -27,8 +27,8 @@ $Path = \Yii::$app->request->hostInfo;
 			<li><a href="javascript:;">调度中心</a></li>
 			<li class="active">发布管理</li>
 		</ul>
-		<a href="javascript:;" class="btn-control" id="batch-control">批量操作</a>
-		<a href="javascript:;" class="btn-cancel" id="batch-cancel">取消</a>
+		<a href="javascript:;" class="btn btn-control" id="batch-control">批量操作</a>
+		<a href="javascript:;" class="btn btn-cancel" id="batch-cancel">取消</a>
 	</div>
 
 	<div class="listBox">

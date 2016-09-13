@@ -28,7 +28,7 @@ $Path = \Yii::$app->request->hostInfo;
 			<li><a href="<?= $Path;?>/sched/order-web/transport-list">运输管理</a></li>
 			<li class="active">查看详情</li>
 		</ul>
-		<a href="<?= $Path;?>/sched/order-web/transport-list" class="back-control">返回</a>
+		<a href="<?= $Path;?>/sched/order-web/transport-list" class="btn back-control">返回</a>
 	</div>
 
 	<div class="detail-box bid-detail">
