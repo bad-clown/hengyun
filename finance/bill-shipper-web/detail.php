@@ -27,9 +27,9 @@ $Path = \Yii::$app->request->hostInfo;
 			<li><a href="<?= $Path;?>/finance/bill-shipper-web/list">账单管理</a></li>
 			<li class="active">查看详情</li>
 		</ul>
-		<a href="javascript:;" id="j-save-control" class="save-control" style="display: none;">保存</a>
-		<a href="javascript:;" id="j-cancel-control" class="cancel-control" style="display: none;">取消</a>
-		<a href="<?= $Path;?>/finance/bill-shipper-web/list" id="j-back-control" class="back-control">返回</a>
+		<a href="javascript:;" id="j-save-control" class="btn save-control" style="display: none;">保存</a>
+		<a href="javascript:;" id="j-cancel-control" class="btn cancel-control" style="display: none;">取消</a>
+		<a href="<?= $Path;?>/finance/bill-shipper-web/list" id="j-back-control" class="btn back-control">返回</a>
 	</div>
 
 	<div class="detail-box">
@@ -114,7 +114,7 @@ $(function() {
 
 			$note.append(noteHTML);
 
-			var mailHTML = '<div class="clearfix"><div class="form-group label-floating"><label class="control-label">邮寄地址</label><input class="form-control" readonly="readonly" name="mailAddress" value="'+ data.mailAddress +'" type="text"></div><div class="form-group label-floating"><label class="control-label">联系电话</label><input class="form-control" readonly="readonly" name="mailTel" value="'+ data.mailTel +'" type="text"></div></div>';
+			var mailHTML = '<div class="clearfix"><div class="form-group label-floating"><label class="control-label">邮寄地址</label><input class="form-control" readonly="readonly" name="mailAddress" value="'+ data.mailAddress +'" type="text"></div><div class="form-group label-floating"><label class="control-label">联系电话</label><input class="form-control" readonly="readonly" name="mailTel" value="'+ data.mailTel +'" type="text"></div></div>';w
 
 			$mail.append(mailHTML);
 

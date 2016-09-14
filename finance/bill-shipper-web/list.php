@@ -25,9 +25,9 @@ $Path = \Yii::$app->request->hostInfo;
 		<ul class="breadcrumb">
 			<li class="active">账单管理</li>
 		</ul>
-		<div class="btn-control">
+		<div class="btn btn-control" id="open-create">
 			<span class="glyphicon glyphicon-plus"></span>
-			<a href="javascript:;" id="open-create">新增账单</a>
+			<a href="javascript:;">新增账单</a>
 		</div>
 	</div>
 

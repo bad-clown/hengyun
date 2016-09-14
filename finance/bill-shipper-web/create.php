@@ -27,8 +27,8 @@ $Path = \Yii::$app->request->hostInfo;
 			<li><a href="<?= $Path;?>/finance/bill-shipper-web/list">账单管理</a></li>
 			<li class="active">新增账单</li>
 		</ul>
-		<a href="javascript:;" id="j-save-control" class="save-control">保存</a>
-		<a href="<?= $Path;?>/finance/bill-shipper-web/list" class="back-control">返回</a>
+		<a href="javascript:;" id="j-save-control" class="btn save-control">保存</a>
+		<a href="<?= $Path;?>/finance/bill-shipper-web/list" class="btn back-control">返回</a>
 	</div>
 
 	<div class="detail-box">

@@ -102,6 +102,7 @@ $(function() {
 		return n < 10 ? "0"+n : n;
 	};
 	_global.FormatTime = function(n, t) {
+		if(!n) return '';
 		var t = t || 0;
 		var nS= new Date(parseInt(n) * 1000),
 			year=_global.Digit(nS.getFullYear()),
