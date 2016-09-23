@@ -44,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <thead>
                 <tr>
                     <th>手机号</th>
+                    <th>姓名</th>
                     <th width="102">
                     <div class="navbar-collapse collapse navbar-inverse-collapse">
                         <ul class="nav navbar-nav">
@@ -108,7 +109,7 @@ $(function() {
                     $.each(data.list, function(i,o) {
                         var block = o.isBlocked ? '启用' : '禁用';
                         var t = _global.FormatTime(o.created_at);
-                        var h = '<tr><td>'+ o.phone +'</td><td align="center">'+type[o.type]+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/update?id='+o._id+'">编辑</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+                        var h = '<tr><td>'+ o.phone +'</td><td>'+ (o.name || "暂无") +'</td><td align="center">'+type[o.type]+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/update?id='+o._id+'">编辑</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
                         c.append(h)
                     })
                 }

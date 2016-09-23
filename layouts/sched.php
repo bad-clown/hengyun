@@ -5,7 +5,7 @@
  * @File: admin.php
  * $Id: admin.php v 1.0 2016-06-22 14:20:42 maxing $
  * $Author: maxing xm.crazyboy@gmail.com $
- * $Last modified: 2016-06-23 16:33:01 $
+ * $Last modified: 2016-09-18 11:30:30 $
  * @brief
  *
  ******************************************************************/
@@ -82,6 +82,9 @@ if($isContentPage){
                             <a href="/sched/order-web/transport-list" target="mainframe">运输管理<span class="badge" id="trans-cnt">0</span></a>
                         </li>
                     </ul>
+                </li>
+                <li>
+                    <a href="/finance/order-web/order-list" target="mainframe" class="nav">订单管理</a>
                 </li>
             </ul>
         </div>

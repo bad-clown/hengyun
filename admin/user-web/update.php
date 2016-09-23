@@ -47,7 +47,7 @@ $(function() {
 		dataType : "json",
 		success : function(data) {
 			var $user = $('#J-user-detail');
-			var userHTML = '<div class="form-group"><label class="control-label">手机号</label><input class="form-control" name="phone" value="'+data.phone+'" type="text"></div><div class="form-group"><label class="control-label">密码</label><input class="form-control" name="password" value="" type="password"></div><div class="form-group"><label class="control-label">类型</label><select name="type" class="form-control"><option value="admin">管理员</option><option value="sched">调度员</option><option value="finance">账务员</option></select></div>';
+			var userHTML = '<div class="form-group"><label class="control-label">手机号</label><input class="form-control" name="phone" value="'+data.phone+'" type="text"></div><div class="form-group"><label class="control-label">姓名</label><input class="form-control" name="name" value="'+(data.name||"")+'" type="text"></div><div class="form-group"><label class="control-label">密码</label><input class="form-control" name="password" value="" type="password"></div><div class="form-group"><label class="control-label">类型</label><select name="type" class="form-control"><option value="admin">管理员</option><option value="sched">调度员</option><option value="finance">账务员</option></select></div>';
             $user.append(userHTML);
             $('select[name="type"]').val(data.type).triggerHandler("change");
 		}
@@ -56,12 +56,18 @@ $(function() {
 
     $('#j-save-control').on('click', function() {
         var phone = $("input[name='phone']").val();
+        var name = $("input[name='name']").val();
         var password = $("input[name='password']").val();
         var type = $("select[name='type']").val();
         var reg = /^0?1[3|4|5|8][0-9]\d{8}$/;
         if(!reg.test(phone)) {
             alert('请输入正确手机号码！');
             $("input[name='phone']").focus();
+            return;
+        }
+        if (!name) {
+            alert('姓名不能为空！');
+            $("input[name='name']").focus();
             return;
         }
         if(!password) {
@@ -71,6 +77,7 @@ $(function() {
         }
         var data = {
             phone : phone,
+            name : name,
             password : password,
             type : type
         }

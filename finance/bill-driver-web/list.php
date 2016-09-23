@@ -60,9 +60,8 @@ $Path = \Yii::$app->request->hostInfo;
 					</div>
 					</th>
 					<th>账单号</th>
-					<th>货主姓名</th>
+					<th>司机姓名</th>
 					<th>联系电话</th>
-					<th>开票时间</th>
 					<th width="144"><div class="navbar-collapse collapse navbar-inverse-collapse">
 						<ul class="nav navbar-nav">
 							<li class="dropdown">
@@ -98,7 +97,6 @@ $Path = \Yii::$app->request->hostInfo;
 						</ul>
 					</div></th>
 					<th>订单数</th>
-					<th>开票抬头</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -118,7 +116,7 @@ $Path = \Yii::$app->request->hostInfo;
 				<ul class="breadcrumb">
 					<li>账单管理</li>
 					<li>新增账单</li>
-					<li class="active">货主选择</li>
+					<li class="active">司机选择</li>
 				</ul>
 				<a href="javascript:;" class="btn btn-primary" id="shipper-complete" title="确认">确认</a>
 			</div>
@@ -156,7 +154,7 @@ $(function() {
 
 		$.ajax({
 			type : "GET",
-			url : "<?= $Path;?>/finance/bill-shipper/list",
+			url : "<?= $Path;?>/finance/bill-driver/list",
 			data : {
 				page : actPage,
 				status : actStatus,
@@ -171,8 +169,7 @@ $(function() {
 					PageTotal.init('#listPages', data, actPage)
 					c.empty();
 					$.each(data.list, function(i,o) {
-						var t = _global.FormatTime(o.billTime);
-						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.billNo+'</td><td>'+(o.shipper.name || '暂无')+'</td><td>'+o.shipper.phone+'</td><td>'+t+'</td><td><span class="pl24">'+o.totalMoney+'元</span></td><td>'+o.orderCnt+'单</td><td>'+o.title+'</td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/bill-shipper-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.billNo+'</td><td>'+(o.driver.name || '暂无')+'</td><td>'+o.driver.phone+'</td><td><span class="pl24">'+o.totalMoney+'元</span></td><td>'+o.orderCnt+'单</td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/bill-driver-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
 				}
@@ -191,7 +188,7 @@ $(function() {
 	function getShipperData() {
 		$.ajax({
 			type : "GET",
-			url : "<?= $Path;?>/finance/bill-shipper/unpayed-users",
+			url : "<?= $Path;?>/finance/bill-driver/unpayed-users",
 			data : {
 				page : actPage
 			},
@@ -246,7 +243,7 @@ $(function() {
 		$('#shipperData').find('tr').removeClass('has');
 		$(this).parents('tr').addClass('has');
 		$(this).addClass('has-btn-option');
-		$('#shipper-complete').prop('href', '<?= $Path;?>/finance/bill-shipper-web/create?shipperId='+$(this).data('key'));
+		$('#shipper-complete').prop('href', '<?= $Path;?>/finance/bill-driver-web/create?driverId='+$(this).data('key'));
 	})
 
 	$('#open-create').on('click', function() {
@@ -260,7 +257,7 @@ $(function() {
 		if(confirm("确定删除？")) {
 			$.ajax({
 				type : "GET",
-				url : "<?= $Path;?>/finance/bill-shipper/del?id="+k,
+				url : "<?= $Path;?>/finance/bill-driver/del?id="+k,
 				dataType : "json",
 				success : function(data) {
 					if(data.code == '0') {

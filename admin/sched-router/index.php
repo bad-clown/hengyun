@@ -120,9 +120,6 @@ $(function(){
                         alert('删除成功！')
                         getData()
                     }
-                    else{
-                        alert('删除失败！')
-                    }
                 }
             })
         }

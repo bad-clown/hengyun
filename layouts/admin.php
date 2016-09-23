@@ -87,7 +87,10 @@ if($isContentPage){
                     <a href="/finance/order-web/order-list" target="mainframe" class="nav">订单管理</a>
                 </li>
                 <li>
-                    <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">账单管理</a>
+                    <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">货主账单管理</a>
+                </li>
+                <li>
+                    <a href="/finance/bill-driver-web/list" target="mainframe" class="nav">司机账单管理</a>
                 </li>
                 <li>
                     <a href="javascript:;" target="mainframe" class="user-nav select-menu">用户管理</a>
@@ -104,10 +107,15 @@ if($isContentPage){
                     <a href="/admin/goods-category" target="mainframe" class="nav">货物类型管理</a>
                 </li>
                 <li>
-                    <a href="/admin/truck-cat" target="mainframe" class="nav">货车类型管理</a>
-                </li>
-                <li>
-                    <a href="/admin/truck-length" target="mainframe" class="nav">车长管理</a>
+                    <a href="javascript:;" target="mainframe" class="truck-nav select-menu">货车管理</a>
+                    <ul class="sub-nav" style="display: none;">
+                        <li>
+                            <a href="/admin/truck-cat" target="mainframe">货车类型管理</a>
+                        </li>
+                        <li>
+                            <a href="/admin/truck-length" target="mainframe">车长管理</a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="/admin/sched-router" target="mainframe" class="nav">调度路线管理</a>
@@ -160,7 +168,7 @@ $(function() {
         $(this).addClass('cur');
     })
 
-    $('.user-nav,.sched-nav').on('click', function() {
+    $('.user-nav,.sched-nav,.truck-nav').on('click', function() {
         if($(this).hasClass('cur')) {
             $(this).removeClass('cur')
             $(this).next('.sub-nav').hide();

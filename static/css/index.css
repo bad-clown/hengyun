@@ -34,7 +34,7 @@ body{background-color: #f5f5f5;}
 
 .nav-list .badge{background-color: #ef4f51;margin-left: 40px;display: none;}
 /* 侧导航-子导航 */
-.nav-list .sub-nav li a{background: #353439;}
+.nav-list .sub-nav li a{background: #353439;font-size: 14px;padding-left: 70px;}
 .nav-list .sub-nav li a.cur{background: #2b2a2f;}
 .nav-list .select-menu:after{color: #fff;bottom: 0;}
 
