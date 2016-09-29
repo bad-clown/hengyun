@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="breadcrumbBox">
         <ul class="breadcrumb">
             <li><a href="<?= $Path;?>/admin/user-web/managers">用户管理</a></li>
-            <li class="active">后台管理员</li>
+            <li class="active">APP用户</li>
         </ul>
     </div>
 

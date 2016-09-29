@@ -106,6 +106,33 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 </div>
 
+<div class="pricelist-pop popup">
+	<a href="javascrip:void(0);" class="glyphicon glyphicon-remove close-btn"></a>
+	<div class="popup-header"></div>
+	<div class="popup-main">
+		<div class="popup-breadcrumb">
+			<div class="breadcrumbBox">
+				<ul class="breadcrumb">
+					<li class="active">司机报价</li>
+				</ul>
+			</div>
+			<div class="driverBox clearfix" id="priceOrder">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr>
+							<th>报价</th>
+							<th>合计</th>
+							<th>报价时间</th>
+							<th>电话</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div class="overlay"></div>
 
 <?php $this->beginBlock("bottomcode");  ?>
@@ -125,8 +152,9 @@ $(function() {
 							var bidCnt = '暂无司机报价';
 						}
 						else {
-							var bidCnt = '<div class="form-group"><label>'+o.bidCnt+'人</label></div>';
+							var bidCnt = '<div class="form-group"><label><a href="javascript:;" class="j-price-list" data-key="'+o._id+'">'+o.bidCnt+'人</a></label></div>';
 						}
+
 						if(!o.bid["bidPrice"] || !o.bid["bidTime"]) {
 							var bidPrice = '还未给货主报价';
 							var bidCls = 'j-price';
@@ -136,7 +164,7 @@ $(function() {
 							var bidCls = 'has-driver';
 						}
 
-						if((!o.bid["bidPrice"] || !o.bid["bidTime"]) || !o.bidCnt || o.status != 300 || o.dealt) {
+						if((!o.bid["bidPrice"] || !o.bid["bidTime"]) || !o.bidCnt || o.status > 300 || o.dealt) {
 							var driverCls = 'has-driver';
 						}
 						else {
@@ -254,6 +282,26 @@ $(function() {
 				else {
 					alert('提交失败！');
 				}
+			}
+		})
+	})
+
+	$(document).on('click', '.j-price-list', function() {
+		var k = $(this).data('key');
+		$.ajax({
+			type : "GET",
+			url : "<?= $Path;?>/sched/order/bid-list?orderId="+k,
+			dataType : "json",
+			success : function(data) {
+				var c = $('#priceOrder').find('tbody');
+				c.empty();
+				$.each(data.data, function(i, o) {
+					var h = '<tr><td>'+Sched.priceType[o.bidPriceType]+'：'+o.bidPrice+'元</td><td>'+o.realTotalMoney+'元</td><td>'+_global.FormatTime(o.bidTime)+'</td><td>'+o.phone+'</td></tr>';
+
+					c.append(h)
+				})
+				$('.pricelist-pop:eq(0)').show();
+				$('.overlay:eq(0)').show();
 			}
 		})
 	})

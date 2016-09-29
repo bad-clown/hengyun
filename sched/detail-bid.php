@@ -131,9 +131,13 @@ $(function() {
 			$('.panel-label>span').html('状态：'+Sched.status[data.status]);
 
 
-			if((!data["bidPrice"] || !data["bidTime"]) || data.status != 300) {
+			if((!data["bidPrice"] || !data["bidTime"]) || data.status > 300) {
 				$('.j-driver').data('status', true);
-			}
+				//var driverCls = 'has-driver';
+			}/*
+			else {
+				var driverCls = 'j-driver';
+			}*/
 
 			if(!data.bidPrice || !data.realTotalMoney){
 				bidPrice = '暂无';
