@@ -84,6 +84,10 @@ $Path = \Yii::$app->request->hostInfo;
 				<label class="control-label">计量单位</label>
 				<input class="form-control" readonly="readonly" name="goodsUnit" value="" type="text">
 			</div>
+			<div class="form-group">
+				<label class="control-label">实际重量</label>
+				<input class="form-control" readonly="readonly" name="realTotalWeight" value="" type="text">
+			</div>
 			<div class="form-group form-group-last">
 				<label class="control-label">简介</label>
 				<input class="form-control" readonly="readonly" name="note" value="" type="text">
@@ -234,6 +238,7 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 	<div class="control-panel">
 		<div class="control-btns">
+			<a href="javascript:;" class="btn btn-default" id="J_Republish">重新发布</a>
 			<a href="javascript:;" class="btn btn-default" id="J_Change">修改订单</a>
 			<a href="javascript:;" class="btn btn-default" id="J_Cancel" style="display: none;">取消修改</a>
 			<a href="javascript:;" class="btn btn-default" id="J_Save" style="display: none;">保存</a>
@@ -266,16 +271,17 @@ $(function() {
 			$('input[name="orderNo"]').val( data.orderNo )
 			$('input[name="status"]').val( Sched.status[data.status] )
 			$('input[name="goodsCnt"]').val( data.goodsCnt +'件'  )
-			$('input[name="totalWeight"]').val( data.totalWeight +'吨' )
+			$('input[name="totalWeight"]')	.val( data.totalWeight +'吨' )
 			$('input[name="pickupDrop"]').val( data.pickupDrop )
 			$('input[name="goodsMaxLen"]').val( data.goodsMaxLen )
 			$('input[name="goodsMaxWidth"]').val( data.goodsMaxWidth )
 			$('input[name="provinceFrom"]').val( data.provinceFrom+data.cityFrom+data.districtFrom )
 			$('input[name="provinceTo"]').val( data.provinceTo+data.cityTo+data.districtTo )
 			$('input[name="deliverTime"]').val( deliverTime )
-			$('input[name="predictArriveTime"]').val( predictArriveTime )
+			$('input[name="predictArriveTim	e"]').val( predictArriveTime )
 			$('input[name="realArriveTime"]').val( realArriveTime )
 			$('input[name="goodsUnit"]').val( (data.goodsUnit || '') )
+			$('input[name="realTotalWeight"]').val( (data.realTotalWeight || '') + '吨' )
 			$('input[name="note"]').val( data.note )
 
 			/* 货物明细 */
@@ -413,11 +419,34 @@ $(function() {
 		$('input[name="payNetAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 
 		$('#J_Change').hide();
+		$('#J_Republish').hide();
 		$('#J_Cancel').show()
 		$('#J_Save').show()
 		$(window).scrollTop(0)
 		$('input[name="predictArriveTime"]').focus();
 	})
+
+    $('#J_Republish').on('click', function() {
+        if(confirm('确实重新发布？')) {
+        	$.ajax({
+	            type : "post",
+	                url : '<?= $Path;?>/finance/order/republish?id=<?= $_id;?>',
+	                dataType : 'json',
+	                success : function(data) {
+	                    if(data.code == 0) {
+	                        alert('重新发布成功！')
+	                            window.location.reload();
+	                    }
+	                    else {
+	                        alert('重新发布失败！请检查后重试！')
+	                    }
+	                },
+                    error : function() {
+                        alert("重新发布失败，请检查网络后重试！");
+                    }
+	        })
+        }
+    })
 
 	$('#J_Cancel').on('click', function() {
 		window.location.reload();
@@ -477,10 +506,14 @@ $(function() {
 	})
 
 	$('#J_Save').on('click', function() {
+		var predictArriveTime = $('input[name="predictArriveTime"]').val() == '' ? '' : Date.parse($('input[name="predictArriveTime"]').val()) /1000;
+		var bilingTime = $('input[name="bilingTime"]').val() == '' ? '' : Date.parse($('input[name="bilingTime"]').val()) /1000;
+		var backTime = $('input[name="backTime"]').val() == '' ? '' : Date.parse($('input[name="backTime"]').val()) /1000;
+		var payTime = $('input[name="payTime"]').val() == '' ? '' : Date.parse($('input[name="payTime"]').val()) /1000;
 		var data = {
 			contact : $('input[name="contact"]').val(),
 			realCarInfo : $('input[name="realCarInfo"]').val(),
-			predictArriveTime : Date.parse($('input[name="predictArriveTime"]').val()) /1000,
+			predictArriveTime : predictArriveTime,
 			goodsUnit : $('input[name="goodsUnit"]').val(),
 			daifu : $('input[name="daifu"]').val(),
 			predictProfit : $('input[name="predictProfit"]').val(),
@@ -492,12 +525,12 @@ $(function() {
 			realProfit : $('input[name="realProfit"]').val(),
 			realProfitRate : $('input[name="realProfitRate"]').val(),
 			billing : $('select[name="billing"]').val(),
-			bilingTime : Date.parse($('input[name="bilingTime"]').val()) /1000,
-			backTime : Date.parse($('input[name="backTime"]').val()) /1000,
+			bilingTime : bilingTime,
+			backTime : backTime,
 			backReceived : $('select[name="backReceived"]').val(),
 			receiveMoneyTime : $('select[name="receiveMoneyTime"]').val(),
 			payedStatus : $('select[name="payedStatus"]').val(),
-			payTime : Date.parse($('input[name="payTime"]').val()) /1000,
+			payTime : payTime,
 			payOilAmount : $('input[name="payOilAmount"]').val(),
 			payNetAmount : $('input[name="payNetAmount"]').val()
 		}

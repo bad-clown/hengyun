@@ -102,6 +102,14 @@ $(function() {
 					getData()
 					_global.badge();
 				}
+				else {
+					alert('发布失败，请重试！');
+					getData()
+					_global.badge();
+				}
+			},
+			error : function() {
+				alert("发布失败，请检查网络后重试！");
 			}
 		})
 	})
@@ -119,6 +127,14 @@ $(function() {
 						getData()
 						_global.badge();
 					}
+					else {
+						alert('删除失败，请重试！')
+						getData()
+						_global.badge();
+					}
+				},
+				error : function() {
+					alert("删除失败，请检查网络后重试！");
 				}
 			})
 		}
@@ -146,6 +162,14 @@ $(function() {
 						getData()
 						_global.badge();
 					}
+					else {
+						alert('发布失败，请重试！');
+						getData()
+						_global.badge();
+					}
+				},
+				error : function() {
+					alert("发布失败，请检查网络后重试！");
 				}
 			})
 		}
@@ -176,6 +200,14 @@ $(function() {
 						getData()
 						_global.badge();
 					}
+					else {
+						alert('删除失败，请重试！')
+						getData()
+						_global.badge();
+					}
+				},
+				error : function() {
+					alert("删除失败，请检查网络后重试！");
 				}
 			})
 		}

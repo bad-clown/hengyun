@@ -100,6 +100,9 @@ $(function() {
                 else {
                     alert('创建失败！')
                 }
+            },
+            error : function() {
+                alert("创建失败，请检查网络后重试！");
             }
         })
     })

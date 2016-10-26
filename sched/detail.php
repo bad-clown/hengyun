@@ -77,7 +77,15 @@ $(function() {
 					_global.badge();
 					window.location.href = '<?= $Path;?>/sched/order-web/new?sort=-time';
 				}
+				else {
+					alert('发布失败，请重试！');
+					_global.badge();
+				}
+			},
+			error : function() {
+				alert("发布失败，请检查网络后重试！");
 			}
+			
 		})
 	})
 	$('.btn-del').on('click', function() {
@@ -92,6 +100,13 @@ $(function() {
 						_global.badge();
 						window.location.href = '<?= $Path;?>/sched/order-web/new?sort=-time'
 					}
+					else {
+						alert('删除失败，请重试！')
+						_global.badge();
+					}
+				},
+				error : function() {
+					alert("删除失败，请检查网络后重试！");
 				}
 			})
 		}

@@ -120,6 +120,13 @@ $(function(){
                         alert('删除成功！')
                         getData()
                     }
+                    else {
+                        alert('删除失败，请重试！')
+                        getData()
+                    }
+                },
+                error : function() {
+                    alert("删除失败，请检查网络后重试！");
                 }
             })
         }
@@ -181,8 +188,13 @@ $(function(){
                         alert('保存成功！')
                         $('.btn-save:eq(0)').addClass('btn-disabled').data('disabled', true);
                         $('.btn-update:eq(0)').removeClass('btn-disabled').data('disabled', false);
-
                     }
+                    else {
+                        alert('保存失败，请重试！')
+                    }
+                },
+                error : function() {
+                    alert("保存失败，请检查网络后重试！");
                 }
             })
         }

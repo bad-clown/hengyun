@@ -147,6 +147,12 @@ $(function() {
                         alert('删除成功！')
                         getData()
                     }
+                    else {
+                        alert('删除失败，请重试！')
+                    }
+                },
+                error : function() {
+                    alert("删除失败，请检查网络后重试！");
                 }
             })
         }

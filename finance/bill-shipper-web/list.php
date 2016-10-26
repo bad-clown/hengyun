@@ -179,7 +179,7 @@ $(function() {
 				else {
 					$('.pagination').empty()
 					c.empty();
-					var h = '<tr><td align="center" colspan="7">暂无数据</td></tr>';
+					var h = '<tr><td align="center" colspan="9">暂无数据</td></tr>';
 					c.append(h)
 
 				}
@@ -267,6 +267,13 @@ $(function() {
 						alert('删除成功！')
 						getData()
 					}
+					else {
+						alert('删除失败，请重试！')
+						getData()
+					}
+				},
+				error : function() {
+					alert("删除失败，请检查网络后重试！");
 				}
 			})
 		}

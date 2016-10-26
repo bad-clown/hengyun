@@ -73,7 +73,10 @@ if($isContentPage){
                     <a href="/finance/order-web/order-list" target="mainframe" class="nav cur">订单管理</a>
                 </li>
                 <li>
-                    <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">账单管理</a>
+                    <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">货主账单管理</a>
+                </li>
+                <li>
+                    <a href="/finance/bill-driver-web/list" target="mainframe" class="nav">司机账单管理</a>
                 </li>
             </ul>
         </div>

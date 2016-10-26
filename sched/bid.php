@@ -220,6 +220,9 @@ $(function() {
 					alert('提交失败！')
 					getData()
 				}
+			},
+			error : function() {
+				alert("提交失败，请检查网络后重试！");
 			}
 		})
 	})
@@ -282,6 +285,9 @@ $(function() {
 				else {
 					alert('提交失败！');
 				}
+			},
+			error : function() {
+				alert("提交失败，请检查网络后重试！");
 			}
 		})
 	})
@@ -304,6 +310,15 @@ $(function() {
 				$('.overlay:eq(0)').show();
 			}
 		})
+	})
+
+	$('#priceType').change(function() {
+		if($(this).val() == 1) {
+			$('.label-unit:eq(0)').html('元')
+		}
+		else {
+			$('.label-unit:eq(0)').html('元 / 吨')
+		}
 	})
 
 	$('.close-btn').on('click', function() {

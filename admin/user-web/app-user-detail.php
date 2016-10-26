@@ -25,7 +25,7 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
 			<li><a href="<?= $Path;?>/admin/user-web/app-users">用户管理</a></li>
-			<li><a href="<?= $Path;?>/admin/user-web/app-users">后台管理员</a></li>
+			<li><a href="<?= $Path;?>/admin/user-web/app-users">APP用户</a></li>
 			<li class="active">APP用户详情</li>
 		</ul>
 		<!-- <a href="javascript:;" id="j-save-control" class="btn save-control" style="display: none;">保存</a> -->
@@ -34,7 +34,7 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 
 	<div class="detail-box pb100">
-		<div class="clearfix" id="J-user-detail"></div>
+		<div id="J-user-detail"></div>
 	</div>
 
 	<div class="control-panel" style="display: none;">
@@ -60,9 +60,9 @@ $(function() {
         2 : "认证通过",
         3 : "认证不通过"
     };
-    var role = {
-        company : "（公司）",
-        pernson : "（个人）"
+    var category = {
+    	0 : "（公司）",
+        1 : "（个人/车队）"
     }
 	$.ajax({
 		type : "GET",
@@ -75,7 +75,18 @@ $(function() {
 			var idFront = data.idFront ? "<img src='<?= $Path;?>"+data.idFront+"' />" : '未上传';
 			var idBack = data.idBack ? "<img src='<?= $Path;?>"+data.idBack+"' />" : '未上传';
 
-			var userHTML = '<div class="form-group label-floating"><label for="status" class="control-label">状态</label><input class="form-control" readonly="readonly" name="status" value="'+ status[data.authStatus] +'" type="text"></div><div class="form-group label-floating"><label class="control-label">手机号</label><input class="form-control" readonly="readonly" name="phone" value="'+ data.phone +'" type="text"></div><div class="form-group label-floating"><label class="control-label">类型</label><input class="form-control" readonly="readonly" name="type" value="'+ type[data.type] +'"></div><div class="form-group label-floating"><label class="control-label">用户名</label><input class="form-control" readonly="readonly" name="username" value="'+ (data.nickname ||"暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">真实姓名</label><input class="form-control" readonly="readonly" name="name" value="'+ (data.name||"暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">身份证号</label><input class="form-control" readonly="readonly" name="id" value="'+ (data.id||"暂无") +'" type="text"></div><div class="form-group pictureBox"><label class="control-label">头像</label><div class="input-group"><input type="file" id="inputFile4" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+avatar+'</div></div><div class="form-group pictureBox"><label class="control-label">身份证正面</label><div class="input-group"><input type="file" id="inputFile4" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idFront+'</div></div><div class="form-group pictureBox"><label class="control-label">身份证反面</label><div class="input-group"><input type="file" id="inputFile4" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idBack+'</div></div>';
+			if(data.category == 1) {
+				var company = '<div class="form-group label-floating"><label class="control-label">真实姓名</label><input class="form-control" readonly="readonly" name="name" value="'+ (data.name||"暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">身份证号</label><input class="form-control" readonly="readonly" name="id" value="'+ (data.id||"暂无") +'" type="text"></div>';
+				var idHtml = '<div class="form-group pictureBox"><label class="control-label">身份证正面</label><div class="input-group"><input type="file" id="inputFile2" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idFront+'</div></div><div class="form-group pictureBox"><label class="control-label">身份证反面</label><div class="input-group"><input type="file" id="inputFile3" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idBack+'</div>';
+			}
+			else {
+				var company = '<div class="form-group label-floating"><label class="control-label">公司名称</label><input class="form-control" readonly="readonly" name="company" value="'+ (data.company||"暂无") +'" type="text"></div>';
+
+				var lisence = data.lisence ? "<img src='<?= $Path;?>"+data.lisence+"' />" : '未上传';
+				var idHtml = '<div class="form-group pictureBox"><label class="control-label">营业执照</label><div class="input-group"><input type="file" id="inputFile4" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+lisence+'</div></div>';
+			}
+
+			var userHTML = '<div class="clearfix"><div class="form-group label-floating"><label for="status" class="control-label">状态</label><input class="form-control" readonly="readonly" name="status" value="'+ status[data.authStatus] +'" type="text"></div><div class="form-group label-floating"><label class="control-label">手机号</label><input class="form-control" readonly="readonly" name="phone" value="'+ data.phone +'" type="text"></div><div class="form-group label-floating"><label class="control-label">类型</label><input class="form-control" readonly="readonly" name="type" value="'+ type[data.type]+(category[data.category] || "") +'"></div><div class="form-group label-floating"><label class="control-label">用户名</label><input class="form-control" readonly="readonly" name="username" value="'+ (data.nickname ||"暂无") +'" type="text"></div>'+ company +'</div></div><div class="clearfix"><div class="form-group pictureBox"><label class="control-label">头像</label><div class="input-group"><input type="file" id="inputFile1" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+avatar+'</div></div>'+ idHtml +'</div>';
 
             $user.append(userHTML);
             if (data.authStatus == 1) {

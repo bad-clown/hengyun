@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索用户" />
         <i class="glyphicon glyphicon-search"></i>
     </div>
     <div class="username">
@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <div class="listBox orderList">
+        <div class="summary">注册用户共<b id="userCnt"></b>位</div>
         <table class="table table-striped table-hover" id="listContent">
             <thead>
                 <tr>
@@ -61,16 +62,16 @@ $this->params['breadcrumbs'][] = $this->title;
                         </ul>
                     </div>
                     </th>
-                    <th>手机号</th>
+                    <th>用户名</th>
                     <th style="text-align:center;">姓名</th>
-                    <th style="text-align:center;">用户名</th>
-                    <th width="102">
+                    <th style="text-align:center;">昵称</th>
+                    <th width="130">
                     <div class="navbar-collapse collapse navbar-inverse-collapse">
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
                                 <a href="bootstrap-elements.html" data-target="#" class="dropdown-toggle" data-toggle="dropdown">类型<b class="caret"></b>
                                 </a>
-                                <ul class="dropdown-menu" id="TypeFilter">
+                                <ul class="dropdown-menu" id="TypeFilter" style="min-width: 114px;">
                                     <li>
                                         <a href="javascript:void(0)" data-type="">全部</a>
                                     </li>
@@ -101,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script type="text/javascript" src="/assets/8c065db/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 $(function() {
-    var actPage = 1, actStatus = "", actType = "";
+    var actPage = 1, actStatus = "", actType = "", actKey = "";
 
     function getData() {
         var type = {
@@ -114,9 +115,9 @@ $(function() {
             2 : "认证通过",
             3 : "认证不通过"
         };
-        var role = {
-            company : "（公司）",
-            pernson : "（个人）"
+        var category = {
+            0 : "（公司）",
+            1 : "（个人/车队）"
         }
         $.ajax({
             type : "GET",
@@ -124,7 +125,8 @@ $(function() {
             data : {
                 page : actPage,
                 status : actStatus,
-                type : actType
+                type : actType,
+                key : actKey
             },
             dataType : "json",
             success : function(d) {
@@ -136,7 +138,7 @@ $(function() {
                     $.each(data.list, function(i,o) {
                         var block = o.isBlocked ? '启用' : '禁用';
                         var t = _global.FormatTime(o.created_at);
-                        var h = '<tr><td align="center">'+status[o.authStatus]+'</td><td>'+ o.phone +'</td><td align="center">'+(o.name || "暂无")+'</td><td align="center">'+(o.nickname || "暂无")+'</td><td align="center">'+type[o.type]+(role[o.role] || "")+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/app-user-detail?id='+o._id+'">查看详情</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+                        var h = '<tr><td align="center">'+status[o.authStatus]+'</td><td>'+ o.phone +'</td><td align="center">'+(o.name || "暂无")+'</td><td align="center">'+(o.nickname || "暂无")+'</td><td align="center">'+type[o.type]+(category[o.category] || "")+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/app-user-detail?id='+o._id+'">查看详情</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
                         c.append(h)
                     })
                 }
@@ -157,13 +159,13 @@ $(function() {
     })
 
     $('#StatusFilter a').on('click', function() {
-        actPage = 1;
+        actPage = 1, actKey = '';
         actStatus = $(this).data('status');
         getData()
     })
 
     $('#TypeFilter a').on('click', function() {
-        actPage = 1;
+        actPage = 1, actKey = '';
         actType = $(this).data('type');
         getData()
     })
@@ -180,6 +182,13 @@ $(function() {
                         alert('删除成功！')
                         getData()
                     }
+                    else {
+                        alert('删除失败，请重试！')
+                        getData()
+                    }
+                },
+                error : function() {
+                    alert("删除失败，请检查网络后重试！");
                 }
             })
         }
@@ -201,6 +210,26 @@ $(function() {
                     }
                 }
             })
+        }
+    })
+
+    $.ajax({
+        type : 'get',
+        url : '<?= $Path;?>/admin/user/app-user-cnt',
+        success : function(data) {
+            if(data.code == '0') {
+                $('#userCnt').html(data['data']['cnt']);
+            }
+            else {
+                $('#userCnt').html(0);
+            }
+        }
+    })
+
+    $('.search-text').on('keypress', function(e) {
+        if(e.keyCode == 13) {
+            actKey = $(this).val(), actPage = 1, actStatus = '';
+            getData()
         }
     })
 })

@@ -93,6 +93,9 @@ $(function() {
                 else {
                     alert('更新失败！')
                 }
+            },
+            error : function() {
+                alert("更新失败，请检查网络后重试！");
             }
         })
     })

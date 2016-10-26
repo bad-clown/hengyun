@@ -102,7 +102,7 @@ $(function() {
 
 			$bill.append(billHTML);
 
-			$('select[name="status"]').val(data.status).triggerHandler("change"); 
+			$('select[name="status"]').val(data.status).triggerHandler("change");
 
 			$.each(data.orderList, function(i, o) {
 				var deliverTime = _global.FormatTime(o.deliverTime);
@@ -114,7 +114,7 @@ $(function() {
 
 			$note.append(noteHTML);
 
-			var mailHTML = '<div class="clearfix"><div class="form-group label-floating"><label class="control-label">邮寄地址</label><input class="form-control" readonly="readonly" name="mailAddress" value="'+ data.mailAddress +'" type="text"></div><div class="form-group label-floating"><label class="control-label">联系电话</label><input class="form-control" readonly="readonly" name="mailTel" value="'+ data.mailTel +'" type="text"></div></div>';w
+			var mailHTML = '<div class="clearfix"><div class="form-group label-floating"><label class="control-label">邮寄地址</label><input class="form-control" readonly="readonly" name="mailAddress" value="'+ data.mailAddress +'" type="text"></div><div class="form-group label-floating"><label class="control-label">联系电话</label><input class="form-control" readonly="readonly" name="mailTel" value="'+ data.mailTel +'" type="text"></div></div>';
 
 			$mail.append(mailHTML);
 

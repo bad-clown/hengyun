@@ -200,7 +200,7 @@ $(function() {
 					PageTotal.init('#popupPages', data)
 					c.empty();
 					$.each(data.list, function(i,o) {
-						var h = '<tr><td>'+(o.name || "暂无")+'</td><td>'+o.phone+'</td><td>'+o.orderCnt+'单</td><td><span class="pl24">货主（个人）</span></td><td width="100"><a href="javascript:void(0);" class="btn-option" data-key="'+o._id+'">选择</a></td></tr>';
+						var h = '<tr><td>'+(o.name || "暂无")+'</td><td>'+o.phone+'</td><td>'+o.orderCnt+'单</td><td><span class="pl24">司机</span></td><td width="100"><a href="javascript:void(0);" class="btn-option" data-key="'+o._id+'">选择</a></td></tr>';
 						c.append(h)
 					})
 				}
@@ -264,6 +264,13 @@ $(function() {
 						alert('删除成功！')
 						getData()
 					}
+					else {
+						alert('删除失败，请重试！')
+						getData()
+					}
+				},
+				error : function() {
+					alert("删除失败，请检查网络后重试！");
 				}
 			})
 		}
