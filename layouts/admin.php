@@ -59,7 +59,10 @@ if($isContentPage){
 <?php
 }else{ // is not contentpage
 ?>
+
 <div class="wrapper">
+    <!--隐藏按钮 -->
+    <button class="btn btn-primary" id="hide-btn" style="position: absolute;top:10px; z-index: 9999">隐藏</button>
     <div class="side-nav">
         <div class="title">
             <a href="#">
@@ -67,7 +70,7 @@ if($isContentPage){
                 享运物流后台系统
             </a>
         </div>
-        <div class="nav-list" id="j-nav">
+        <div class="nav-list" id="j-nav" deep="show">
             <ul>
                 <li>
                     <a href="javascript:;" target="mainframe" class="sched-nav select-menu">调度中心<span class="badge" id="total-cnt">0</span></a>
@@ -184,6 +187,17 @@ $(function() {
         $('.sub-nav a').removeClass('cur')
         $(this).addClass('cur');
     })
+
+});
+// 隐藏按钮
+$('#hide-btn').click(function(){
+    if ($('.side-nav').prop('deep') == 'hide') {
+        $('.side-nav').show().prop('deep','show');
+        $('#hide-btn').html('隐藏');
+    } else {
+        $('#hide-btn').html('显示');
+        $('.side-nav').hide().prop('deep','hide');
+    }
 
 });
 </script>

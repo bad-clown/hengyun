@@ -131,10 +131,16 @@ $(function() {
 			$('.panel-label>span').html('状态：'+Sched.status[data.status]);
 
 
-			if((!data["bidPrice"] || !data["bidTime"]) || data.status > 300) {
+			if(!data["bidPrice"] || !data["driver"] || data.status != 300) {
+				$('.j-driver').data('status', false);
+			}
+			else {
+				$('.j-driver').data('status', true);
+			}
+			/*if((!data["bidPrice"] || !data["bidTime"]) || data.status > 300) {
 				$('.j-driver').data('status', true);
 				//var driverCls = 'has-driver';
-			}/*
+			}
 			else {
 				var driverCls = 'j-driver';
 			}*/
@@ -314,16 +320,16 @@ $(function() {
 			},
 			success : function(data) {
 				if(data.code == '0') {
-					alert('提交成功！');
+					alert('撮合成功！');
 					$('.close-btn').click();
 					window.location.reload()
 				}
 				else {
-					alert('提交失败！');
+					alert('撮合失败！');
 				}
 			},
 			error : function() {
-				alert("提交失败，请检查网络后重试！");
+				alert("撮合失败，请检查网络后重试！");
 			}
 		})
 	})

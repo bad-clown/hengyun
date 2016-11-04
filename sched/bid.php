@@ -164,7 +164,7 @@ $(function() {
 							var bidCls = 'has-driver';
 						}
 
-						if((!o.bid["bidPrice"] || !o.bid["bidTime"]) || !o.bidCnt || o.status > 300 || o.dealt) {
+						if(!o.bid["bidPrice"] || !o.driverBid["bidPrice"] || !o.bidCnt || o.status != 300) {
 							var driverCls = 'has-driver';
 						}
 						else {
@@ -250,6 +250,7 @@ $(function() {
 					c.append(h)
 				})
 				$('#j-submit-driver').data('key', k);
+
 				$('.driver-pop:eq(0)').show();
 				$('.overlay:eq(0)').show();
 			}
@@ -267,6 +268,7 @@ $(function() {
 
 	$('#j-submit-driver').on('click', function() {
 		var orderId = $(this).data('key'), driverId = $(this).data('driverId');
+        console.log(driverId);
 		if(!driverId) {alert('请先选择司机！');return false;};
 
 		$.ajax({
@@ -277,17 +279,18 @@ $(function() {
 				driverId : driverId
 			},
 			success : function(data) {
+
 				if(data.code == '0') {
-					alert('提交成功！');
+					alert('撮合成功！');
 					$('.close-btn').click();
 					getData();
 				}
 				else {
-					alert('提交失败！');
+					alert('撮合失败！');
 				}
 			},
 			error : function() {
-				alert("提交失败，请检查网络后重试！");
+				alert("撮合失败，请检查网络后重试！");
 			}
 		})
 	})
