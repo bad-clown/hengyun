@@ -417,6 +417,7 @@ $(function() {
 		$('input[name="billing"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="payOilAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="payNetAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+		$('input[name="realTotalWeight"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 
 		$('#J_Change').hide();
 		$('#J_Republish').hide();
@@ -532,7 +533,8 @@ $(function() {
 			payedStatus : $('select[name="payedStatus"]').val(),
 			payTime : payTime,
 			payOilAmount : $('input[name="payOilAmount"]').val(),
-			payNetAmount : $('input[name="payNetAmount"]').val()
+			payNetAmount : $('input[name="payNetAmount"]').val(),
+			realTotalWeight : parseFloat($('input[name="realTotalWeight"]').val())
 		}
 
 		$.ajax({
