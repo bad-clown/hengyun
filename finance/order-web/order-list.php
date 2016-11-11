@@ -25,14 +25,13 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
 			<li class="active">订单管理</li>
-            <?php if($export):?>
-            <li><a class="active" href="<?= $Path;?>/finance/order/daochu">导出</a></li>
-            <?php endif;?>
 		</ul>
-		<!-- <div class="btn-control">
-			<span class="glyphicon glyphicon-plus"></span>
-			<a href="javascript:;">新增订单</a>
-		</div> -->
+		<?php if($export):?>
+		<div class="btn-control">
+			<span class="glyphicon glyphicon-download-alt"></span>
+			<a href="<?= $Path;?>/finance/order/daochu">导出</a>
+		</div>
+		<?php endif;?>
 	</div>
 
 	<div class="listBox orderList">
@@ -143,7 +142,13 @@ $Path = \Yii::$app->request->hostInfo;
                             var t = _global.FormatTime(o.publishTime);
                             var driverTotal = o.driver ? o["driver"]["bid"]["realTotalMoney"] + '元' : "暂无报价";
                             var bidTotal = o.realTotalMoney ? o.realTotalMoney + '元' : "暂无报价";
-                            var h = '<tr><td align="center"><div class="form-group"><label>' + Sched.status[o.status] + '</label></div></td><td>' + t + '</td><td>' + o.orderNo + '</td><td>' + o.provinceFrom + o.cityFrom + o.districtFrom + '</td><td>' + o.provinceTo + o.cityTo + o.districtTo + '</td><td>1</td><td>1</td><td>合计：' + driverTotal + '</td><td>合计：' + bidTotal + '</td><td> ' + o.backReceived + ' </td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/order-web/detail?id=' + o._id + '">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="' + o._id + '">删除</a></td></tr>';
+                            var delBtn = '';
+
+                            if(o.status != 700) {
+                            	delBtn = '<a class="btn-danger j-delete" href="javascript:;" data-key="' + o._id + '">删除</a>';
+                            }
+
+                            var h = '<tr><td align="center"><div class="form-group"><label>' + Sched.status[o.status] + '</label></div></td><td>' + t + '</td><td>' + o.orderNo + '</td><td>' + o.provinceFrom + o.cityFrom + o.districtFrom + '</td><td>' + o.provinceTo + o.cityTo + o.districtTo + '</td><td>1</td><td>1</td><td>合计：' + driverTotal + '</td><td>合计：' + bidTotal + '</td><td> ' + o.backReceived + ' </td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/order-web/detail?id=' + o._id + '">查看详情</a>'+ delBtn +'</td></tr>';
                             c.append(h);
 
                         })
@@ -151,7 +156,7 @@ $Path = \Yii::$app->request->hostInfo;
                     else {
                         $('.pagination').empty()
                         c.empty();
-                        var h = '<tr><td align="center" colspan="8">暂无数据</td></tr>';
+                        var h = '<tr><td align="center" colspan="11">暂无数据</td></tr>';
                         c.append(h)
 
                     }
@@ -173,8 +178,9 @@ $Path = \Yii::$app->request->hostInfo;
         })
 
         $(document).on('click', '.j-delete', function () {
+        	<?php if($export) {?>
             var k = $(this).data('key');
-            if (confirm("确定删除？")) {
+            if (confirm("确定要删除订单吗？")) {
                 $.ajax({
                     type: "GET",
                     url: "<?= $Path;?>/finance/order/del-order?id=" + k,
@@ -194,6 +200,9 @@ $Path = \Yii::$app->request->hostInfo;
                     }
                 })
             }
+            <?php }else { ?>
+            alert("您的账单已生成无法删除，如需删除订单请通知财务！");
+            <?php } ?>
         })
         setInterval(function () {
             getData()

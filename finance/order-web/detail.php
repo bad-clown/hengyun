@@ -93,7 +93,9 @@ $Path = \Yii::$app->request->hostInfo;
 			<div class="form-group">
 				<label class="control-label">实际重量</label>
 				<input class="form-control" readonly="readonly" name="realTotalWeight" value="" type="text">
-			</div>
+
+
+            </div>
 			<div class="form-group form-group-last">
 				<label class="control-label">简介</label>
 				<input class="form-control" readonly="readonly" name="note" value="" type="text">
@@ -119,7 +121,8 @@ $Path = \Yii::$app->request->hostInfo;
 		<div class="clearfix" id="J-order-detail">
 			<div class="form-group">
 				<label class="control-label">后台报价</label>
-				<input class="form-control" readonly="readonly" name="bidPrice" value="" type="text">
+                <input type="hidden" name="bidPriceType" value=""/>
+                <input class="form-control" readonly="readonly" name="bidPrice" value="" type="text">
 			</div>
 			<div class="form-group">
 				<label class="control-label">后台报价合计</label>
@@ -186,7 +189,6 @@ $Path = \Yii::$app->request->hostInfo;
 				<select id="billing" name="billing" class="form-control" disabled="disabled">
 					<option value="0">否</option>
 					<option value="1">是</option>
-
 				</select>
 			</div>
 			<div class="form-group">
@@ -251,7 +253,6 @@ $Path = \Yii::$app->request->hostInfo;
 				<input class="form-control" name="payNetAmount" readonly="readonly" value="" type="text">
 			</div>
 		</div>
-
 	</div>
 	<div class="control-panel">
 		<div class="control-btns">
@@ -279,7 +280,7 @@ $(function() {
 			var $shipper = $('#J-shipper-detail');
 			var $trucklist = $('#J-trucklist-detail');
 			var $extra = $('#J-extra-detail');
-			var bidPrice,bidPriceTotal,driverBid,driverBidTotal,hasBidWarning="",hasDriverWarning="",deliverTime,predictArriveTime,realArriveTime,bilingTime,backTime,payTime,privateMoney,publicMoney;
+			var bidPrice,bidPriceTotal,driverBid,bidPriceType,driverBidTotal,hasBidWarning="",hasDriverWarning="",deliverTime,predictArriveTime,realArriveTime,bilingTime,backTime,payTime,privateMoney,publicMoney;
 			if(data.status == 700) {
 				$('#J_Republish').data('dis', true)
 			}
@@ -299,6 +300,7 @@ $(function() {
 			$('input[name="deliverTime"]').val( deliverTime )
 			$('input[name="predictArriveTime"]').val( predictArriveTime )
 			$('input[name="realArriveTime"]').val( realArriveTime )
+            $('input[name="bidPriceType"]').val( data.bidPriceType )
 			$('#goodsUnit').val( (data.goodsUnit || '') )
 			$('input[name="realTotalWeight"]').val( (data.realTotalWeight || '') + ($('#goodsUnit').val() || '') )
 			$('input[name="note"]').val( data.note )
@@ -369,7 +371,6 @@ $(function() {
 			$('input[name="backTime"]').val( backTime )
 			$('select[name="backReceived"]').val( (data.backReceived || 0) ).triggerHandler("change")
 			$('select[name="receiveMoneyTime"]').val( (data.receiveMoneyTime || 0) ).triggerHandler("change")
-
             $('select[name="payedStatus"]').val( (data.payedStatus || 0) ).triggerHandler("change")
 			$('input[name="payTime"]').val( payTime )
 			$('input[name="payOilAmount"]').val( (data.payOilAmount || '') )
@@ -424,6 +425,18 @@ $(function() {
 
 	$('#J_Change').on('click', function() {
 
+		/* 管理员 、 账务员权限 */
+		<?php if($export){ ?>
+		$('input[name="bilingTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
+		$('input[name="backTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
+		$('select[name="backReceived"]').removeAttr('disabled').parent('.form-group').addClass('has-warning');
+		$('input[name="payTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
+		$('input[name="publicMoney"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+        $('input[name="privateMoney"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+        $('input[name="payOilAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+        $('input[name="payNetAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+		<?php }; ?>
+
 		$('input[name="contact"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="realCarInfo"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="predictArriveTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
@@ -433,16 +446,9 @@ $(function() {
 		$('input[name="outPrice"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="tax"]').attr('disabled',true).parent('.form-group');
 		$('select[name="billing"]').removeAttr('disabled').parent('.form-group').addClass('has-warning');
-		$('input[name="bilingTime"]').attr('disabled',true).parent('.form-group');
-		$('input[name="backTime"]').attr('disabled',true).parent('.form-group');
-		$('select[name="backReceived"]').attr('disabled',true).parent('.form-group');
-		$('input[name="payTime"]').attr('disabled',true).parent('.form-group');
 		$('input[name="billing"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-		$('input[name="payOilAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-		$('input[name="payNetAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="realTotalWeight"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-        $('input[name="publicMoney"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-        $('input[name="privateMoney"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+
 		$('#J_Change').hide();
 		$('#J_Republish').hide();
 		$('#J_Cancel').show()
@@ -538,7 +544,8 @@ $(function() {
 		var backTime = $('input[name="backTime"]').val() == '' ? '' : Date.parse($('input[name="backTime"]').val()) /1000;
 		var payTime = $('input[name="payTime"]').val() == '' ? '' : Date.parse($('input[name="payTime"]').val()) /1000;
         var realTotalweight = parseInt($('input[name="realTotalWeight"]').val());
-        var realtotalmoney = realTotalweight * parseInt($('input[name="bidPrice"]').val());
+        var bidPriceType =  $('input[name="bidPriceType"]').val();
+        var bidPrice = $('input[name="bidPrice"]').val();
 
 		var data = {
 			contact : $('input[name="contact"]').val(),
@@ -551,7 +558,8 @@ $(function() {
 			outPrice : $('input[name="outPrice"]').val(),
 			outMoney : $('input[name="outMoney"]').val(),
 			outBidPrice : $('input[name="outBidPrice"]').val(),
-            realTotalMoney : realtotalmoney,
+            bidPriceType : bidPriceType,
+            bidPrice : bidPrice,
 			tax : $('input[name="tax"]').val(),
 			realProfit : $('input[name="realProfit"]').val(),
 			realProfitRate : $('input[name="realProfitRate"]').val(),
@@ -575,7 +583,6 @@ $(function() {
 			dataType : 'json',
 			data : data,
 			success : function(data) {
-
 
 				if(data.code == 0) {
 					alert('修改成功！')

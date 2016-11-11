@@ -165,7 +165,7 @@ $(function() {
 							var bidCnt = '<div class="form-group"><label><a href="javascript:;" class="j-price-list" data-key="'+o._id+'">'+o.bidCnt+'人</a></label></div>';
 						}
 
-						if(!o.bid["bidPrice"] || !o.bid["bidTime"]) {
+						if(o.status < 300) {
 							var bidPrice = '还未给货主报价';
 							var bidCls = 'j-price';
 						}
