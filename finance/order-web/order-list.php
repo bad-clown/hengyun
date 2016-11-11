@@ -7,15 +7,16 @@ use app\components\I18n;
 use app\modules\admin\models\Job;
 use app\modules\admin\models\Dictionary;
 use app\modules\admin\logic\DictionaryLogic;
+
 $Path = \Yii::$app->request->hostInfo;
 
 ?>
 
 <div class="topbar">
-    <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
+	<div class="search">
+		<input type="text" class="search-text" name="search" value="" placeholder="搜索订单" id="search_submit" />
+		<i class="glyphicon glyphicon-search" ></i>
+	</div>
     <div class="username">
         <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
     </div>
@@ -24,6 +25,9 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
 			<li class="active">订单管理</li>
+            <?php if($export):?>
+            <li><a class="active" href="<?= $Path;?>/finance/order/daochu">导出</a></li>
+            <?php endif;?>
 		</ul>
 		<!-- <div class="btn-control">
 			<span class="glyphicon glyphicon-plus"></span>
@@ -84,8 +88,11 @@ $Path = \Yii::$app->request->hostInfo;
 					<th>订单号</th>
 					<th>起点</th>
 					<th>终点</th>
+                    <th>公司名称</th>
+                    <th>联系人</th>
 					<th>司机报价</th>
 					<th>后台报价</th>
+					<th>回单状态</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -100,82 +107,101 @@ $Path = \Yii::$app->request->hostInfo;
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript" src="/assets/8c065db/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-$(function() {
-	var actPage = 1, actStatus = -1;
 
-	function getData() {
-		$.ajax({
-			type : "GET",
-			url : "<?= $Path;?>/finance/order/list",
-			data : {
-				page : actPage,
-				status : actStatus
-			},
-			dataType : "json",
-			success : function(d) {
-				var data = d.data,
-					c = $('#listContent').find('tbody');
-				if(data.list.length) {
-					PageTotal.init('.pagination', data, actPage)
-					c.empty();
-					$.each(data.list, function(i,o) {
-						var t = _global.FormatTime(o.publishTime);
-						var driverTotal = o.driver ? o["driver"]["bid"]["realTotalMoney"]+'元' : "暂无报价";
-						var bidTotal = o.realTotalMoney ? o.realTotalMoney+'元' : "暂无报价";
-						var h = '<tr><td align="center"><div class="form-group"><label>'+Sched.status[o.status]+'</label></div></td><td>'+t+'</td><td>'+o.orderNo+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>合计：'+driverTotal+'</td><td>合计：'+bidTotal+'</td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
-						c.append(h)
-					})
-				}
-				else {
-					$('.pagination').empty()
-					c.empty();
-					var h = '<tr><td align="center" colspan="8">暂无数据</td></tr>';
-					c.append(h)
 
-				}
-			}
-		})
-	}
-	getData()
+	$(function() {
 
-	$(document).on("click", '.pagination a', function() {
-		actPage = $(this).data("page");
-		getData()
-	})
+        var actPage = 1, actStatus = -1;
+        var search_val = '';
+        // 获取搜索栏内容
+        $(document).bind('change', '#search_submit', function () {
+            var search_val = $('#search_submit').val();
+            getData(search_val);
 
-	$('.dropdown-menu a').on('click', function() {
-		actPage = 1;
-		actStatus = $(this).data('status');
-		getData()
-	})
+        })
 
-	$(document).on('click', '.j-delete', function() {
-		var k = $(this).data('key');
-		if(confirm("确定删除？")) {
-			$.ajax({
-				type : "GET",
-				url : "<?= $Path;?>/finance/order/del-order?id="+k,
-				dataType : "json",
-				success : function(data) {
-					if(data.code == '0') {
-						alert('删除成功！')
-						getData()
-					}
-					else {
-						alert('删除失败，请重试！')
-						getData()
-					}
-				},
-				error : function() {
-					alert("删除失败，请检查网络后重试！");
-				}
-			})
-		}
-	})
+        function getData(search_val) {
+            if (!search_val) {
+                search_val = '';
+            }
+            $.ajax({
+                type: "GET",
+                url: "<?= $Path;?>/finance/order/list",
+                data: {
+                    search_val: search_val,
+                    page: actPage,
+                    status: actStatus
+                },
+                dataType: "json",
+                success: function (d) {
+                    var data = d.data,
+                        c = $('#listContent').find('tbody');
+                    if (data.list.length) {
+                        PageTotal.init('.pagination', data, actPage)
+                        c.empty();
+                        $.each(data.list, function (i, o) {
+                            var t = _global.FormatTime(o.publishTime);
+                            var driverTotal = o.driver ? o["driver"]["bid"]["realTotalMoney"] + '元' : "暂无报价";
+                            var bidTotal = o.realTotalMoney ? o.realTotalMoney + '元' : "暂无报价";
+                            var h = '<tr><td align="center"><div class="form-group"><label>' + Sched.status[o.status] + '</label></div></td><td>' + t + '</td><td>' + o.orderNo + '</td><td>' + o.provinceFrom + o.cityFrom + o.districtFrom + '</td><td>' + o.provinceTo + o.cityTo + o.districtTo + '</td><td>1</td><td>1</td><td>合计：' + driverTotal + '</td><td>合计：' + bidTotal + '</td><td> ' + o.backReceived + ' </td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/order-web/detail?id=' + o._id + '">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="' + o._id + '">删除</a></td></tr>';
+                            c.append(h);
 
-	setInterval(function() {
-		getData()
-	}, 30000)
-})
+                        })
+                    }
+                    else {
+                        $('.pagination').empty()
+                        c.empty();
+                        var h = '<tr><td align="center" colspan="8">暂无数据</td></tr>';
+                        c.append(h)
+
+                    }
+                }
+            })
+        }
+
+        getData()
+
+        $(document).on("click", '.pagination a', function () {
+            actPage = $(this).data("page");
+            getData()
+        })
+
+        $('.dropdown-menu a').on('click', function () {
+            actPage = 1;
+            actStatus = $(this).data('status');
+            getData()
+        })
+
+        $(document).on('click', '.j-delete', function () {
+            var k = $(this).data('key');
+            if (confirm("确定删除？")) {
+                $.ajax({
+                    type: "GET",
+                    url: "<?= $Path;?>/finance/order/del-order?id=" + k,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == '0') {
+                            alert('删除成功！')
+                            getData()
+                        }
+                        else {
+                            alert('删除失败，请重试！')
+                            getData()
+                        }
+                    },
+                    error: function () {
+                        alert("删除失败，请检查网络后重试！");
+                    }
+                })
+            }
+        })
+        setInterval(function () {
+            getData()
+        }, 30000);
+
+
+
+    });
+
 </script>
 <?php $this->endBlock();  ?>

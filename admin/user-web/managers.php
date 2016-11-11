@@ -103,6 +103,7 @@ $(function() {
             success : function(d) {
                 var data = d.data,
                     c = $('#listContent').find('tbody');
+
                 if(data.list.length) {
                     PageTotal.init('.pagination', data, actPage)
                     c.empty();

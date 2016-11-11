@@ -12,10 +12,11 @@ $Path = \Yii::$app->request->hostInfo;
 ?>
 
 <div class="topbar">
-    <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
+<!--    <div class="search">-->
+<!--        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />-->
+<!--        <i class="glyphicon glyphicon-search"></i>-->
+<!--    </div>-->
+
     <div class="username">
         <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
     </div>
@@ -79,10 +80,15 @@ $Path = \Yii::$app->request->hostInfo;
 			<div class="form-group">
 				<label class="control-label">实际到达时间</label>
 				<input class="form-control" readonly="readonly" name="realArriveTime" id="realArriveTime" value="" type="text">
-			</div>
+
+            </div>
 			<div class="form-group">
 				<label class="control-label">计量单位</label>
-				<input class="form-control" readonly="readonly" name="goodsUnit" value="" type="text">
+<!--				<input class="form-control" readonly="readonly" name="goodsUnit" value="" type="text">-->
+                <select id="goodsUnit" name="goodsUnit" class="form-control" disabled="disabled" >
+                    <option value="吨" >吨</option>
+                    <option value="方" >方</option>
+                </select>
 			</div>
 			<div class="form-group">
 				<label class="control-label">实际重量</label>
@@ -180,6 +186,7 @@ $Path = \Yii::$app->request->hostInfo;
 				<select id="billing" name="billing" class="form-control" disabled="disabled">
 					<option value="0">否</option>
 					<option value="1">是</option>
+
 				</select>
 			</div>
 			<div class="form-group">
@@ -195,6 +202,7 @@ $Path = \Yii::$app->request->hostInfo;
 				<select id="backReceived" name="backReceived" class="form-control" disabled="disabled">
 					<option value="0">否</option>
 					<option value="1">是</option>
+					<option value="2">无需回单</option>
 				</select>
 			</div>
 		</div>
@@ -207,7 +215,16 @@ $Path = \Yii::$app->request->hostInfo;
 					<option value="1">已付中</option>
 				</select>
 			</div>
+            <div class="form-group">
+                <label class="control-label">对公金额</label>
+                <input class="form-control" name="publicMoney"  readonly="readonly" value="" type="text">
+            </div>
+            <div class="form-group">
+                <label class="control-label">对私金额</label>
+                <input class="form-control" name="privateMoney" readonly="readonly" value="" type="text">
+            </div>
 		</div>
+
 		<div class="clearfix">
 			<div class="form-group select-menu">
 				<label for="payedStatus" class="control-label">付款状态</label>
@@ -238,7 +255,7 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 	<div class="control-panel">
 		<div class="control-btns">
-			<a href="javascript:;" class="btn btn-default" id="J_Republish">重新发布</a>
+			<a href="javascript:;" class="btn btn-default" id="J_Republish" >重新发布</a>
 			<a href="javascript:;" class="btn btn-default" id="J_Change">修改订单</a>
 			<a href="javascript:;" class="btn btn-default" id="J_Cancel" style="display: none;">取消修改</a>
 			<a href="javascript:;" class="btn btn-default" id="J_Save" style="display: none;">保存</a>
@@ -262,8 +279,10 @@ $(function() {
 			var $shipper = $('#J-shipper-detail');
 			var $trucklist = $('#J-trucklist-detail');
 			var $extra = $('#J-extra-detail');
-			var bidPrice,bidPriceTotal,driverBid,driverBidTotal,hasBidWarning="",hasDriverWarning="",deliverTime,predictArriveTime,realArriveTime,bilingTime,backTime,payTime;
-
+			var bidPrice,bidPriceTotal,driverBid,driverBidTotal,hasBidWarning="",hasDriverWarning="",deliverTime,predictArriveTime,realArriveTime,bilingTime,backTime,payTime,privateMoney,publicMoney;
+			if(data.status == 700) {
+				$('#J_Republish').data('dis', true)
+			}
 			/* 订单信息 */
 			deliverTime = _global.FormatTime(data.deliverTime);
 			predictArriveTime = _global.FormatTime(data.predictArriveTime,1);
@@ -278,12 +297,11 @@ $(function() {
 			$('input[name="provinceFrom"]').val( data.provinceFrom+data.cityFrom+data.districtFrom )
 			$('input[name="provinceTo"]').val( data.provinceTo+data.cityTo+data.districtTo )
 			$('input[name="deliverTime"]').val( deliverTime )
-			$('input[name="predictArriveTim	e"]').val( predictArriveTime )
+			$('input[name="predictArriveTime"]').val( predictArriveTime )
 			$('input[name="realArriveTime"]').val( realArriveTime )
-			$('input[name="goodsUnit"]').val( (data.goodsUnit || '') )
-			$('input[name="realTotalWeight"]').val( (data.realTotalWeight || '') + '吨' )
+			$('#goodsUnit').val( (data.goodsUnit || '') )
+			$('input[name="realTotalWeight"]').val( (data.realTotalWeight || '') + ($('#goodsUnit').val() || '') )
 			$('input[name="note"]').val( data.note )
-
 			/* 货物明细 */
 			$.each(data.goods, function(i, o) {
 				var goodsHTML = '<div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 名称</label><input class="form-control" readonly="readonly" value="'+ o["category"].name +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 重量</label><input class="form-control" readonly="readonly" value="'+ o.count+o["category"].unit +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 提货详细地址</label><input class="form-control" readonly="readonly" value="'+ o.addressFrom +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 送达详细地址</label><input class="form-control" readonly="readonly" value="'+ o.addressTo +'" type="text"></div>';
@@ -343,13 +361,16 @@ $(function() {
 			$('input[name="outBidPrice"]').val( (data.outBidPrice || '') )
 			$('input[name="tax"]').val( (data.tax || '') )
 			$('input[name="realProfit"]').val( (data.realProfit || '') )
+			$('input[name="publicMoney"]').val( (data.publicMoney || '') )
+			$('input[name="privateMoney"]').val( (data.privateMoney || '') )
 			$('input[name="realProfitRate"]').val( (data.realProfitRate || '') )
 			$('select[name="billing"]').val( (data.billing || 0) ).triggerHandler("change")
 			$('input[name="bilingTime"]').val( bilingTime )
 			$('input[name="backTime"]').val( backTime )
 			$('select[name="backReceived"]').val( (data.backReceived || 0) ).triggerHandler("change")
 			$('select[name="receiveMoneyTime"]').val( (data.receiveMoneyTime || 0) ).triggerHandler("change")
-			$('select[name="payedStatus"]').val( (data.payedStatus || 0) ).triggerHandler("change")
+
+            $('select[name="payedStatus"]').val( (data.payedStatus || 0) ).triggerHandler("change")
 			$('input[name="payTime"]').val( payTime )
 			$('input[name="payOilAmount"]').val( (data.payOilAmount || '') )
 			$('input[name="payNetAmount"]').val( (data.payNetAmount || '') )
@@ -402,32 +423,37 @@ $(function() {
 	})
 
 	$('#J_Change').on('click', function() {
+
 		$('input[name="contact"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="realCarInfo"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="predictArriveTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
-		$('input[name="goodsUnit"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+		$('#goodsUnit').removeAttr('disabled').parent('.form-group').addClass('has-warning');
+		$('input[name="realTotalWeight"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="daifu"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="outPrice"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-		$('input[name="tax"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+		$('input[name="tax"]').attr('disabled',true).parent('.form-group');
 		$('select[name="billing"]').removeAttr('disabled').parent('.form-group').addClass('has-warning');
-		$('input[name="bilingTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
-		$('input[name="backTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
-		$('select[name="backReceived"]').removeAttr('disabled').parent('.form-group').addClass('has-warning');
-		$('input[name="payTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
+		$('input[name="bilingTime"]').attr('disabled',true).parent('.form-group');
+		$('input[name="backTime"]').attr('disabled',true).parent('.form-group');
+		$('select[name="backReceived"]').attr('disabled',true).parent('.form-group');
+		$('input[name="payTime"]').attr('disabled',true).parent('.form-group');
 		$('input[name="billing"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="payOilAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="payNetAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="realTotalWeight"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-
+        $('input[name="publicMoney"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+        $('input[name="privateMoney"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('#J_Change').hide();
 		$('#J_Republish').hide();
 		$('#J_Cancel').show()
 		$('#J_Save').show()
 		$(window).scrollTop(0)
 		$('input[name="predictArriveTime"]').focus();
+
 	})
 
     $('#J_Republish').on('click', function() {
+    	if($(this).data('dis')){return false;}
         if(confirm('确实重新发布？')) {
         	$.ajax({
 	            type : "post",
@@ -511,17 +537,21 @@ $(function() {
 		var bilingTime = $('input[name="bilingTime"]').val() == '' ? '' : Date.parse($('input[name="bilingTime"]').val()) /1000;
 		var backTime = $('input[name="backTime"]').val() == '' ? '' : Date.parse($('input[name="backTime"]').val()) /1000;
 		var payTime = $('input[name="payTime"]').val() == '' ? '' : Date.parse($('input[name="payTime"]').val()) /1000;
+        var realTotalweight = parseInt($('input[name="realTotalWeight"]').val());
+        var realtotalmoney = realTotalweight * parseInt($('input[name="bidPrice"]').val());
+
 		var data = {
 			contact : $('input[name="contact"]').val(),
 			realCarInfo : $('input[name="realCarInfo"]').val(),
 			predictArriveTime : predictArriveTime,
-			goodsUnit : $('input[name="goodsUnit"]').val(),
+			goodsUnit : $('#goodsUnit').val(),
 			daifu : $('input[name="daifu"]').val(),
 			predictProfit : $('input[name="predictProfit"]').val(),
 			predictProfitRate : $('input[name="predictProfitRate"]').val(),
 			outPrice : $('input[name="outPrice"]').val(),
 			outMoney : $('input[name="outMoney"]').val(),
 			outBidPrice : $('input[name="outBidPrice"]').val(),
+            realTotalMoney : realtotalmoney,
 			tax : $('input[name="tax"]').val(),
 			realProfit : $('input[name="realProfit"]').val(),
 			realProfitRate : $('input[name="realProfitRate"]').val(),
@@ -534,7 +564,9 @@ $(function() {
 			payTime : payTime,
 			payOilAmount : $('input[name="payOilAmount"]').val(),
 			payNetAmount : $('input[name="payNetAmount"]').val(),
-			realTotalWeight : parseFloat($('input[name="realTotalWeight"]').val())
+			realTotalWeight : realTotalweight,
+            privateMoney: $('input[name="privateMoney"]').val(),
+            publicMoney: $('input[name="publicMoney"]').val()
 		}
 
 		$.ajax({
@@ -543,6 +575,8 @@ $(function() {
 			dataType : 'json',
 			data : data,
 			success : function(data) {
+
+
 				if(data.code == 0) {
 					alert('修改成功！')
 					window.location.reload();

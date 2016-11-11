@@ -12,7 +12,7 @@ $Path = \Yii::$app->request->hostInfo;
 ?>
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" id="search_submit" />
         <i class="glyphicon glyphicon-search"></i>
     </div>
     <div class="username">
@@ -138,10 +138,20 @@ $Path = \Yii::$app->request->hostInfo;
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript">
 $(function() {
-	function getData() {
+    $(document).bind('change','#search_submit',function(){
+        var search_val = $('#search_submit').val();
+        getData(search_val);
+    });
+	function getData(search_val) {
+        if (!search_val) {
+            search_val = '';
+        }
 		$.ajax({
 			type : "GET",
 			url : "<?= $Path;?>/sched/order/bid-order-list",
+            data:{
+                search_val:search_val
+            },
 			dataType : "json",
 			success : function(data) {
 				if(data.code == "0") {
@@ -164,7 +174,7 @@ $(function() {
 							var bidCls = 'has-driver';
 						}
 
-						if(!o.bid["bidPrice"] || !o.driverBid["bidPrice"] || !o.bidCnt || o.status != 300) {
+						if(!o.bid["bidPrice"] || !o.bidCnt || o.status != 300) {
 							var driverCls = 'has-driver';
 						}
 						else {
@@ -268,7 +278,6 @@ $(function() {
 
 	$('#j-submit-driver').on('click', function() {
 		var orderId = $(this).data('key'), driverId = $(this).data('driverId');
-        console.log(driverId);
 		if(!driverId) {alert('请先选择司机！');return false;};
 
 		$.ajax({

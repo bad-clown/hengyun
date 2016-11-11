@@ -20,6 +20,7 @@ $Path = Dictionary::indexKeyValue('App', 'Host', false);
 if(!isset($this->context->unRegisterAppAsset)){
     AppAsset::register($this);//注册前端资源
 }
+
 //用户登录了。取用户设置的语言优先
 $language =\Yii::$app->language;
 //是否是内容页，默认都是，内容页不需要菜单

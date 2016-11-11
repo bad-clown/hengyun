@@ -13,7 +13,7 @@ $Path = \Yii::$app->request->hostInfo;
 
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" id="search_submit" />
         <i class="glyphicon glyphicon-search"></i>
     </div>
     <div class="username">
@@ -68,10 +68,23 @@ $Path = \Yii::$app->request->hostInfo;
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript">
 $(function() {
-	function getData() {
+    // 获取搜索栏内容
+    $(document).bind('change','#search_submit',function(){
+        var search_val = $('#search_submit').val();
+        getData(search_val);
+
+    })
+
+	function getData(search_val) {
+        if (!search_val) {
+            search_val = '';
+        }
 		$.ajax({
 			type : "GET",
 			url : "<?= $Path;?>/sched/order/new",
+            data : {
+			    search_val:search_val
+			},
 			dataType : "json",
 			success : function(data) {
 				if(data.code == "0") {

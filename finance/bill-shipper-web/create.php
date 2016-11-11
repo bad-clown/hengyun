@@ -75,6 +75,7 @@ $Path = \Yii::$app->request->hostInfo;
 						<th>几装几卸</th>
 						<th>司机报价</th>
 						<th>后台报价</th>
+						<th>回单状态</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -156,6 +157,7 @@ $Path = \Yii::$app->request->hostInfo;
 							<th>几装几卸</th>
 							<th>司机报价</th>
 							<th>后台报价</th>
+							<th>回单状态</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -172,6 +174,7 @@ $Path = \Yii::$app->request->hostInfo;
 							<td><?=$value["pickupDrop"];?></td>
 							<td><?=$value["driverBid"]["realTotalMoney"];?></td>
 							<td><?=$value["realTotalMoney"];?></td>
+							<td><?=$value["backReceived"];?></td>
 							<td width="100">
 								<a class="btn-option" href="javascript:;" data-key="<?=$value["_id"];?>">未选择</a>
 							</td>
@@ -221,7 +224,7 @@ $(function() {
 		$orderDetailList.each(function(i, o) {
 			if($(o).hasClass('has')) {
 				var $td = $(o).find('td');
-				var html = '<tr data-key="'+$(o).data("key")+'"><td>'+$td.eq(0).text()+'</td><td>'+$td.eq(1).text()+'</td><td>'+$td.eq(2).text()+'</td><td>'+$td.eq(3).text()+'</td><td>'+$td.eq(4).text()+'</td><td>'+$td.eq(5).text()+'</td><td>'+$td.eq(6).text()+'</td><td>'+$td.eq(7).text()+'</td><td class="totalMoney">'+$td.eq(8).text()+'</td><td width="100"><a class="btn-danger j-delete" href="javascript:;" data-key="'+$(o).data("key")+'">删除</a></td></tr>';
+				var html = '<tr data-key="'+$(o).data("key")+'"><td>'+$td.eq(0).text()+'</td><td>'+$td.eq(1).text()+'</td><td>'+$td.eq(2).text()+'</td><td>'+$td.eq(3).text()+'</td><td>'+$td.eq(4).text()+'</td><td>'+$td.eq(5).text()+'</td><td>'+$td.eq(6).text()+'</td><td>'+$td.eq(7).text()+'</td><td class="totalMoney">'+$td.eq(8).text()+'</td><td>'+ $td.eq(9).text()+'</td><td width="100"><a class="btn-danger j-delete" href="javascript:;" data-key="'+$(o).data("key")+'">删除</a></td></tr>';
 				$orderList.append(html);
 				$(o).removeClass('has');
 				$(o).find('a').removeClass('has-btn-option btn-option').addClass('suc-btn-option').html('已添加');

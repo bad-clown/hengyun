@@ -51,6 +51,7 @@ $Path = \Yii::$app->request->hostInfo;
 						<th>几装几卸</th>
 						<th>司机报价</th>
 						<th>后台报价</th>
+						<th>回单状态</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -106,7 +107,7 @@ $(function() {
 
 			$.each(data.orderList, function(i, o) {
 				var deliverTime = _global.FormatTime(o.deliverTime);
-				var orderHTML = '<tr data-key="'+o._id+'"><td>'+o.orderNo+'</td><td>'+deliverTime+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>'+o.goodsCnt+'件</td><td>'+(o.realTotalWeight || 0)+'</td><td>'+o.pickupDrop+'</td><td>'+o["driverBid"]["realTotalMoney"]+'</td><td>'+o.realTotalMoney+'</td></tr>';
+				var orderHTML = '<tr data-key="'+o._id+'"><td>'+o.orderNo+'</td><td>'+deliverTime+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>'+o.goodsCnt+'件</td><td>'+(o.realTotalWeight || 0)+'</td><td>'+o.pickupDrop+'</td><td>'+o["driverBid"]["realTotalMoney"]+'</td><td>'+o.realTotalMoney+'</td><td>'+o.backReceived+'</td></tr>';
 				$order.append(orderHTML);
 			})
 

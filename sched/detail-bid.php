@@ -131,7 +131,7 @@ $(function() {
 			$('.panel-label>span').html('状态：'+Sched.status[data.status]);
 
 
-			if(!data["bidPrice"] || !data["driver"] || data.status != 300) {
+			if(!data["bidPrice"] || data.status != 300) {
 				$('.j-driver').data('status', false);
 			}
 			else {
