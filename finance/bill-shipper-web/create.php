@@ -116,6 +116,7 @@ $Path = \Yii::$app->request->hostInfo;
 			</div>
 		</div>
 	</div>
+
 	<div class="detail-box pt15" id="J-mail-detail">
 		<div class="detail-label"><span class="label label-default">邮寄信息</span></div>
 		<div class="clearfix">
@@ -129,6 +130,7 @@ $Path = \Yii::$app->request->hostInfo;
 			</div>
 		</div>
 	</div>
+
 </div>
 
 <div class="order-detail-pop popup">

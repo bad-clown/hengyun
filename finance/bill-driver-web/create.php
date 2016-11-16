@@ -32,7 +32,9 @@ $Path = \Yii::$app->request->hostInfo;
 	</div>
 
 	<div class="detail-box">
-		<div class="detail-label"><span class="label label-default">账单信息</span></div>
+		<div class="detail-label">
+            <span class="label label-default">账单信息</span>
+        </div>
 		<div class="clearfix" id="J-bill-detail">
 			<div class="form-group label-floating select-menu">
 				<label for="status" class="control-label">账单状态</label>
@@ -55,13 +57,13 @@ $Path = \Yii::$app->request->hostInfo;
 				<input class="form-control" readonly="readonly" name="orderCnt" value="" type="text">
 			</div>
 		</div>
-		<div class="detail-label">
-			<span class="label label-default">订单明细</span>
-			<div class="btn-create-detail">
-				<span class="glyphicon glyphicon-plus"></span>
-				<a href="javascript:;" id="create-order-detail">添加明细</a>
-			</div>
-		</div>
+        <div class="detail-label">
+            <span class="label label-default">订单明细</span>
+            <div class="btn-create-detail">
+                <span class="glyphicon glyphicon-plus"></span>
+                <a href="javascript:;" id="create-order-detail">添加明细</a>
+            </div>
+        </div>
 		<div class="clearfix">
 			<table class="table table-striped table-hover" id="orderList">
 				<thead>

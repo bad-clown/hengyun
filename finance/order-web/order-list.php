@@ -140,8 +140,8 @@ $Path = \Yii::$app->request->hostInfo;
                         c.empty();
                         $.each(data.list, function (i, o) {
                             var t = _global.FormatTime(o.publishTime);
-                            var driverTotal = o.driver ? o["driver"]["bid"]["realTotalMoney"] + '元' : "暂无报价";
-                            var bidTotal = o.realTotalMoney ? o.realTotalMoney + '元' : "暂无报价";
+                            var driverTotal = o.driver ? o["driver"]["bid"]["realTotalMoney"] + '元<br>' + _global.FormatTime(o["driver"]["bid"]["bidTime"]) : "暂无报价";
+                            var bidTotal = o.realTotalMoney ? o.realTotalMoney + '元<br>' + _global.FormatTime(o["bid"]["bidTime"]) : "暂无报价";
                             var delBtn = '';
 
                             if(o.status != 700) {
@@ -183,7 +183,7 @@ $Path = \Yii::$app->request->hostInfo;
             if (confirm("确定要删除订单吗？")) {
                 $.ajax({
                     type: "GET",
-                    url: "<?= $Path;?>/finance/order/del-order?id=" + k,
+                    url: "<?= $Path;?>/finance/order/del?id=" + k,
                     dataType: "json",
                     success: function (data) {
                         if (data.code == '0') {

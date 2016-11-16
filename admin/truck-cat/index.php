@@ -38,7 +38,6 @@ $Path = \Yii::$app->request->hostInfo;
                 'dataProvider' => $dataProvider,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-
                     'name',
                     'order',
 

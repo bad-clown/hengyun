@@ -69,7 +69,7 @@ $Path = \Yii::$app->request->hostInfo;
 <script type="text/javascript">
 $(function() {
     // 获取搜索栏内容
-    $(document).bind('change','#search_submit',function(){
+    $(document).on('change','#search_submit',function(){
         var search_val = $('#search_submit').val();
         getData(search_val);
 
@@ -155,7 +155,7 @@ $(function() {
 
 	$('#J_Pubbatch').on('click', function() {
 		var dataId = [];
-		$('#order .checkbox input[type="checkbox"]').each(function(i, o) {
+		$('.form-group .checkbox input[type="checkbox"]').each(function(i, o) {
 			if($(o).is(':checked')){
 				dataId.push($(o).data('num'));
 			}
@@ -193,7 +193,7 @@ $(function() {
 
 	$('#J_Delbatch').on('click', function() {
 		var dataId = [];
-		$('#order .checkbox input[type="checkbox"]').each(function(i, o) {
+		$('.form-group .checkbox input[type="checkbox"]').each(function(i, o) {
 			if($(o).is(':checked')){
 				dataId.push($(o).data('num'));
 			}
@@ -239,6 +239,7 @@ $(function() {
 	})
 
 	$('#batch-control').on('click', function() {
+		clearInterval(listTimer)
 		$('.breadcrumb').html('<li><a href="javascript:;">调度中心</a></li><li><a href="<?= $Path;?>/sched/order-web/new?sort=-time">发布管理</a></li><li class="active">批量操作</li>');
 		$('.checkbox-material').show();
 		$('#batch-cancel').show();
@@ -246,6 +247,9 @@ $(function() {
 	})
 
 	$('#batch-cancel').on('click', function() {
+		listTimer = setInterval(function() {
+			getData()
+		}, 30000)
 		$('.breadcrumb').html('<li><a href="javascript:;">调度中心</a></li><li class="active">发布管理</li>');
 		$('.checkbox-material').hide();
 		$('#batch-cancel').hide();
@@ -258,9 +262,15 @@ $(function() {
 		$('.overlay:eq(0)').hide();
 	})
 
-	setInterval(function() {
+	/*setInterval(function() {
+		getData()
+	}, 30000)*/
+
+	var listTimer = setInterval(function() {
 		getData()
 	}, 30000)
+
+
 })
 </script>
 <?php $this->endBlock();  ?>

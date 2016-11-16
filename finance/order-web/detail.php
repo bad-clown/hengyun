@@ -86,7 +86,7 @@ $Path = \Yii::$app->request->hostInfo;
 				<label class="control-label">计量单位</label>
 <!--				<input class="form-control" readonly="readonly" name="goodsUnit" value="" type="text">-->
                 <select id="goodsUnit" name="goodsUnit" class="form-control" disabled="disabled" >
-                    <option value="吨" >吨</option>
+                    <option value="吨" selected >吨</option>
                     <option value="方" >方</option>
                 </select>
 			</div>
@@ -96,10 +96,7 @@ $Path = \Yii::$app->request->hostInfo;
 
 
             </div>
-			<div class="form-group form-group-last">
-				<label class="control-label">简介</label>
-				<input class="form-control" readonly="readonly" name="note" value="" type="text">
-			</div>
+
 		</div>
 		<div class="detail-label"><span class="label label-default">货物明细</span></div>
 		<div class="goods-detail clearfix" id="J-goods-detail"></div>
@@ -120,12 +117,12 @@ $Path = \Yii::$app->request->hostInfo;
 		<div class="detail-label"><span class="label label-default">账务信息</span></div>
 		<div class="clearfix" id="J-order-detail">
 			<div class="form-group">
-				<label class="control-label">后台报价</label>
+				<label class="control-label">单价</label>
                 <input type="hidden" name="bidPriceType" value=""/>
                 <input class="form-control" readonly="readonly" name="bidPrice" value="" type="text">
 			</div>
 			<div class="form-group">
-				<label class="control-label">后台报价合计</label>
+				<label class="control-label">营业额</label>
 				<input class="form-control" readonly="readonly" name="bidPriceTotal" value="" type="text">
 			</div>
 			<div class="form-group">
@@ -147,7 +144,7 @@ $Path = \Yii::$app->request->hostInfo;
 				<input class="form-control" name="predictTax" readonly="readonly" value="5" type="text">
 			</div>
 			<div class="form-group">
-				<label class="control-label">预期毛利润</label>
+				<label class="control-label">预期毛利润率</label>
 				<input class="form-control" name="predictProfit" readonly="readonly" value="" type="text">
 			</div>
 			<div class="form-group">
@@ -155,31 +152,31 @@ $Path = \Yii::$app->request->hostInfo;
 				<input class="form-control" name="predictProfitRate" readonly="readonly" value="" type="text">
 			</div>
 		</div>
-		<div class="clearfix">
-			<div class="form-group">
-				<label class="control-label">分出单价</label>
-				<input class="form-control" name="outPrice" readonly="readonly" value="" type="text">
-			</div>
-			<div class="form-group">
-				<label class="control-label">分出额</label>
-				<input class="form-control" name="outMoney" readonly="readonly" value="" type="text">
-			</div>
-			<div class="form-group">
-				<label class="control-label">分出一口价</label>
-				<input class="form-control" name="outBidPrice" readonly="readonly" value="" type="text">
-			</div>
-		</div>
+<!--		<div class="clearfix">-->
+<!--			<div class="form-group">-->
+<!--				<label class="control-label">分出单价</label>-->
+<!--				<input class="form-control" name="outPrice" readonly="readonly" value="" type="text">-->
+<!--			</div>-->
+<!--			<div class="form-group">-->
+<!--				<label class="control-label">分出额</label>-->
+<!--				<input class="form-control" name="outMoney" readonly="readonly" value="" type="text">-->
+<!--			</div>-->
+<!--			<div class="form-group">-->
+<!--				<label class="control-label">分出一口价</label>-->
+<!--				<input class="form-control" name="outBidPrice" readonly="readonly" value="" type="text">-->
+<!--			</div>-->
+<!--		</div>-->
 		<div class="clearfix">
 			<div class="form-group">
 				<label class="control-label">实际税点(%)</label>
 				<input class="form-control" name="tax" readonly="readonly" value="" type="text">
 			</div>
 			<div class="form-group">
-				<label class="control-label">实际毛利润</label>
+				<label class="control-label">实际毛利润率</label>
 				<input class="form-control" name="realProfit" readonly="readonly" value="" type="text">
 			</div>
 			<div class="form-group">
-				<label class="control-label">实际毛利润率</label>
+				<label class="control-label">实际利润率</label>
 				<input class="form-control" name="realProfitRate" readonly="readonly" value="" type="text">
 			</div>
 		</div>
@@ -200,7 +197,7 @@ $Path = \Yii::$app->request->hostInfo;
 				<input class="form-control" name="backTime" id="backTime" readonly="readonly" value="" type="text">
 			</div>
 			<div class="form-group select-menu">
-				<label for="backReceived" class="control-label">回单是否收到</label>
+				<label for="backReceived" class="control-label">回单情况</label>
 				<select id="backReceived" name="backReceived" class="form-control" disabled="disabled">
 					<option value="0">否</option>
 					<option value="1">是</option>
@@ -241,16 +238,22 @@ $Path = \Yii::$app->request->hostInfo;
 				<input class="form-control" name="payTime" id="payTime" readonly="readonly" value="" type="text">
 			</div>
 		</div>
+		<?php if($export):?>
 		<div class="clearfix">
 			<div class="form-group">
 				<label class="control-label">付款方式：油卡金额</label>
 				<input class="form-control" name="payOilAmount" readonly="readonly" value="" type="text">
 			</div>
-		</div>
-		<div class="clearfix">
 			<div class="form-group">
 				<label class="control-label">付款方式：网银金额</label>
 				<input class="form-control" name="payNetAmount" readonly="readonly" value="" type="text">
+			</div>
+		</div>
+		<?php endif;?>
+		<div class="clearfix">
+			<div class="form-group form-group-last">
+				<label class="control-label">备注</label>
+				<input class="form-control" readonly="readonly" name="remarks" value="" type="text">
 			</div>
 		</div>
 	</div>
@@ -301,7 +304,7 @@ $(function() {
 			$('input[name="predictArriveTime"]').val( predictArriveTime )
 			$('input[name="realArriveTime"]').val( realArriveTime )
             $('input[name="bidPriceType"]').val( data.bidPriceType )
-			$('#goodsUnit').val( (data.goodsUnit || '') )
+			$('#goodsUnit').val( (data.goodsUnit || '吨') )
 			$('input[name="realTotalWeight"]').val( (data.realTotalWeight || '') + ($('#goodsUnit').val() || '') )
 			$('input[name="note"]').val( data.note )
 			/* 货物明细 */
@@ -350,7 +353,7 @@ $(function() {
 			bidPriceTotal = data.realTotalMoney ? data.realTotalMoney : '暂无';
 			driverBid = data.driver ? data["driver"]["bid"]["bidPrice"] : '暂无';
 			driverBidTotal = data.driver ? data["driver"]["bid"]["realTotalMoney"] : '暂无';
-
+			$('input[name="remarks"]').val( (data.remarks || '') )
 			$('input[name="bidPrice"]').val(  bidPrice  ).parent('.form-group').addClass(hasBidWarning)
 			$('input[name="bidPriceTotal"]').val(  bidPriceTotal  ).parent('.form-group').addClass(hasBidWarning)
 			$('input[name="driverBidPrice"]').val(  driverBid  ).parent('.form-group').addClass(hasDriverWarning)
@@ -435,6 +438,7 @@ $(function() {
         $('input[name="privateMoney"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
         $('input[name="payOilAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
         $('input[name="payNetAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+        $('input[name="remarks"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		<?php }; ?>
 
 		$('input[name="contact"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
@@ -543,7 +547,7 @@ $(function() {
 		var bilingTime = $('input[name="bilingTime"]').val() == '' ? '' : Date.parse($('input[name="bilingTime"]').val()) /1000;
 		var backTime = $('input[name="backTime"]').val() == '' ? '' : Date.parse($('input[name="backTime"]').val()) /1000;
 		var payTime = $('input[name="payTime"]').val() == '' ? '' : Date.parse($('input[name="payTime"]').val()) /1000;
-        var realTotalweight = parseInt($('input[name="realTotalWeight"]').val());
+        var realTotalweight = $('input[name="realTotalWeight"]').val();
         var bidPriceType =  $('input[name="bidPriceType"]').val();
         var bidPrice = $('input[name="bidPrice"]').val();
 
@@ -574,7 +578,8 @@ $(function() {
 			payNetAmount : $('input[name="payNetAmount"]').val(),
 			realTotalWeight : realTotalweight,
             privateMoney: $('input[name="privateMoney"]').val(),
-            publicMoney: $('input[name="publicMoney"]').val()
+            publicMoney: $('input[name="publicMoney"]').val(),
+			remarks:$('input[name="remarks"]').val()
 		}
 
 		$.ajax({

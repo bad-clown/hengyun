@@ -29,11 +29,11 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 <div class="content">
 	<div class="breadcrumbBox">
 		<ul class="breadcrumb">
-			<li><a href="<?= $Path;?>/admin/truck-length">车长管理</a></li>
+			<li><a href="<?= $Path;?>/admin/truck-length/index?sort=order">车长管理</a></li>
 			<li class="active">修改车长</li>
 		</ul>
 		<!-- <a href="javascript:;" id="j-save-control" class="save-control">保存</a> -->
-		<a href="<?= $Path;?>/admin/truck-length" class="btn back-control">返回</a>
+		<a href="<?= $Path;?>/admin/truck-length/index?sort=order" class="btn back-control">返回</a>
 	</div>
 
 	<div class="truck-length-update">

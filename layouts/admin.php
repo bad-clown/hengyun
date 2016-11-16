@@ -84,6 +84,9 @@ if($isContentPage){
                         <li>
                             <a href="/sched/order-web/transport-list" target="mainframe">运输管理<span class="badge" id="trans-cnt">0</span></a>
                         </li>
+                        <li>
+                            <a href="/sched/order-web/reject-list" target="mainframe">报价失败列表<span class="badge" id="reject-cnt">0</span></a>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -113,10 +116,10 @@ if($isContentPage){
                     <a href="javascript:;" target="mainframe" class="truck-nav select-menu">货车管理</a>
                     <ul class="sub-nav" style="display: none;">
                         <li>
-                            <a href="/admin/truck-cat" target="mainframe">货车类型管理</a>
+                            <a href="/admin/truck-cat/index?sort=order" target="mainframe">货车类型管理</a>
                         </li>
                         <li>
-                            <a href="/admin/truck-length" target="mainframe">车长管理</a>
+                            <a href="/admin/truck-length/index?sort=order" target="mainframe">车长管理</a>
                         </li>
                     </ul>
                 </li>
@@ -158,12 +161,14 @@ $(function() {
             if(data.total){$("#total-cnt").show().html(data.total);}
             if(data.new){$("#new-cnt").show().html(data.new);}
             if(data.bid){$("#bid-cnt").show().html(data.bid);}
+            if(data.reject){$("#reject-cnt").show().html(data.reject);}
             if(data.trans){$("#trans-cnt").show().html(data.trans);}
+
         })
     }
     setInterval(function() {
         orderCnt()
-    }, 10000)
+    }, 5000)
 
     $('#j-nav .nav').on('click', function() {
         $('.sub-nav').hide();
