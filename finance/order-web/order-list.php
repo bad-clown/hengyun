@@ -92,6 +92,7 @@ $Path = \Yii::$app->request->hostInfo;
 					<th>司机报价</th>
 					<th>后台报价</th>
 					<th>回单状态</th>
+					<th>调度员</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -135,6 +136,7 @@ $Path = \Yii::$app->request->hostInfo;
                 success: function (d) {
                     var data = d.data,
                         c = $('#listContent').find('tbody');
+
                     if (data.list.length) {
                         PageTotal.init('.pagination', data, actPage)
                         c.empty();
@@ -143,12 +145,12 @@ $Path = \Yii::$app->request->hostInfo;
                             var driverTotal = o.driver ? o["driver"]["bid"]["realTotalMoney"] + '元<br>' + _global.FormatTime(o["driver"]["bid"]["bidTime"]) : "暂无报价";
                             var bidTotal = o.realTotalMoney ? o.realTotalMoney + '元<br>' + _global.FormatTime(o["bid"]["bidTime"]) : "暂无报价";
                             var delBtn = '';
-
+                            var shipperName = (o.shipper.nickname || '暂无');
+                            var shipperCompany = (o.shipper.company || '暂无');
                             if(o.status != 700) {
                             	delBtn = '<a class="btn-danger j-delete" href="javascript:;" data-key="' + o._id + '">删除</a>';
                             }
-
-                            var h = '<tr><td align="center"><div class="form-group"><label>' + Sched.status[o.status] + '</label></div></td><td>' + t + '</td><td>' + o.orderNo + '</td><td>' + o.provinceFrom + o.cityFrom + o.districtFrom + '</td><td>' + o.provinceTo + o.cityTo + o.districtTo + '</td><td>1</td><td>1</td><td>合计：' + driverTotal + '</td><td>合计：' + bidTotal + '</td><td> ' + o.backReceived + ' </td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/order-web/detail?id=' + o._id + '">查看详情</a>'+ delBtn +'</td></tr>';
+                            var h = '<tr><td align="center"><div class="form-group"><label>' + Sched.status[o.status] + '</label></div></td><td>' + t + '</td><td>' + o.orderNo + '</td><td>' + o.provinceFrom + o.cityFrom + o.districtFrom + '</td><td>' + o.provinceTo + o.cityTo + o.districtTo + '</td><td>'+ shipperCompany +'</td><td>'+ shipperName +'</td><td>合计：' + driverTotal + '</td><td>合计：' + bidTotal + '</td><td> ' + o.backReceived + ' </td><td>'+ o.scheduler +'</td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/order-web/detail?id=' + o._id + '">查看详情</a>'+ delBtn +'</td></tr>';
                             c.append(h);
 
                         })

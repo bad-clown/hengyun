@@ -126,8 +126,9 @@ $Path = \Yii::$app->request->hostInfo;
 				<table class="table table-striped table-hover" id="shipperData">
 					<thead>
 						<tr>
-							<th>用户名</th>
+							<th>姓名</th>
 							<th>手机号</th>
+							<th>公司名称</th>
 							<th>订单数</th>
 							<th>类型</th>
 							<th>操作</th>
@@ -149,9 +150,9 @@ $(function() {
 	var actPage = 1, actStatus = -1, minMoney = -1, maxMoney = -1;
 	function getData() {
 		var status = {
-			0 : "未支付",
-			1 : "支付中",
-			2 : "已支付"
+			0 : "未结账",
+			1 : "结账中",
+			2 : "已结账"
 		};
 
 		$.ajax({
@@ -173,6 +174,7 @@ $(function() {
 					c.empty();
 					$.each(data.list, function(i,o) {
 						var t = _global.FormatTime(o.billTime);
+
 						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.billNo+'</td><td>'+(o.shipper.name || '暂无')+'</td><td>'+o.shipper.phone+'</td><td>'+t+'</td><td><span class="pl24">'+o.totalMoney+'元</span></td><td>'+o.orderCnt+'单</td><td>'+o.title+'</td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/bill-shipper-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
 						c.append(h)
 					})
@@ -204,14 +206,15 @@ $(function() {
 					PageTotal.init('#popupPages', data)
 					c.empty();
 					$.each(data.list, function(i,o) {
-						var h = '<tr><td>'+(o.name || "暂无")+'</td><td>'+o.phone+'</td><td>'+o.orderCnt+'单</td><td><span class="pl24">货主（个人）</span></td><td width="100"><a href="javascript:void(0);" class="btn-option" data-key="'+o._id+'">选择</a></td></tr>';
+						var company = (o.commpany || '暂无');
+						var h = '<tr><td>'+(o.username || "暂无")+'</td><td>'+o.phone+'</td><td>'+ company  +'</td><td>'+o.orderCnt+'单</td><td><span class="pl24">货主（个人）</span></td><td width="100"><a href="javascript:void(0);" class="btn-option" data-key="'+o._id+'">选择</a></td></tr>';
 						c.append(h)
 					})
 				}
 				else {
 					$('#popupPages').empty()
 					c.empty();
-					var h = '<tr><td align="center" colspan="5">暂无数据</td></tr>';
+					var h = '<tr><td align="center" colspan="6">暂无数据</td></tr>';
 					c.append(h)
 
 				}

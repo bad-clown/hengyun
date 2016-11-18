@@ -41,6 +41,7 @@ $Path = \Yii::$app->request->hostInfo;
 					<th>几装几卸</th>
 					<th>司机报价</th>
 					<th>货主的价格</th>
+					<th>调度员</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -88,7 +89,7 @@ $(function() {
 						}
 
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><label>'+Sched.status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+driverBid+'</td><td>'+bidPrice+'</td><td width="100"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail-reject?id='+o._id+'">查看详情</a></td></tr>';
+						var h = '<tr><td><div class="form-group"><label>'+Sched.status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+driverBid+'</td><td>'+bidPrice+'</td><td>'+ o.scheduler +'</td><td width="100"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail-reject?id='+o._id+'">查看详情</a></td></tr>';
 
 						c.append(h)
 					})

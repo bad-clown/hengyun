@@ -124,7 +124,7 @@ $Path = \Yii::$app->request->hostInfo;
 				<table class="table table-striped table-hover" id="shipperData">
 					<thead>
 						<tr>
-							<th>用户名</th>
+							<th>姓名</th>
 							<th>手机号</th>
 							<th>订单数</th>
 							<th>类型</th>

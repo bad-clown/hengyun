@@ -89,6 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <th style="text-align:center;">注册时间</th>
                     <th>公司名称</th>
                     <th>联系人</th>
+                    <th>推荐码</th>
                     <th>操作</th>
                 </tr>
             </thead>
@@ -139,8 +140,10 @@ $(function() {
                     c.empty();
                     $.each(data.list, function(i,o) {
                         var block = o.isBlocked ? '启用' : '禁用';
+                        var company = (o.company || '暂无');
+                        var name = (o.name || '暂无');
                         var t = _global.FormatTime(o.created_at);
-                        var h = '<tr><td align="center">'+status[o.authStatus]+'</td><td>'+ o.phone +'</td><td align="center">'+(o.name || "暂无")+'</td><td align="center">'+(o.nickname || "暂无")+'</td><td align="center">'+type[o.type]+(category[o.category] || "")+'</td><td align="center">'+t+'</td><td>1</td><td>2</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/app-user-detail?id='+o._id+'">查看详情</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+                        var h = '<tr><td align="center">'+status[o.authStatus]+'</td><td>'+ o.phone +'</td><td align="center">'+(o.name || "暂无")+'</td><td align="center">'+(o.nickname || "暂无")+'</td><td align="center">'+type[o.type]+(category[o.category] || "")+'</td><td align="center">'+t+'</td><td>'+ company  +'</td><td>'+ name +'</td><td>'+ (o.reference || '暂无') +'</td><td width="180"><a class="btn-default" href="<?= $Path;?>/admin/user-web/app-user-detail?id='+o._id+'">查看详情</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a></td></tr>';
                         c.append(h)
                     })
                 }

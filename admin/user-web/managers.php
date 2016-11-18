@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <a href="javascript:void(0)" data-type="admin">管理员</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)" data-type="sched">调度员</a>
+                                        <a href="javascript:void(0)" data-type="sched">交易员</a>
                                     </li>
                                     <li>
                                         <a href="javascript:void(0)" data-type="finance">账务员</a>
@@ -89,7 +89,7 @@ $(function() {
     function getData() {
         var type = {
             admin : "管理员",
-            sched : "调度员",
+            sched : "交易员",
             finance : "财务员"
         };
         $.ajax({
@@ -110,7 +110,7 @@ $(function() {
                     $.each(data.list, function(i,o) {
                         var block = o.isBlocked ? '启用' : '禁用';
                         var t = _global.FormatTime(o.created_at);
-                        var h = '<tr><td>'+ o.phone +'</td><td>'+ (o.name || "暂无") +'</td><td align="center">'+type[o.type]+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/update?id='+o._id+'">编辑</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+                        var h = '<tr><td>'+ o.phone +'</td><td>'+ (o.name || "暂无") +'</td><td align="center">'+type[o.type]+'</td><td align="center">'+t+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/admin/user-web/update?id='+o._id+'">编辑</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a></td></tr>';
                         c.append(h)
                     })
                 }
@@ -123,6 +123,7 @@ $(function() {
             }
         })
     }
+//    <a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a>
     getData()
 
     $(document).on("click", '.pagination a', function() {

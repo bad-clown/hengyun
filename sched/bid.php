@@ -37,10 +37,11 @@ $Path = \Yii::$app->request->hostInfo;
 					<th>起点</th>
 					<th>终点</th>
 					<th>总件数</th>
-					<th>总吨数</th>
+					<th>预提数量</th>
 					<th>几装几卸</th>
 					<th>报价人数</th>
 					<th>货主的价格</th>
+					<th>调度员</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -157,6 +158,7 @@ $(function() {
 				if(data.code == "0") {
 					var c = $('#listContent').find('tbody');
 					c.empty();
+
 					$.each(data.data, function(i,o) {
 						if(!o.bidCnt) {
 							var bidCnt = '暂无司机报价';
@@ -182,7 +184,7 @@ $(function() {
 						}
 
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><label>'+Sched.status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-default '+bidCls+'" href="javascript:;" data-key="'+o._id+'">报价</a><a href="javascript:;" class="btn-default '+driverCls+'" data-key="'+o._id+'">撮合</a></td></tr>';
+						var h = '<tr><td><div class="form-group"><label>'+Sched.status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+bidCnt+'</td><td>'+bidPrice+'</td><td>'+ o.scheduler +'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail-bid?id='+o._id+'">查看详情</a><a class="btn-default '+bidCls+'" href="javascript:;" data-key="'+o._id+'">报价</a><a href="javascript:;" class="btn-default '+driverCls+'" data-key="'+o._id+'">撮合</a></td></tr>';
 
 						c.append(h)
 					})

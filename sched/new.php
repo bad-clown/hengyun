@@ -62,6 +62,37 @@ $Path = \Yii::$app->request->hostInfo;
 		</div>
 		<div class="panel-label"><span></span></div>
 	</div>
+
+</div>
+<div class="shipper-pop popup">
+	<a href="javascrip:void(0);" class="glyphicon glyphicon-remove close-btn"></a>
+	<div class="popup-header"></div>
+	<div class="popup-main">
+		<div class="popup-breadcrumb">
+			<div class="breadcrumbBox">
+				<ul class="breadcrumb">
+					<li>调度员列表</li>
+					<li>转发</li>
+				</ul>
+				<a href="javascript:;" class="btn btn-primary" id="shipper-complete" title="确认">确认</a>
+			</div>
+			<div class="shipperBox clearfix">
+				<table class="table table-striped table-hover" id="schedData">
+					<thead>
+					<tr>
+						<th>姓名</th>
+						<th>手机号</th>
+						<th>出发</th>
+						<th>到达</th>
+						<th>操作</th>
+					</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+				<div class="shipperPages"><ul class="pagination" id="popupPages"></ul></div>
+			</div>
+		</div>
+	</div>
 </div>
 
 
@@ -92,7 +123,7 @@ $(function() {
 					c.empty();
 					$.each(data.data, function(i,o) {
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+ Sched.status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-default j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+ Sched.status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-default j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-default j-relay" href="javascript:;" data-key="'+o.orderNo+'">转发</a></td></tr>';
 						c.append(h)
 					})
 					_global.badge();
@@ -101,6 +132,39 @@ $(function() {
 		})
 	}
 	getData()
+
+	var actPage = 1;
+
+	function getSchedRouter(orderNo) {
+		$.ajax({
+			type : "GET",
+			url : "<?= $Path;?>/sched/order/route-list",
+			data : {
+				page : actPage
+			},
+			dataType : "json",
+			success : function(d) {
+			var c = $('#schedData').find('tbody');
+
+			if(d.length) {
+				// PageTotal.init('.pagination', data, actPage)
+				PageTotal.init('#popupPages', d)
+				c.empty();
+				$.each(d, function(i,o) {
+					var name = o.name || "暂无";
+					var h = '<tr><td>'+ name +'</td><td>'+ o.phone +'</td><td>'+ o.provinceTo  +'</td><td>'+ o.provinceFrom +'</td><td width="100"><a href="javascript:void(0);" class="btn-option" data-key="'+ orderNo +'" data-uid="'+ o.userId +'" >选择</a></td></tr>';
+					c.append(h)
+				})
+			}
+			else {
+				// $('.pagination').empty()
+				c.empty();
+				var h = '<tr><td align="center" colspan="5">暂无数据</td></tr>';
+				c.append(h)
+			}
+			}
+		})
+	}
 
 	$(document).on('click', '.j-publish',function() {
 		var k = $(this).data('key');
@@ -127,31 +191,47 @@ $(function() {
 		})
 	})
 
-	$(document).on('click', '.j-delete', function() {
-		var k = $(this).data('key');
-		if(confirm("确定删除？")) {
-			$.ajax({
-				type : "GET",
-				url : "<?= $Path;?>/sched/order-web/del-order?id="+k,
-				dataType : "json",
-				success : function(data) {
-					if(data.code == '0') {
-						alert('删除成功！')
-						getData()
-						_global.badge();
-					}
-					else {
-						alert('删除失败，请重试！')
-						getData()
-						_global.badge();
-					}
-				},
-				error : function() {
-					alert("删除失败，请检查网络后重试！");
-				}
-			})
-		}
+	$(document).on('click', '.j-relay', function() {
+		//console.log(this);
+		var orderNo = $(this).data('key');
+		$('.shipper-pop').show();
+		getSchedRouter(orderNo);
 	})
+
+	$(document).on('click', '.btn-option', function() {
+		$('.btn-option').removeClass('has-btn-option');
+		$('#schedData').find('tr').removeClass('has');
+		$(this).parents('tr').addClass('has');
+		$(this).addClass('has-btn-option');
+		var scheduler = $(this).data('uid');
+		$('#shipper-complete').prop('href', '<?= $Path;?>/sched/order-web/relay?$schedulerid='+ scheduler +'&orderNo='+ $(this).data('key') );
+	})
+
+//	$(document).on('click', '.j-delete', function() {
+//		var k = $(this).data('key');
+//		if(confirm("确定删除？")) {
+//			$.ajax({
+//				type : "GET",
+//				url : "<?//= $Path;?>///sched/order-web/del-order?id="+k,
+//				dataType : "json",
+//				success : function(data) {
+//					if(data.code == '0') {
+//						alert('删除成功！')
+//						getData()
+//						_global.badge();
+//					}
+//					else {
+//						alert('删除失败，请重试！')
+//						getData()
+//						_global.badge();
+//					}
+//				},
+//				error : function() {
+//					alert("删除失败，请检查网络后重试！");
+//				}
+//			})
+//		}
+//	})
 
 	$('#J_Pubbatch').on('click', function() {
 		var dataId = [];

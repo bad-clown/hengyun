@@ -51,6 +51,7 @@ $Path = \Yii::$app->request->hostInfo;
 						<th>几装几卸</th>
 						<th>司机报价</th>
 						<th>后台报价</th>
+						<th>代付款</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -87,7 +88,7 @@ $(function() {
 			var $order = $('#orderList').find('tbody');
 			var billTime = _global.FormatTime(data.billTime, 1);
 
-			var billHTML = '<div class="form-group label-floating select-menu"><label for="status" class="control-label">账单状态</label><select id="status" name="status" class="form-control" disabled="disabled"><option value="0">未支付</option><option value="1">支付中</option><option value="2">已支付</option></select></div><div class="form-group label-floating"><label class="control-label">账单编号</label><input class="form-control" readonly="readonly" name="billNo" value="'+ data.billNo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">司机姓名</label><input class="form-control" readonly="readonly" name="billNo" value="'+ (data.driver.name || '暂无') +'" type="text"></div><div class="form-group label-floating"><label class="control-label">联系电话</label><input class="form-control" readonly="readonly" name="billNo" value="'+ data.driver.phone +'" type="text"></div><div class="form-group label-floating"><label class="control-label">总金额</label><input class="form-control" readonly="readonly" name="totalMoney" value="'+ data.totalMoney +'" type="text"></div><div class="form-group label-floating"><label class="control-label">订单个数</label><input class="form-control" readonly="readonly" name="orderCnt" value="'+ data.orderCnt +'" type="text"></div>';
+			var billHTML = '<div class="form-group label-floating select-menu"><label for="status" class="control-label">账单状态</label><select id="status" name="status" class="form-control" disabled="disabled"><option value="0">未支付</option><option value="1">支付中</option><option value="2">已支付</option></select></div><div class="form-group label-floating"><label class="control-label">账单编号</label><input class="form-control" readonly="readonly" name="billNo" value="'+ data.billNo +'" type="text"></div><div class="form-group label-floating"><label class="control-label">司机姓名</label><input class="form-control" readonly="readonly" name="billNo" value="'+ (data.driver.name || '暂无') +'" type="text"></div><div class="form-group label-floating"><label class="control-label">联系电话</label><input class="form-control" readonly="readonly" name="billNo" value="'+ data.driver.phone +'" type="text"></div><div class="form-group label-floating"><label class="control-label">总金额</label><input class="form-control" readonly="readonly" name="totalMoney" value="'+ data.totalMoney +'" type="text"></div><div class="form-group label-floating"><label class="control-label">订单个数</label><input class="form-control" readonly="readonly" name="orderCnt" value="'+ data.orderCnt +'" type="text"></div><div class="form-group"><label class="control-label">运费</label><input class="form-control" name="driverBidPriceTotal" readonly="readonly" value="'+ data.driverBidPriceTotal +'" type="text"></div><div class="form-group"><label class="control-label">代付费</label><input class="form-control" name="daifu" readonly="readonly" value="'+ data.daifu +'" type="text"></div><div class="form-group"><label class="control-label">网银金额</label><input class="form-control" name="payNetAmount" readonly="readonly" value="'+ data.daifu +'" type="text"></div><div class="form-group"><label class="control-label">收款姓名</label><input class="form-control" name="" readonly="readonly" value="'+ data.daifu +'" type="text"></div><div class="form-group"><label class="control-label">收款账号</label><input class="form-control" name="" readonly="readonly" value="" type="text"></div><div class="form-group"><label class="control-label">开户行</label><input class="form-control" name="bank" readonly="readonly" value="'+ data.bank +'" type="text"></div><div class="form-group"><label class="control-label">油卡金额</label><input class="form-control" name="payOilAmount" readonly="readonly" value="'+ data.payOilAmount +'" type="text"></div><div class="form-group"><label class="control-label">油卡卡号</label><input class="form-control" name="" readonly="readonly" value="" type="text"></div>';
 
 			$bill.append(billHTML);
 
@@ -95,7 +96,7 @@ $(function() {
 
 			$.each(data.orderList, function(i, o) {
 				var deliverTime = _global.FormatTime(o.deliverTime);
-				var orderHTML = '<tr data-key="'+o._id+'"><td>'+o.orderNo+'</td><td>'+deliverTime+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>'+o.goodsCnt+'件</td><td>'+(o.realTotalWeight || 0)+'</td><td>'+o.pickupDrop+'</td><td>'+o["driverBid"]["realTotalMoney"]+'</td><td>'+o.realTotalMoney+'</td></tr>';
+				var orderHTML = '<tr data-key="'+o._id+'"><td>'+o.orderNo+'</td><td>'+deliverTime+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td>'+o.goodsCnt+'件</td><td>'+(o.realTotalWeight || 0)+'</td><td>'+o.pickupDrop+'</td><td>'+o["driverBid"]["realTotalMoney"]+'</td><td>'+o.realTotalMoney+'</td><td> '+ o.daifu +' </td></tr>';
 				$order.append(orderHTML);
 			})
 		}
