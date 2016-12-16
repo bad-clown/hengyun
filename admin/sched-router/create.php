@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索" />
         <i class="glyphicon glyphicon-search"></i>
     </div>
     <div class="username">
@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	    </div>
 	    <div class="clearfix">
 	    	<div class="form-group select-menu">
-                <label for="name" class="control-label">调度员</label>
+                <label for="name" class="control-label">交易员</label>
                 <select id="name" name="name" class="form-control"></select>
             </div>
 	        <div class="form-group">
@@ -80,7 +80,7 @@ $(function(){
         url : '<?= $Path;?>/admin/sched-router/sched-list',
         dataType : 'json',
         success : function(data) {
-        	$('#name').get(0).options.add(new Option('请选择调度员', 0));
+        	$('#name').get(0).options.add(new Option('请选择交易员员', 0));
             $.each(data, function(i, o) {
                 var name = o.name || '暂无';
                 var phone = o.phone || '暂无';
@@ -104,7 +104,7 @@ $(function(){
 	$('#j-save-control').on('click', function() {
 		if($('#provinceFrom').val()==0){ alert('请选择出发省');return false;}
 		if($('#provinceTo').val()==0){ alert('请选择到达省');return false;}
-		if($('#name').val()==0){ alert('请选择调度员');return false;}
+		if($('#name').val()==0){ alert('请选择交易员');return false;}
 
 		var data = {
 			provinceFrom : $('#provinceFrom').val(),
@@ -117,7 +117,6 @@ $(function(){
 			url : '<?= $Path;?>/admin/sched-router/create',
 			data : data,
 			success : function(data) {
-				console.log(data)
 				if(data.code == 0) {
 					alert('创建成功！')
 					window.location.href="<?= $Path;?>/admin/sched-router";

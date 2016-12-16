@@ -14,7 +14,7 @@ $Path = \Yii::$app->request->hostInfo;
 
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索" />
         <i class="glyphicon glyphicon-search"></i>
     </div>
     <div class="username">
@@ -26,10 +26,10 @@ $Path = \Yii::$app->request->hostInfo;
         <ul class="breadcrumb">
             <li class="active">货物类型管理</li>
         </ul>
-        <a href="<?= $Path;?>/admin/goods-category/create" class="btn btn-control">
-            <span class="glyphicon glyphicon-plus"></span>
-            新增货物类型
-        </a>
+<!--        <a href="--><?//= $Path;?><!--/admin/goods-category/create" class="btn btn-control">-->
+<!--            <span class="glyphicon glyphicon-plus"></span>-->
+<!--            新增货物类型-->
+<!--        </a>-->
     </div>
 
     <div class="listBox orderList">
@@ -47,18 +47,18 @@ $Path = \Yii::$app->request->hostInfo;
                         'template' => '{update} {delete}',
                         'buttons' => [
                             'delete' => function ($url, $model) {
-                                return Html::a('删除', $url, [
-                                    'class' => 'btn-xs btn-raised btn-danger',
-                                    'data-method' => 'post',
-                                    'data-confirm' => '确定删除该职位？',
-                                    'title' => Yii::t('yii', 'Delete'),
-                                    ]);
+//                                return Html::a('删除', $url, [
+//                                    'class' => 'btn-xs btn-raised btn-danger',
+//                                    'data-method' => 'post',
+//                                    'data-confirm' => '确定删除该职位？',
+//                                    'title' => Yii::t('yii', 'Delete'),
+//                                    ]);
                             },
                             'update' => function ($url, $model) {
-                                return Html::a('更新', $url, [
-                                    'class' => 'btn-xs btn-raised btn-info',
-                                    'title' => Yii::t('yii', 'Update'),
-                                    ]);
+//                                return Html::a('更新', $url, [
+//                                    'class' => 'btn-xs btn-raised btn-info',
+//                                    'title' => Yii::t('yii', 'Update'),
+//                                    ]);
                             },
                         ],
                     ],

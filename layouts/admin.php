@@ -51,6 +51,7 @@ $isContentPage = !isset($this->context->notContentPage);
 <link href="/static/css/index.css" rel="stylesheet">
 </head>
 <body <?= isset($_GET["fullscreen"])?' class="fullscreen" ':"" ?> >
+<div id="mask" class="mask"></div>
 
 <?php
 if($isContentPage){
@@ -59,10 +60,9 @@ if($isContentPage){
 <?php
 }else{ // is not contentpage
 ?>
-
-<div class="wrapper">
     <!--隐藏按钮 -->
-    <button class="btn btn-primary" id="hide-btn" style="position: absolute;top:10px; z-index: 9999">隐藏</button>
+    <button class="btn btn-primary" id="hide-btn" style="position: fixed;top:2px;left:-30px; z-index: 9999;width: 5%">隐藏</button>
+<div class="wrapper" >
     <div class="side-nav">
         <div class="title">
             <a href="#">
@@ -72,8 +72,9 @@ if($isContentPage){
         </div>
         <div class="nav-list" id="j-nav" deep="show">
             <ul>
+
                 <li>
-                    <a href="javascript:;" target="mainframe" class="sched-nav select-menu">调度中心<span class="badge" id="total-cnt">0</span></a>
+                    <a href="javascript:;" target="mainframe" class="sched-nav select-menu">调度中心<span class="badge" id="total-cnt">0</span><i class="glyphicon glyphicon-time" ></i></a>
                     <ul class="sub-nav" style="display: none;">
                         <li>
                             <a href="/sched/order-web/new?sort=-time" target="mainframe">发布管理<span class="badge" id="new-cnt">0</span></a>
@@ -90,16 +91,23 @@ if($isContentPage){
                     </ul>
                 </li>
                 <li>
-                    <a href="/finance/order-web/order-list" target="mainframe" class="nav">订单管理</a>
+                    <a href="/finance/order-web/order-list" target="mainframe" class="nav">订单管理<i class="glyphicon glyphicon-list-alt" ></i></a>
+
                 </li>
+                <?php if ((\Yii::$app->user->identity->type) != 'manager') :?>
+                    <li>
+                        <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">货主账单管理<i class="glyphicon glyphicon-tasks" ></i></a>
+                    </li>
+                    <li>
+                        <a href="/finance/bill-driver-web/list" target="mainframe" class="nav">司机账单管理<i class="glyphicon glyphicon-tasks" ></i></a>
+                    </li>
+                <?php else: ?>
+                    <li>
+                        <a href="/finance/order-web/order-management" target="mainframe" class="nav">账单管理<i class="glyphicon glyphicon-tasks" ></i></a>
+                    </li>
+                <?php endif;?>
                 <li>
-                    <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">货主账单管理</a>
-                </li>
-                <li>
-                    <a href="/finance/bill-driver-web/list" target="mainframe" class="nav">司机账单管理</a>
-                </li>
-                <li>
-                    <a href="javascript:;" target="mainframe" class="user-nav select-menu">用户管理</a>
+                    <a href="javascript:;" target="mainframe" class="user-nav select-menu">用户管理<i class="glyphicon glyphicon-user" ></i></a>
                     <ul class="sub-nav" style="display: none;">
                         <li>
                             <a href="/admin/user-web/managers" target="mainframe">后台管理员</a>
@@ -110,10 +118,10 @@ if($isContentPage){
                     </ul>
                 </li>
                 <li>
-                    <a href="/admin/goods-category" target="mainframe" class="nav">货物类型管理</a>
+                    <a href="/admin/goods-category" target="mainframe" class="nav">货物类型管理<i class="glyphicon glyphicon-gift" ></i></a>
                 </li>
                 <li>
-                    <a href="javascript:;" target="mainframe" class="truck-nav select-menu">货车管理</a>
+                    <a href="javascript:;" target="mainframe" class="truck-nav select-menu">货车管理<i class="glyphicon glyphicon-dashboard" ></i></a>
                     <ul class="sub-nav" style="display: none;">
                         <li>
                             <a href="/admin/truck-cat/index?sort=order" target="mainframe">货车类型管理</a>
@@ -124,7 +132,13 @@ if($isContentPage){
                     </ul>
                 </li>
                 <li>
-                    <a href="/admin/sched-router" target="mainframe" class="nav">调度路线管理</a>
+                    <a href="/admin/sched-router" target="mainframe" class="nav">调度路线管理<i class="glyphicon glyphicon-map-marker" ></i></a>
+                </li>
+                <li>
+                    <a href="/admin/activity-web" target="mainframe" class="nav">活动中心<i class="glyphicon glyphicon-star-empty" ></i></a>
+                </li>
+                <li>
+                    <a href="/finance/order-web/recycle" target="mainframe" class="nav">回收站<i class="glyphicon glyphicon-trash" ></i></a>
                 </li>
             </ul>
         </div>
@@ -176,7 +190,7 @@ $(function() {
         $(this).addClass('cur');
     })
 
-    $('.user-nav,.sched-nav,.truck-nav').on('click', function() {
+    $('.user-nav,.sched-nav,.truck-nav,.bid-nav').on('click', function() {
         if($(this).hasClass('cur')) {
             $(this).removeClass('cur')
             $(this).next('.sub-nav').hide();
@@ -193,18 +207,22 @@ $(function() {
         $(this).addClass('cur');
     })
 
-});
-// 隐藏按钮
-$('#hide-btn').click(function(){
-    if ($('.side-nav').prop('deep') == 'hide') {
-        $('.side-nav').show().prop('deep','show');
-        $('#hide-btn').html('隐藏');
-    } else {
-        $('#hide-btn').html('显示');
-        $('.side-nav').hide().prop('deep','hide');
-    }
+    // 隐藏按钮
+    $('#hide-btn').click(function(){
+        if ($('.side-nav').prop('deep') == 'hide') {
+            $('.side-nav').toggle('show').prop('deep','show');
+            $('#hide-btn').html('隐藏');
+            $('.main').css('margin-left', '270px');
+        } else {
+            $('#hide-btn').html('显示');
+            $('.side-nav').toggle('show').prop('deep','hide');
+            $('.main').css('margin-left', '0px');
+        }
+
+    })
 
 });
+
 </script>
 <?php
 }

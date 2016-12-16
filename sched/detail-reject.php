@@ -12,13 +12,13 @@ $Path = \Yii::$app->request->hostInfo;
 ?>
 
 <div class="topbar">
-    <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
-    <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
-    </div>
+	<div class="search">
+		<input type="text" class="search-text" name="search" value="" placeholder="搜索" />
+		<i class="glyphicon glyphicon-search"></i>
+	</div>
+	<div class="username">
+		<a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+	</div>
 </div>
 
 <div class="content">
@@ -49,6 +49,7 @@ $Path = \Yii::$app->request->hostInfo;
 </div>
 
 <?php $this->beginBlock("bottomcode");  ?>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
 	$.ajax({

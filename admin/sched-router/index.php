@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索" />
         <i class="glyphicon glyphicon-search"></i>
     </div>
     <div class="username">
@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="detail-label"><span class="label label-default">其他路线</span></div>
         <div class="clearfix" id="">
             <div class="form-group">
-                <label for="name" class="control-label">调度员</label>
+                <label for="name" class="control-label">交易员</label>
                 <select id="name" name="name" class="form-control" disabled="disabled"></select>
             </div>
             <div class="form-group">
@@ -60,7 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <tr>
                     <th>出发省份</th>
                     <th>到达省份</th>
-                    <th>调度员</th>
+                    <th>交易员</th>
                     <th>联系电话</th>
                     <th>操作</th>
                 </tr>

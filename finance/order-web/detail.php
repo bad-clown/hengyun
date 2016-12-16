@@ -8,18 +8,15 @@ use app\modules\admin\models\Job;
 use app\modules\admin\models\Dictionary;
 use app\modules\admin\logic\DictionaryLogic;
 $Path = \Yii::$app->request->hostInfo;
-
 ?>
-
 <div class="topbar">
-<!--    <div class="search">-->
-<!--        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />-->
-<!--        <i class="glyphicon glyphicon-search"></i>-->
-<!--    </div>-->
-
-    <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
-    </div>
+	<div class="search">
+		<input type="text" class="search-text" name="search" value="" placeholder="搜索"  />
+		<i class="glyphicon glyphicon-search sou" ></i>
+	</div>
+	<div class="username">
+		<a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+	</div>
 </div>
 
 <div class="content">
@@ -28,14 +25,14 @@ $Path = \Yii::$app->request->hostInfo;
 			<li><a href="<?= $Path;?>/finance/order-web/order-list">订单管理</a></li>
 			<li class="active">查看详情</li>
 		</ul>
-		<a href="<?= $Path;?>/finance/order-web/order-list" class="btn back-control">返回</a>
+		<a href="javascript:;" class="btn back-control" id="j-back-control">返回</a>
 	</div>
 
 	<div class="detail-box bid-detail">
 		<div class="clearfix" id="J-order-detail">
 			<div class="form-group">
-				<label class="control-label">订单号</label>
-				<input class="form-control" readonly="readonly" name="orderNo" value="" type="text">
+				<label class="control-label ">订单号</label>
+				<input class="form-control " readonly="readonly" name="orderNo" value="" type="text">
 			</div>
 			<div class="form-group">
 				<label class="control-label">状态</label>
@@ -84,7 +81,6 @@ $Path = \Yii::$app->request->hostInfo;
             </div>
 			<div class="form-group">
 				<label class="control-label">计量单位</label>
-<!--				<input class="form-control" readonly="readonly" name="goodsUnit" value="" type="text">-->
                 <select id="goodsUnit" name="goodsUnit" class="form-control" disabled="disabled" >
                     <option value="吨" selected >吨</option>
                     <option value="方" >方</option>
@@ -118,12 +114,22 @@ $Path = \Yii::$app->request->hostInfo;
 		<div class="clearfix" id="J-order-detail">
 			<div class="form-group">
 				<label class="control-label">单价</label>
-                <input type="hidden" name="bidPriceType" value=""/>
                 <input class="form-control" readonly="readonly" name="bidPrice" value="" type="text">
 			</div>
 			<div class="form-group">
 				<label class="control-label">营业额</label>
 				<input class="form-control" readonly="readonly" name="bidPriceTotal" value="" type="text">
+			</div>
+			<div class="form-group">
+				<label class="control-label">价格类型</label>
+				<select  name="bidPriceType" class="form-control bidPriceType" disabled="disabled">
+					<option value="0">单价</option>
+					<option value="1">一口价</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label class="control-label">代付费</label>
+				<input class="form-control" name="daifu" readonly="readonly" value="" type="text">
 			</div>
 			<div class="form-group">
 				<label class="control-label">司机报价</label>
@@ -134,9 +140,13 @@ $Path = \Yii::$app->request->hostInfo;
 				<input class="form-control" readonly="readonly" name="driverBidPriceTotal" value="" type="text">
 			</div>
 			<div class="form-group">
-				<label class="control-label">代付费</label>
-				<input class="form-control" name="daifu" readonly="readonly" value="" type="text">
+				<label class="control-label">价格类型</label>
+				<select name="driverBidPriceType" class="form-control driverBidPriceType" disabled="disabled">
+					<option value="0" selected>单价</option>
+					<option value="1">一口价</option>
+				</select>
 			</div>
+
 		</div>
 		<div class="clearfix">
 			<div class="form-group">
@@ -152,20 +162,6 @@ $Path = \Yii::$app->request->hostInfo;
 				<input class="form-control" name="predictProfitRate" readonly="readonly" value="" type="text">
 			</div>
 		</div>
-<!--		<div class="clearfix">-->
-<!--			<div class="form-group">-->
-<!--				<label class="control-label">分出单价</label>-->
-<!--				<input class="form-control" name="outPrice" readonly="readonly" value="" type="text">-->
-<!--			</div>-->
-<!--			<div class="form-group">-->
-<!--				<label class="control-label">分出额</label>-->
-<!--				<input class="form-control" name="outMoney" readonly="readonly" value="" type="text">-->
-<!--			</div>-->
-<!--			<div class="form-group">-->
-<!--				<label class="control-label">分出一口价</label>-->
-<!--				<input class="form-control" name="outBidPrice" readonly="readonly" value="" type="text">-->
-<!--			</div>-->
-<!--		</div>-->
 		<div class="clearfix">
 			<div class="form-group">
 				<label class="control-label">实际税点(%)</label>
@@ -199,7 +195,7 @@ $Path = \Yii::$app->request->hostInfo;
 			<div class="form-group select-menu">
 				<label for="backReceived" class="control-label">回单情况</label>
 				<select id="backReceived" name="backReceived" class="form-control" disabled="disabled">
-					<option value="0">否</option>
+					<option value="0" selected >否</option>
 					<option value="1">是</option>
 					<option value="2">无需回单</option>
 				</select>
@@ -209,47 +205,41 @@ $Path = \Yii::$app->request->hostInfo;
 			<div class="form-group select-menu">
 				<label for="receiveMoneyTime" class="control-label">收款状态</label>
 				<select id="receiveMoneyTime" name="receiveMoneyTime" class="form-control" disabled="disabled">
-					<option value="0">未支付</option>
-					<option value="1">支付中</option>
-					<option value="1">已付中</option>
+					<option value="0">未收款</option>
+					<option value="1">收款中</option>
+					<option value="2">已收款</option>
 				</select>
 			</div>
-            <div class="form-group">
-                <label class="control-label">对公金额</label>
-                <input class="form-control" name="publicMoney"  readonly="readonly" value="" type="text">
-            </div>
-            <div class="form-group">
-                <label class="control-label">对私金额</label>
-                <input class="form-control" name="privateMoney" readonly="readonly" value="" type="text">
-            </div>
+			<div class="form-group">
+				<label class="control-label">收款时间</label>
+				<input class="form-control" name="prmTime" id="prmTime" readonly="readonly" value="" type="text">
+			</div>
+			<div class="form-group">
+				<label class="control-label">货主账单号</label>
+				<input class="form-control" name="billShipperNumber"  readonly="readonly" value="" type="text">
+			</div>
+
 		</div>
 
 		<div class="clearfix">
 			<div class="form-group select-menu">
 				<label for="payedStatus" class="control-label">付款状态</label>
-				<select id="payedStatus" name="payedStatus" class="form-control" disabled="disabled">
-					<option value="0">未支付</option>
-					<option value="1">支付中</option>
-					<option value="1">已付中</option>
+				<select name="payedStatus" class="form-control" disabled="disabled">
+					<option value="-1" selected="selected" >未支付</option>
+					<option value="0">审批中</option>
+					<option value="1">待支付</option>
+					<option value="2">已支付</option>
 				</select>
 			</div>
 			<div class="form-group">
 				<label class="control-label">付款时间</label>
-				<input class="form-control" name="payTime" id="payTime" readonly="readonly" value="" type="text">
-			</div>
-		</div>
-		<?php if($export):?>
-		<div class="clearfix">
-			<div class="form-group">
-				<label class="control-label">付款方式：油卡金额</label>
-				<input class="form-control" name="payOilAmount" readonly="readonly" value="" type="text">
+				<input class="form-control" name="payTime" id="payTime" readonly="readonly" value="" type="text" disabled="disabled">
 			</div>
 			<div class="form-group">
-				<label class="control-label">付款方式：网银金额</label>
-				<input class="form-control" name="payNetAmount" readonly="readonly" value="" type="text">
+				<label class="control-label">司机账单号</label>
+				<input class="form-control" name="billDriverNumber" readonly="readonly" value="" type="text" >
 			</div>
 		</div>
-		<?php endif;?>
 		<div class="clearfix">
 			<div class="form-group form-group-last">
 				<label class="control-label">备注</label>
@@ -260,19 +250,44 @@ $Path = \Yii::$app->request->hostInfo;
 	<div class="control-panel">
 		<div class="control-btns">
 			<a href="javascript:;" class="btn btn-default" id="J_Republish" >重新发布</a>
-			<a href="javascript:;" class="btn btn-default" id="J_Change">修改订单</a>
+			<a href="javascript:;" class="btn btn-default" id="J_Apply">申请修改</a>
+			<a href="javascript:;" class="btn btn-default J-Wait"  style="display: none;">审批中</a>
+			<a href="javascript:;" class="btn btn-default J-Consent" style="display: none;">审批</a>
+			<a href="javascript:;" class="btn btn-default" id="J_Change" style="display: none;">修改订单</a>
 			<a href="javascript:;" class="btn btn-default" id="J_Cancel" style="display: none;">取消修改</a>
 			<a href="javascript:;" class="btn btn-default" id="J_Save" style="display: none;">保存</a>
 		</div>
 		<div class="panel-label"><span></span></div>
 	</div>
 </div>
+<div class="shipper-pop popup" style="z-index: 9999">
+	<a href="javascrip:void(0);" class="glyphicon glyphicon-remove close-btn"></a>
+	<div class="popup-header"></div>
+	<div class="popup-main">
+		<div class="popup-breadcrumb">
+			<div class="breadcrumbBox">
+				<ul class="breadcrumb">
+					<li>申请订单修改</li>
+				</ul>
+				<span><a href="javascript:;" class="btn btn-primary">提交</a></span>
+			</div>
+			<div class=" ">
+				<div class="form-control-static">
+					<label for="name">申请原因</label>
+					<input tpye="text" class="form-control" name="reason" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript" src="<?= $Path;?>/static/laydate/laydate.js"></script>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
+
 	$.ajax({
 		type : "GET",
 		url : "<?= $Path;?>/finance/order/detail?id=<?= $_id;?>",
@@ -283,10 +298,11 @@ $(function() {
 			var $shipper = $('#J-shipper-detail');
 			var $trucklist = $('#J-trucklist-detail');
 			var $extra = $('#J-extra-detail');
-			var bidPrice,bidPriceTotal,driverBid,bidPriceType,driverBidTotal,hasBidWarning="",hasDriverWarning="",deliverTime,predictArriveTime,realArriveTime,bilingTime,backTime,payTime,privateMoney,publicMoney;
+			var bidPrice,bidPriceTotal,driverBid,bidPriceType,driverBidTotal,driverBidPriceType,hasBidWarning="",hasDriverWarning="",deliverTime,predictArriveTime,realArriveTime,bilingTime,backTime,payTime,prmTime,billShipperNumber,billDriverNumber;
 			if(data.status == 700) {
 				$('#J_Republish').data('dis', true)
 			}
+			driverBidPriceType = data.driver != null ? data['driver']['bid']['bidPriceType'] : '';
 			/* 订单信息 */
 			deliverTime = _global.FormatTime(data.deliverTime);
 			predictArriveTime = _global.FormatTime(data.predictArriveTime,1);
@@ -303,10 +319,10 @@ $(function() {
 			$('input[name="deliverTime"]').val( deliverTime )
 			$('input[name="predictArriveTime"]').val( predictArriveTime )
 			$('input[name="realArriveTime"]').val( realArriveTime )
-            $('input[name="bidPriceType"]').val( data.bidPriceType )
 			$('#goodsUnit').val( (data.goodsUnit || '吨') )
 			$('input[name="realTotalWeight"]').val( (data.realTotalWeight || '') + ($('#goodsUnit').val() || '') )
 			$('input[name="note"]').val( data.note )
+
 			/* 货物明细 */
 			$.each(data.goods, function(i, o) {
 				var goodsHTML = '<div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 名称</label><input class="form-control" readonly="readonly" value="'+ o["category"].name +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 重量</label><input class="form-control" readonly="readonly" value="'+ o.count+o["category"].unit +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 提货详细地址</label><input class="form-control" readonly="readonly" value="'+ o.addressFrom +'" type="text"></div><div class="form-group label-floating"><label class="control-label">货物'+(i+1)+' 送达详细地址</label><input class="form-control" readonly="readonly" value="'+ o.addressTo +'" type="text"></div>';
@@ -344,15 +360,19 @@ $(function() {
 				})
 			}
 
-
 			/* 账务信息 */
 			bilingTime = _global.FormatTime(data.bilingTime,1);
 			backTime = _global.FormatTime(data.backTime,1);
 			payTime = _global.FormatTime(data.payTime,1);
-			bidPrice = data.bidPrice ? data.bidPrice : '暂无';
-			bidPriceTotal = data.realTotalMoney ? data.realTotalMoney : '暂无';
-			driverBid = data.driver ? data["driver"]["bid"]["bidPrice"] : '暂无';
-			driverBidTotal = data.driver ? data["driver"]["bid"]["realTotalMoney"] : '暂无';
+			prmTime = _global.FormatTime(data.prmTime,1);
+			bidPrice = data.bidPrice ? data.bidPrice : '';
+			bidPriceTotal = data.realTotalMoney ? data.realTotalMoney : '';
+			driverBid = data.driver ? data["driver"]["bid"]["bidPrice"] : '';
+			driverBidTotal = data.driver ? data["driver"]["bid"]["realTotalMoney"] : '';
+			billShipperNumber = $('input[name="billShipperNumber"]').val( data.billShipperNumber )
+			billDriverNumber = $('input[name="billDriverNumber"]').val( data.billDriverNumber )
+			$('select[name="driverBidPriceType"]').val(driverBidPriceType)
+			$('select[name="bidPriceType"]').val( data.bidPriceType)
 			$('input[name="remarks"]').val( (data.remarks || '') )
 			$('input[name="bidPrice"]').val(  bidPrice  ).parent('.form-group').addClass(hasBidWarning)
 			$('input[name="bidPriceTotal"]').val(  bidPriceTotal  ).parent('.form-group').addClass(hasBidWarning)
@@ -366,20 +386,55 @@ $(function() {
 			$('input[name="outBidPrice"]').val( (data.outBidPrice || '') )
 			$('input[name="tax"]').val( (data.tax || '') )
 			$('input[name="realProfit"]').val( (data.realProfit || '') )
-			$('input[name="publicMoney"]').val( (data.publicMoney || '') )
-			$('input[name="privateMoney"]').val( (data.privateMoney || '') )
 			$('input[name="realProfitRate"]').val( (data.realProfitRate || '') )
 			$('select[name="billing"]').val( (data.billing || 0) ).triggerHandler("change")
 			$('input[name="bilingTime"]').val( bilingTime )
 			$('input[name="backTime"]').val( backTime )
 			$('select[name="backReceived"]').val( (data.backReceived || 0) ).triggerHandler("change")
-			$('select[name="receiveMoneyTime"]').val( (data.receiveMoneyTime || 0) ).triggerHandler("change")
-            $('select[name="payedStatus"]').val( (data.payedStatus || 0) ).triggerHandler("change")
+			$('select[name="receiveMoneyTime"]').val( (data.receiveMoneyTime  || 0) ).triggerHandler("change")
 			$('input[name="payTime"]').val( payTime )
-			$('input[name="payOilAmount"]').val( (data.payOilAmount || '') )
-			$('input[name="payNetAmount"]').val( (data.payNetAmount || '') )
+			$('input[name="prmTime"]').val( prmTime )
+			$('input[name="bidPriceType"]').val( data.bidPriceType );
+			if (billDriverNumber.val()) {
+				$('select[name="payedStatus"]').val( (data.payedStatus || 0) ).triggerHandler("change")
+			}
+			if (billDriverNumber.val()  || billShipperNumber.val() ) {
+				$('#J_Republish').hide();
+			}
+			if (bilingTime) {
+				$('#billing').val(1);
+			}
+
+			if ("<?= Yii::$app->user->identity->type ;?>" == 'manager') {
+				if ( data.approve == 1 ) {
+					$('#J_Apply').hide()
+					$('#J_Change').hide()
+					$('.J-Wait').hide()
+					$('.J-Consent').show()
+				}
+			} else {
+				if ( data.approve == 1) {
+					$('.J-Wait').show()
+					$('#J_Apply').hide()
+				}
+			}
+
+			if ( "<?=$powers;?>" ) {
+				if ( data.approve == 2 ) {
+					$('#J_Apply').hide()
+					$('#J_Change').show()
+				}
+			} else {
+				if ( data.approve == 2 ) {
+					$(document).off('click','#J_Apply')
+					$('#J_Apply').text('待财务修改')
+				}
+			}
+
 		}
 	})
+
+
 
 	function profit() {
 		var totalWeight = parseFloat($('input[name="totalWeight"]').val()),
@@ -426,18 +481,99 @@ $(function() {
 		profit()
 	})
 
+
+	$(document).on('click','#J_Apply',function() {
+		$('.shipper-pop').show()
+		var mainheight = $(document).height()+30
+		$("#mask").css({height:mainheight + 'px',width:'100%',display:'block'})
+		$("#mask").show()
+	})
+
+	$('.close-btn').on('click',function(){
+		$('.shipper-pop').hide()
+		$('.consent-button').remove()
+		$("#mask").hide()
+	})
+
+	$(document).on('click','.consent',function() {
+
+		var apKey = $(this).data('key')
+		var opinion = $('input[name="reason"]').val()
+
+		$.ajax({
+			type : "get",
+			url : '<?= $Path;?>/finance/order/apply?id=<?= $_id;?>',
+			data : {
+				apKey : apKey,
+				opinion : opinion
+			},
+			dataType : 'json',
+			success : function(data) {
+				if(data.code == 0) {
+					window.location.reload();
+				}
+				else {
+					alert('操作失败！请检查后重试！')
+				}
+			},
+			error : function() {
+				alert("操作失败，请检查网络后重试！");
+			}
+
+		})
+	})
+
+
+	$(document).on('click','.J-Consent',function() {
+		var mainheight = $(document).height()+30
+		var button = '<ul class="consent-button"><span><a href="javascript:;" class="btn btn-primary consent"  data-key="2">同意</a></span><span style="position: absolute;right: 100px"><a href="javascript:;" class="btn btn-danger consent"  data-key="-1">不同意</a></span></ul>';
+		$("#mask").css({height:mainheight + 'px',width:'100%',display:'block'})
+		$('.shipper-pop').show()
+		$("#mask").show()
+		$('.breadcrumb li').html('审批信息')
+		$('.form-control-static label').remove()
+		$('.breadcrumbBox span a').remove()
+		$('.breadcrumbBox').append(button)
+
+	})
+
+	$('.popup-breadcrumb .breadcrumbBox span a').on('click',function() {
+
+		var reason = $('input[name="reason"]').val();
+		if ( !reason ) {
+			alert('申请原因不能为空！')
+			return false;
+		}
+		$.ajax({
+			type : "get",
+			url : '<?= $Path;?>/finance/order/apply?id=<?= $_id;?>',
+			data : {
+				reason : reason
+			},
+			dataType : 'json',
+			success : function(data) {
+				if(data.code == 0) {
+					alert('申请成功，等待审批！')
+					$('.shipper-pop').hide();
+					window.location.reload();
+				}
+				else {
+					alert('申请失败！请检查后重试！')
+				}
+			},
+			error : function() {
+				alert("申请失败，请检查网络后重试！");
+			}
+		})
+
+	})
+
 	$('#J_Change').on('click', function() {
 
 		/* 管理员 、 账务员权限 */
-		<?php if($export){ ?>
-		$('input[name="bilingTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
+		<?php if($powers){ ?>
 		$('input[name="backTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
 		$('select[name="backReceived"]').removeAttr('disabled').parent('.form-group').addClass('has-warning');
-		$('input[name="payTime"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
-		$('input[name="publicMoney"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-        $('input[name="privateMoney"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-        $('input[name="payOilAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-        $('input[name="payNetAmount"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
         $('input[name="remarks"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		<?php }; ?>
 
@@ -449,22 +585,54 @@ $(function() {
 		$('input[name="daifu"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="outPrice"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="tax"]').attr('disabled',true).parent('.form-group');
-		$('select[name="billing"]').removeAttr('disabled').parent('.form-group').addClass('has-warning');
+		console.log()
+		if ($('select[name="bidPriceType"]').val() == 0) {
+			$('input[name="bidPrice"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+		} else {
+			$('input[name="bidPriceTotal"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+		}
+		if ($('select[name="driverBidPriceType"]').val() == 0) {
+			$('input[name="driverBidPrice"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+		} else {
+			$('select[name="driverBidPriceTotal"]').removeAttr('disabled').parent('.form-group').addClass('has-warning');
+		}
+		$('select[name="driverBidPriceType"]').removeAttr('disabled').parent('.form-group').addClass('has-warning');
+		$('select[name="bidPriceType"]').removeAttr('disabled').parent('.form-group').addClass('has-warning');
 		$('input[name="billing"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
 		$('input[name="realTotalWeight"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
-
+		$('input[name="predictArriveTime"]').focus();
 		$('#J_Change').hide();
 		$('#J_Republish').hide();
 		$('#J_Cancel').show()
 		$('#J_Save').show()
 		$(window).scrollTop(0)
-		$('input[name="predictArriveTime"]').focus();
 
 	})
 
+	$(document).on('change','.bidPriceType',function () {
+		if ($(this).val() == 1) {
+			$('input[name="bidPriceTotal"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+			$('input[name="bidPrice"]').attr('readonly',true).parent('.form-group').removeClass('has-warning');
+		} else {
+			$('input[name="bidPrice"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+			$('input[name="bidPriceTotal"]').attr('readonly',true).parent('.form-group').removeClass('has-warning');
+		}
+	})
+
+	$(document).on('change','.driverBidPriceType',function () {
+		if ($(this).val() == 1) {
+			$('input[name="driverBidPriceTotal"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+			$('input[name="driverBidPrice"]').attr('readonly',true).parent('.form-group').removeClass('has-warning');
+		} else {
+			$('input[name="driverBidPrice"]').removeAttr('readonly').parent('.form-group').addClass('has-warning');
+			$('input[name="driverBidPriceTotal"]').attr('readonly',true).parent('.form-group').removeClass('has-warning');
+		}
+	})
+
+
     $('#J_Republish').on('click', function() {
     	if($(this).data('dis')){return false;}
-        if(confirm('确实重新发布？')) {
+        if(confirm('确定重新发布？')) {
         	$.ajax({
 	            type : "post",
 	                url : '<?= $Path;?>/finance/order/republish?id=<?= $_id;?>',
@@ -496,12 +664,13 @@ $(function() {
 				format: 'YYYY-MM-DD hh:mm:ss',
 				istime: true,
 				istoday: false,
-				choose: function(dates){
+				choose: function(dates) {
 					// $('#billTime').change()
 				}
 			});
 		}
 	})
+
 	$(document).on('click', '#bilingTime', function() {
 		if($(this).data('hasChange')) {
 			laydate({
@@ -509,12 +678,13 @@ $(function() {
 				format: 'YYYY-MM-DD hh:mm:ss',
 				istime: true,
 				istoday: false,
-				choose: function(dates){
-					// $('#billTime').change()
+				choose: function(dates) {
+//					$('#billing').val(1);
 				}
 			});
 		}
 	})
+
 	$(document).on('click', '#backTime', function() {
 		if($(this).data('hasChange')) {
 			laydate({
@@ -522,64 +692,82 @@ $(function() {
 				format: 'YYYY-MM-DD hh:mm:ss',
 				istime: true,
 				istoday: false,
-				choose: function(dates){
-					// $('#billTime').change()
+				choose: function(dates) {
+					if (dates) {
+						$('select[name="backReceived"]').val(1);
+					}
 				}
 			});
 		}
 	})
-	$(document).on('click', '#payTime', function() {
+
+	$(document).on('blur', '#backTime', function() {
+		if (!($('#backTime').val())) {
+			$('select[name="backReceived"]').val(0);
+		}
+
+	})
+
+
+
+	$(document).on('click', '#prmTime', function() {
 		if($(this).data('hasChange')) {
 			laydate({
-				elem: '#payTime',
+				elem: '#prmTime',
 				format: 'YYYY-MM-DD hh:mm:ss',
 				istime: true,
 				istoday: false,
-				choose: function(dates){
+				choose: function(dates) {
 					// $('#billTime').change()
 				}
 			});
 		}
 	})
+
 
 	$('#J_Save').on('click', function() {
 		var predictArriveTime = $('input[name="predictArriveTime"]').val() == '' ? '' : Date.parse($('input[name="predictArriveTime"]').val()) /1000;
 		var bilingTime = $('input[name="bilingTime"]').val() == '' ? '' : Date.parse($('input[name="bilingTime"]').val()) /1000;
 		var backTime = $('input[name="backTime"]').val() == '' ? '' : Date.parse($('input[name="backTime"]').val()) /1000;
 		var payTime = $('input[name="payTime"]').val() == '' ? '' : Date.parse($('input[name="payTime"]').val()) /1000;
+		var orderNo = $('input[name="orderNo"]').val();
         var realTotalweight = $('input[name="realTotalWeight"]').val();
-        var bidPriceType =  $('input[name="bidPriceType"]').val();
         var bidPrice = $('input[name="bidPrice"]').val();
-
+        var bidPriceTotal = $('input[name="bidPriceTotal"]').val();
+        var driverBidPrice = $('input[name="driverBidPrice"]').val() ;
+		var driverBidPriceTotal = $('input[name="driverBidPriceTotal"]').val();
+		var driverBidPriceType = $('select[name="driverBidPriceType"]').val();
+		var bidPriceType = $('select[name="bidPriceType"]').val();
+		var billing = $('#billing').val();
 		var data = {
-			contact : $('input[name="contact"]').val(),
-			realCarInfo : $('input[name="realCarInfo"]').val(),
-			predictArriveTime : predictArriveTime,
-			goodsUnit : $('#goodsUnit').val(),
-			daifu : $('input[name="daifu"]').val(),
-			predictProfit : $('input[name="predictProfit"]').val(),
-			predictProfitRate : $('input[name="predictProfitRate"]').val(),
-			outPrice : $('input[name="outPrice"]').val(),
-			outMoney : $('input[name="outMoney"]').val(),
-			outBidPrice : $('input[name="outBidPrice"]').val(),
-            bidPriceType : bidPriceType,
-            bidPrice : bidPrice,
-			tax : $('input[name="tax"]').val(),
-			realProfit : $('input[name="realProfit"]').val(),
-			realProfitRate : $('input[name="realProfitRate"]').val(),
-			billing : $('select[name="billing"]').val(),
-			bilingTime : bilingTime,
-			backTime : backTime,
-			backReceived : $('select[name="backReceived"]').val(),
-			receiveMoneyTime : $('select[name="receiveMoneyTime"]').val(),
-			payedStatus : $('select[name="payedStatus"]').val(),
-			payTime : payTime,
-			payOilAmount : $('input[name="payOilAmount"]').val(),
-			payNetAmount : $('input[name="payNetAmount"]').val(),
-			realTotalWeight : realTotalweight,
-            privateMoney: $('input[name="privateMoney"]').val(),
-            publicMoney: $('input[name="publicMoney"]').val(),
-			remarks:$('input[name="remarks"]').val()
+				contact: $('input[name="contact"]').val(),
+				realCarInfo: $('input[name="realCarInfo"]').val(),
+				predictArriveTime: predictArriveTime,
+				goodsUnit: $('#goodsUnit').val(),
+				daifu: $('input[name="daifu"]').val(),
+				predictProfit: $('input[name="predictProfit"]').val(),
+				predictProfitRate: $('input[name="predictProfitRate"]').val(),
+				outPrice: $('input[name="outPrice"]').val(),
+				outMoney: $('input[name="outMoney"]').val(),
+				outBidPrice: $('input[name="outBidPrice"]').val(),
+				bidPrice: bidPrice,
+				bidPriceType: bidPriceType,
+				realTotalMoney : bidPriceTotal,
+				orderNo: orderNo,
+				billing: billing,
+				tax: $('input[name="tax"]').val(),
+				realProfit: $('input[name="realProfit"]').val(),
+				realProfitRate: $('input[name="realProfitRate"]').val(),
+				billing: $('select[name="billing"]').val(),
+				bilingTime: bilingTime,
+				backTime: backTime,
+				backReceived: $('select[name="backReceived"]').val(),
+				payTime: payTime,
+				realTotalWeight: realTotalweight,
+				remarks: $('input[name="remarks"]').val(),
+				driverBidPrice: driverBidPrice,
+				driverBidPriceTotal: driverBidPriceTotal,
+				driverBidPriceType: driverBidPriceType
 		}
 
 		$.ajax({
@@ -603,6 +791,9 @@ $(function() {
 		})
 	})
 
+	$('#j-back-control').on('click',function(){
+		window.history.go(-1);
+	})
 
 })
 </script>

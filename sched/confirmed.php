@@ -175,7 +175,6 @@ $(function() {
 			url : "<?= $Path;?>/sched/order/bid-list?orderId="+k,
 			dataType : "json",
 			success : function(data) {
-				console.log(data)
 				var c = $('#driverOrder').find('tbody');
 				c.empty();
 				$.each(data.data, function(i, o) {
@@ -258,7 +257,6 @@ $(function() {
 			url : "<?= $Path;?>/sched/order-web/goods-detail?orderNo="+k,
 			dataType : "json",
 			success : function(data) {
-				console.log(data)
 				var c = $('#orderDetails').find('tbody');
 				c.empty();
 				$.each(data, function(i, o) {

@@ -8,17 +8,16 @@ use app\modules\admin\models\Job;
 use app\modules\admin\models\Dictionary;
 use app\modules\admin\logic\DictionaryLogic;
 $Path = \Yii::$app->request->hostInfo;
-
 ?>
 
 <div class="topbar">
-    <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
-    <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
-    </div>
+	<div class="search">
+		<input type="text" class="search-text" name="search" value="" placeholder="搜索"  />
+		<i class="glyphicon glyphicon-search sou" ></i>
+	</div>
+	<div class="username">
+		<a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+	</div>
 </div>
 <div class="content">
 	<div class="breadcrumbBox">
@@ -43,13 +42,16 @@ $Path = \Yii::$app->request->hostInfo;
 								</a>
 								<ul class="dropdown-menu" id="J_StatusFilter">
 									<li>
-										<a href="javascript:void(0)" data-status="-1">全部</a>
+										<a href="javascript:void(0)" data-status="-2">全部</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)" data-status="0">未支付</a>
+										<a href="javascript:void(0)" data-status="-1">拒绝</a>
 									</li>
 									<li>
-										<a href="javascript:void(0)" data-status="1">支付中</a>
+										<a href="javascript:void(0)" data-status="0">审批中</a>
+									</li>
+									<li>
+										<a href="javascript:void(0)" data-status="1">待支付</a>
 									</li>
 									<li>
 										<a href="javascript:void(0)" data-status="2">已支付</a>
@@ -142,13 +144,18 @@ $Path = \Yii::$app->request->hostInfo;
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript" src="/assets/8c065db/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
-	var actPage = 1, actStatus = -1, minMoney = -1, maxMoney = -1;
+	var actPage = 1, actStatus = -2, minMoney = -1, maxMoney = -1, actKey ='';
+	actKey = $('.search-text').val();
+	actStatus = "<?= $actStatus ;?>" || -2;
+
 	function getData() {
 		var status = {
-			0 : "未支付",
-			1 : "支付中",
+		  '-1': "拒绝",
+			0 : "审批中",
+			1 : "待支付",
 			2 : "已支付"
 		};
 
@@ -159,17 +166,21 @@ $(function() {
 				page : actPage,
 				status : actStatus,
 				minMoney : minMoney,
+				actKey : actKey,
 				maxMoney : maxMoney
 			},
 			dataType : "json",
 			success : function(d) {
 				var data = d.data,
 					c = $('#listContent').find('tbody');
+				var delBtn = '';
 				if(data.list.length) {
 					PageTotal.init('#listPages', data, actPage)
 					c.empty();
 					$.each(data.list, function(i,o) {
-						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.billNo+'</td><td>'+(o.driver.name || '暂无')+'</td><td>'+o.driver.phone+'</td><td><span class="pl24">'+o.totalMoney+'元</span></td><td>'+o.orderCnt+'单</td><td width="170"><a class="btn-default" href="<?= $Path;?>/finance/bill-driver-web/detail?id='+o._id+'">查看详情</a><a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a></td></tr>';
+						delBtn = '<a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a>';
+						var h = '<tr><td align="center"><div class="form-group"><label>'+status[o.status]+'</label></div></td><td>'+o.billNo+'</td><td>'+(o.driver.name || '暂无')+'</td><td>'+o.driver.phone+'</td><td><span class="pl24">'+ (o.amount || "") +'元</span></td><td>'+o.orderCnt+'单</td><td width="170" style="text-align:left"><a class="btn-default" href="<?= $Path;?>/finance/bill-driver-web/detail?id='+o._id+'">查看详情</a>'+ (o.status < 0 ? delBtn : "" ) +'</td></tr>';
+						//var admin = '<a class="btn-danger j-delete" href="javascript:;" data-key="'+o._id+'">删除</a>';
 						c.append(h)
 					})
 				}
@@ -215,10 +226,22 @@ $(function() {
 		})
 	}
 
+
 	$(document).on("click", '#listPages a', function() {
 		actPage = $(this).data("page");
 		getData()
 	})
+
+    $(document).on('click', '#toPage', function() {
+        var pageNum = parseInt($('#pageNum').val());
+        if(!(pageNum > $(this).data('max'))) {
+            actPage = pageNum
+            getData()
+        }
+        else {
+            alert('前往页数大与总页数！')
+        }
+    })
 
 	$(document).on("click", '#popupPages a', function() {
 		actPage = $(this).data("page");
@@ -276,14 +299,33 @@ $(function() {
 		}
 	})
 
+	$('.search-text').on('keypress', function(e) {
+		if(e.keyCode == 13) {
+			actKey = $(this).val(), actPage = 1, actStatus = -2, minMoney = -1, maxMoney = -1;
+			getData()
+		}
+	})
+
 	$('.close-btn').on('click', function() {
 		$(this).parents('.popup').hide();
 		$('.overlay:eq(0)').hide();
 	})
 
-	setInterval(function() {
+	$(document).on('focus', '.search-text', function () {
+		clearInterval(timer);
+	});
+	$(document).on('blur', '.search-text', function () {
+		timer = setInterval(function () {
+			getData()
+		}, 30000);
+
+	});
+	var timer =  setInterval(function () {
 		getData()
-	}, 30000)
+	}, 30000);
 })
 </script>
 <?php $this->endBlock();  ?>
+
+
+

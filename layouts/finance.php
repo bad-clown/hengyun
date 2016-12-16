@@ -51,7 +51,7 @@ $isContentPage = !isset($this->context->notContentPage);
 <link href="<?= $Path;?>/static/css/index.css" rel="stylesheet">
 </head>
 <body <?= isset($_GET["fullscreen"])?' class="fullscreen" ':"" ?> >
-
+<div id="mask" class="mask"></div>
 <?php
 if($isContentPage){
 ?>
@@ -59,6 +59,8 @@ if($isContentPage){
 <?php
 }else{ // is not contentpage
 ?>
+    <!--隐藏按钮 -->
+    <button class="btn btn-primary" id="hide-btn" style="position: fixed;top:2px;left:-30px; z-index: 9999;width: 5%">隐藏</button>
 <div class="wrapper">
     <div class="side-nav">
         <div class="title">
@@ -70,13 +72,27 @@ if($isContentPage){
         <div class="nav-list" id="j-nav">
             <ul>
                 <li>
-                    <a href="/finance/order-web/order-list" target="mainframe" class="nav cur">订单管理</a>
+                    <a href="/finance/order-web/order-list" target="mainframe" class="nav">订单管理<i class="glyphicon glyphicon-list-alt" ></i></a>
                 </li>
                 <li>
-                    <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">货主账单管理</a>
+                    <a href="/finance/bill-shipper-web/list" target="mainframe" class="nav">货主账单管理<i class="glyphicon glyphicon-tasks" ></i></a>
                 </li>
                 <li>
-                    <a href="/finance/bill-driver-web/list" target="mainframe" class="nav">司机账单管理</a>
+                    <a href="/finance/bill-driver-web/list" target="mainframe" class="nav">司机账单管理<i class="glyphicon glyphicon-tasks" ></i></a>
+                </li>
+                <li>
+                    <a href="javascript:;" target="mainframe" class="sched-nav select-menu">订单修改申请<i class="glyphicon glyphicon-edit" ></i></a>
+                    <ul class="sub-nav" style="display: none;">
+                        <li>
+                            <a href="/finance/order-web/apply-update?approve=0" target="mainframe">审批中</a>
+                        </li>
+                        <li>
+                            <a href="/finance/order-web/apply-update?approve=1" target="mainframe" >已批准</a>
+                        </li>
+                        <li>
+                            <a href="/finance/order-web/apply-update?approve=-1" target="mainframe" >已拒绝</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -111,7 +127,46 @@ $(function() {
         $('#j-nav .nav').removeClass('cur');
         $(this).addClass('cur');
     })
+
+    $('.bid-nav').on('click', function() {
+        if($(this).hasClass('cur')) {
+            $(this).removeClass('cur')
+            $(this).next('.sub-nav').hide();
+        }
+        else {
+            $('#j-nav .nav').removeClass('cur')
+            $(this).addClass('cur')
+            $(this).next('.sub-nav').show();
+        }
+    })
+
+    $('.sched-nav').on('click', function() {
+        if($(this).hasClass('cur')) {
+            $(this).removeClass('cur')
+            $(this).next('.sub-nav').hide();
+        }
+        else {
+            $('#j-nav .nav').removeClass('cur')
+            $(this).addClass('cur')
+            $(this).next('.sub-nav').show();
+        }
+    })
+
+    // 隐藏按钮
+    $('#hide-btn').click(function(){
+        if ($('.side-nav').prop('deep') == 'hide') {
+            $('.side-nav').toggle('show').prop('deep','show');
+            $('#hide-btn').html('隐藏');
+            $('.main').css('margin-left', '270px');
+        } else {
+            $('#hide-btn').html('显示');
+            $('.side-nav').toggle('show').prop('deep','hide');
+            $('.main').css('margin-left', '0px');
+        }
+
+    })
 });
+
 </script>
 <?php
 }

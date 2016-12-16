@@ -29,8 +29,10 @@ body{background-color: #f5f5f5;}
 .side-nav .title a{font-size: 18px;color: #2bb0bf;text-align: center;line-height: 36px;}
 .side-nav .title a span{font-size: 30px;}
 .nav-list li{font-size: 15px;color: #fff;}
-.nav-list li a{display: block;height: 50px;line-height: 50px;font-size: 15px;color: #fff;padding-left: 60px;background: url(/static/images/menu-icon.png) no-repeat 18px center;position: relative;}
-.nav-list li a:hover,.nav-list li a.cur{color: #2bb0bf;background: url(/static/images/menu-icon-hover.png) #353439 no-repeat 18px center;}
+.nav-list li a{display: block;height: 50px;line-height: 50px;font-size: 15px;color: #fff;padding-left: 60px;position: relative;}
+.nav-list li a i{ position: absolute;left:15px;top: 15px;font-size: 20px;}
+/*background: url(/static/images/menu-icon.png) no-repeat 18px center*/
+.nav-list li a:hover,.nav-list li a.cur{color: #2bb0bf;}
 
 .nav-list .badge{background-color: #ef4f51;margin-left: 40px;display: none;}
 /* 侧导航-子导航 */
@@ -40,8 +42,8 @@ body{background-color: #f5f5f5;}
 
 /* 搜索 */
 .topbar{background-color: #fff;height: 90px;-webkit-box-shadow: 0 4px 4px #c4c4c4;-moz-box-shadow: 0 4px 4px #c4c4c4;box-shadow: 0 4px 4px #c4c4c4;padding-top: 1px;}
-.search{position: relative;margin-left: 30px;margin-top: 19px;float: left;}
-.search .search-text{width: 674px;height: 50px;line-height: 50px;border-radius: 50px;padding-left: 54px;font-size: 14px;color: #464646;border: 1px solid #efefef;background-color: #f5f5f5;}
+.search{position: relative;margin-left: 30px;margin-top: 19px;float: left;width: 60%}
+.search .search-text{width: 100%;height: 50px;line-height: 50px;border-radius: 50px;padding-left: 54px;font-size: 14px;color: #464646;border: 1px solid #efefef;background-color: #f5f5f5;}
 .search .glyphicon-search{position: absolute;top: 16px;left: 25px;font-size: 18px;color: #828282;}
 /* 登录信息 */
 .username{float: right;margin-top: 35px;margin-right: 12px;font-size: 14px;color: #c1c1c1;}
@@ -64,12 +66,14 @@ body{background-color: #f5f5f5;}
 
 /* 发布管理 */
 .listBox .table{width: 100%;}
-.listBox .table tbody td{vertical-align: middle;border-top: 1px solid #e0e0e0;}
+.listBox .table tbody td{vertical-align: middle;border-top: 1px solid #e0e0e0;text-align: center;}
 .listBox .table th{background-color: #f5f5f5;padding: 20px 8px;color: #464646;font-size: 14px;text-align: left;font-weight: 700;}
 .listBox .form-group{padding-bottom: 0;margin: 0;}
 .listBox .checkbox .checkbox-material{margin-right: 10px;}
 .content a.btn-default,.content a.btn-info{background:#fff;border:1px solid #2bb0bf;color: #2bb0bf;display: inline-block;width: 68px;height: 36px;line-height: 36px;text-align: center;border-radius: 3px;margin-right: 8px;}
 .content a.btn-danger{background-color: #fff;border:1px solid #d43f3a;color: #d9534f;display: inline-block;width: 68px;height: 36px;line-height: 36px;text-align: center;border-radius: 3px;margin-right: 8px;}
+.content a.btn-gray{background-color: #fff;border:1px solid #9e9e9e;;color: #9e9e9e;;display: inline-block;width: 68px;height: 36px;line-height: 36px;text-align: center;border-radius: 3px;margin-right: 8px;}
+
 .listBox .form-group .checkbox label,.listBox .form-group label,.listBox .c-ef4f4f{color: #ef4f4f;}
 .listBox .form-group .checkbox .checkbox-material{display: none;}
 .mb60{margin-bottom: 60px;}
@@ -133,7 +137,7 @@ body{background-color: #f5f5f5;}
 .driverBox .suc-driver-control,.shipperBox .suc-btn-option{display: block;width: 70px;height: 32px;line-height: 30px;border: 1px solid #2bb0bf;text-align: center;border-radius: 3px;background-color: #2bb0bf;color: #fff;}
 .listBox .has-driver,.listBox .has-driver:link,.listBox .has-driver:visited{border-color: #9e9e9e;color: #9e9e9e;background-color: #fff;}
 /* 报价订单详情 */
-.bid-detail .form-group{width: 17%;}
+.bid-detail .form-group{width: 22%;}
 .bid-detail .form-group-last{width: 97%;}
 
 
@@ -177,4 +181,21 @@ body{background-color: #f5f5f5;}
 .sched-router .form-group input,.sched-router .form-group select{color: #464646;}
 .sched-router .btn-update,.sched-router .btn-save{border: 1px solid #5fc4d0;background-color: #fff;color: #2cafc1;float: left;margin-top: 37px;margin-right: 3%;}
 .sched-router .btn-disabled{border: 1px solid #9e9e9e;color: #9f9f9f;}
+/*活动中心*/
+#activity .a-title,#startTime,#endTime{border: 1px solid #D2D2D2;border-radius: 5px;border-bottom: 0; padding: 5px 10px;}
+#activity .form-group{margin-bottom: 55px}
+#activity .control-label{font-size: 17px;line-height:5px }
+#activity .activeTime{position: absolute;right: 19px;top: 5px;background: url(/static/images/calender@x2.png);width:28px;height:28px}
+#activity .endTime{position: absolute;top: 139px;left: 58%;width: 40%}
+#activity .textarea{ width:100%;border: 1px solid #D2D2D2;border-radius: 5px;border-bottom: 0;padding: 5px 10px;}
+#listContent th{text-align: center;height: 40px;}
+.topbar .content {height: 210px;position: relative;bottom: 26px;display: none;z-index: 2;border-radius: 10px;}
+.topbar .content .gaoji { position: absolute; width:100%}
+.topbar .content .gaoji li{margin:10px 0;}
+.topbar .content .gaoji input, .topbar .content .gaoji #startTime, .topbar .content .gaoji #endTime{border: 1px solid #D2D2D2;border-radius: 5px; padding: 5px 10px;width:35%;height: 30px}
+.topbar .content .gaoji .glyphicon-calendar{position: relative;right: 20px;}
+.topbar .content .gaoji .glyphicon-minus{margin-right:15px;padding: 0 3px }
+/*遮罩层*/
+#mask { position: absolute; top: 0px; filter: alpha(opacity=60);  background-color: #777;  z-index: 888;  left: 0px;  transition: all 1s;  opacity: 0.5;  -moz-opacity: 0.5;  display: none; }
+
 

@@ -15,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-        <i class="glyphicon glyphicon-search"></i>
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索"  />
+        <i class="glyphicon glyphicon-search sou" ></i>
     </div>
     <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+        <a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
     </div>
 </div>
 <div class="content">
@@ -83,9 +83,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript" src="/assets/8c065db/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
-    var actPage = 1, actType = "";
+    var actPage = 1, actType = "",actKey = "";
+    actKey = $('.search-text').val();
     function getData() {
         var type = {
             admin : "管理员",
@@ -97,7 +99,8 @@ $(function() {
             url : "<?= $Path;?>/admin/user/managers",
             data : {
                 page : actPage,
-                type : actType
+                type : actType,
+                key :  actKey
             },
             dataType : "json",
             success : function(d) {
@@ -131,8 +134,20 @@ $(function() {
         getData()
     })
 
+    $(document).on('click', '#toPage', function() {
+        var pageNum = parseInt($('#pageNum').val());
+
+        if(!(pageNum > $(this).data('max'))) {
+            actPage = pageNum
+            getData()
+        }
+        else {
+            alert('前往页数大与总页数！')
+        }
+    })
+
     $('.dropdown-menu a').on('click', function() {
-        actPage = 1;
+        actPage = 1,actKey = '';;
         actType = $(this).data('type');
         getData()
     })
@@ -176,6 +191,13 @@ $(function() {
                     }
                 }
             })
+        }
+    })
+
+    $('.search-text').on('keypress', function(e) {
+        if(e.keyCode == 13) {
+            actKey = $(this).val(), actPage = 1, actType = '' ;
+            getData()
         }
     })
 })

@@ -73,6 +73,18 @@ $(function() {
 
 				var end = this.total;
 			}
+
+			if(this.current > 1 && this.current < 6) {
+				this.obj.append("<li class='prev'><a href='javascript:;' data-page='"+(1)+"'><<</a></li>");
+			}
+			else if(this.current == 1){
+				this.obj.append("<li class='prev disabled'><span>|<<</span></li>");
+			}
+			else {
+				this.obj.append("<li class='prev'><a href='javascript:;' data-page='"+(this.current - 5)+"'><<</a></li>");
+			}
+
+
 			if (this.current > 1) {
 				this.obj.append("<li class='prev'><a href='javascript:;' data-page='"+(this.current - 1)+"'>«</a></li>");
 			}
@@ -81,6 +93,7 @@ $(function() {
 			}
 
 			for (var i = index; i <= end; i++) {
+
 				if (i == this.current) {
 					this.obj.append("<li class='active'><a href='javascript:;' data-page='"+(this.current)+"'>"+i+"</a></li>");
 				} else {
@@ -94,6 +107,19 @@ $(function() {
 			else if(this.current == end){
 				this.obj.append("<li class='next disabled'><span>»</span></li>");
 			}
+
+			if(this.current < end && this.current > (end-5)) {
+				this.obj.append("<li class='next'><a href='javascript:;' data-page='"+(end)+"'>\>>|</a></li>");
+			}
+			else if(this.current == end) {
+				this.obj.append("<li class='next disabled'><span>\>>|</span></li>");
+			}
+			else {
+				this.obj.append("<li class='next'><a href='javascript:;' data-page='"+(this.current + 5)+"'>\>>|</a></li>");
+			}
+
+
+			this.obj.append("<li><span>前往 <input style='width:33px;text-align:center;' id='pageNum' type='text' value='' /> 页</span></li><li><span style='cursor: pointer;' id='toPage' data-max='"+ this.total +"'>跳转</span><span style='cursor: pointer;'>共"+ this.total +"页</span></li>")
 		}
 	};
 	window.PageTotal = _global.PageTotal;

@@ -15,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-        <i class="glyphicon glyphicon-search"></i>
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索"  />
+        <i class="glyphicon glyphicon-search sou" ></i>
     </div>
     <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+        <a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
     </div>
 </div>
 <div class="content">
@@ -47,10 +47,14 @@ $this->params['breadcrumbs'][] = $this->title;
             <input class="form-control" name="password" value="" type="password">
         </div>
         <div class="form-group">
+            <label class="control-label">工号</label>
+            <input class="form-control" name="reference" value="" type="text">
+        </div>
+        <div class="form-group">
             <label class="control-label">类型</label>
             <select name="type" class="form-control">
                 <option value="admin">管理员</option>
-                <option value="sched">调度员</option>
+                <option value="sched">交易员</option>
                 <option value="finance">账务员</option>
             </select>
         </div>
@@ -59,12 +63,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <?php $this->beginBlock("bottomcode");  ?>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
     $('#j-save-control').on('click', function() {
         var phone = $("input[name='phone']").val();
         var name = $("input[name='name']").val();
         var password = $("input[name='password']").val();
+        var reference = $("input[name='reference']").val();
         var type = $("select[name='type']").val();
         var reg = /^0?1[3|4|5|8][0-9]\d{8}$/;
         if(!reg.test(phone)) {
@@ -86,6 +92,7 @@ $(function() {
             phone : phone,
             name: name,
             password : password,
+            reference : reference,
             type : type
         }
         $.ajax({

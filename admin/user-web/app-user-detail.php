@@ -12,13 +12,13 @@ $Path = \Yii::$app->request->hostInfo;
 ?>
 
 <div class="topbar">
-    <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
-    <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
-    </div>
+	<div class="search">
+		<input type="text" class="search-text" name="search" value="" placeholder="搜索"  />
+		<i class="glyphicon glyphicon-search sou" ></i>
+	</div>
+	<div class="username">
+		<a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+	</div>
 </div>
 
 <div class="content">
@@ -31,7 +31,8 @@ $Path = \Yii::$app->request->hostInfo;
 		<a href="javascript:;" id="j-change-control" class="btn save-control" >修改</a>
 		<a href="javascript:;" id="j-save-control" class="btn save-control" style="display:none" >保存</a>
 		<a href="javascript:;" id="j-cancel-control" class="btn cancel-control" style="display: none;">取消</a>
-		<a href="<?= $Path;?>/admin/user-web/app-users" id="j-back-control" class="btn back-control">返回</a>
+		<a href="javascript:;" id="j-back-control" class="btn back-control">返回</a>
+<!--		--><?//= $Path;?><!--/admin/user-web/app-users-->
 	</div>
 
 	<div class="detail-box pb100">
@@ -49,6 +50,7 @@ $Path = \Yii::$app->request->hostInfo;
 
 
 <?php $this->beginBlock("bottomcode");  ?>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
 	var type = {
@@ -74,17 +76,19 @@ $(function() {
 			var avatar = data.avatar ? "<img src='<?= $Path;?>"+data.avatar+"' />" : '未上传';
 			var idFront = data.idFront ? "<img src='<?= $Path;?>"+data.idFront+"' />" : '未上传';
 			var idBack = data.idBack ? "<img src='<?= $Path;?>"+data.idBack+"' />" : '未上传';
+			var driving = data.driving ? "<img src='<?= $Path;?>"+data.driving+"' />" : '未上传';
+			var ref = '<div class="form-group label-floating"><label class="control-label">推荐码</label><input class="form-control" readonly="readonly" name="refCode" value="'+ (data.refCode || "") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">我的推荐人</label><input class="form-control" readonly="readonly" name="myReferee" value="'+ (data.myReferee || "") +'" type="text"></div>';
 
 			if(data.category == 1) {
-				var company = '<div class="form-group label-floating"><label class="control-label">真实姓名</label><input class="form-control" readonly="readonly" name="name" value="'+ (data.name || "") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">身份证号</label><input class="form-control" readonly="readonly" name="id" value="'+ (data.id || "") +'" type="text"></div>';
-				var idHtml = '<div class="form-group pictureBox"><label class="control-label">身份证正面</label><div class="input-group"><input type="file" id="inputFile2" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idFront+'</div></div><div class="form-group pictureBox"><label class="control-label">身份证反面</label><div class="input-group"><input type="file" id="inputFile3" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idBack+'</div>';
+				var company = '<div class="form-group label-floating"><label class="control-label">真实姓名</label><input class="form-control" readonly="readonly" name="name" value="'+ (data.name || "") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">身份证号</label><input class="form-control" readonly="readonly" name="id" value="'+ (data.id || "") +'" type="text"></div>'+ ref ;
+				var idHtml = '<div class="form-group pictureBox"><label class="control-label">行驶证</label><div class="input-group"><input type="file" id="inputFile4" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+ driving +'</div></div><div class="form-group pictureBox"><label class="control-label">身份证正面</label><div class="input-group"><input type="file" id="inputFile2" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idFront+'</div></div><div class="form-group pictureBox"><label class="control-label">身份证反面</label><div class="input-group"><input type="file" id="inputFile3" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idBack+'</div>';
 			}
 			else {
-				var company = '<div class="form-group label-floating"><label class="control-label">真实姓名</label><input class="form-control" readonly="readonly" name="name" value="'+ (data.name || "") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">身份证号</label><input class="form-control" readonly="readonly" name="id" value="'+ (data.id || "") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">公司名称</label><input class="form-control" readonly="readonly" name="company" value="'+ (data.company||"暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">推荐码</label><input class="form-control" readonly="readonly" name="reference" value="'+ (data.reference||"暂无") +'" type="text"></div>';
+				var company = '<div class="form-group label-floating"><label class="control-label">真实姓名</label><input class="form-control" readonly="readonly" name="name" value="'+ (data.name || "") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">身份证号</label><input class="form-control" readonly="readonly" name="id" value="'+ (data.id || "") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">公司名称</label><input class="form-control" readonly="readonly" name="company" value="'+ (data.company||"暂无") +'" type="text"></div><div class="form-group label-floating"><label class="control-label">托管人</label><input class="form-control" readonly="readonly" name="reference" value="'+ (data.reference||"暂无") +'" type="text"></div>' + ref;
 				var lisence = data.lisence ? "<img src='<?= $Path;?>"+data.lisence+"' />" : '未上传';
 				var idHtml = '<div class="form-group pictureBox"><label class="control-label">营业执照</label><div class="input-group"><input type="file" id="inputFile4" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+lisence+'</div></div><div class="form-group pictureBox"><label class="control-label">身份证正面</label><div class="input-group"><input type="file" id="inputFile2" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idFront+'</div></div><div class="form-group pictureBox"><label class="control-label">身份证反面</label><div class="input-group"><input type="file" id="inputFile3" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+idBack+'</div>';
 			}
-
+			//var company ='<div class="form-group label-floating"><label class="control-label">真实姓名</label>';
 			var userHTML = '<div class="clearfix"><div class="form-group label-floating"><label for="status" class="control-label">状态</label><input class="form-control" readonly="readonly" name="status" value="'+ status[data.authStatus] +'" type="text"></div><div class="form-group label-floating"><label class="control-label">用户名</label><input class="form-control" readonly="readonly" name="phone" value="'+ data.phone +'" type="text"></div><div class="form-group label-floating"><label class="control-label">类型</label><input class="form-control" readonly="readonly" name="type" value="'+ type[data.type]+(category[data.category] || "") +'"></div><div class="form-group label-floating"><label class="control-label">昵称</label><input class="form-control" readonly="readonly" name="nickname" value="'+ (data.nickname ||"暂无") +'" type="text"></div>'+ company +'</div></div><div class="clearfix"><div class="form-group pictureBox"><label class="control-label">头像</label><div class="input-group"><input type="file" id="inputFile1" multiple=""><span class="glyphicon glyphicon-repeat"></span><label class="control-label">更换</label></div><div class="picture">'+avatar+'</div></div>'+ idHtml +'</div>';
 
             $user.append(userHTML);
@@ -119,6 +123,8 @@ $(function() {
 		$('input[name="id"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
 		$('input[name="company"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
 		$('input[name="reference"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
+		$('input[name="refCode"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
+		$('input[name="myReferee"]').removeAttr('readonly').data('hasChange', true).parent('.form-group').addClass('has-warning');
 		$('#j-change-control').hide();
 		$('#j-back-control').hide();
 		$('#j-save-control').show();
@@ -131,6 +137,8 @@ $(function() {
 			name : $('input[name="name"]').val(),
 			id : $('input[name="id"]').val(),
 			company : $('input[name="company"]').val(),
+			refCode : $('input[name="refCode"]').val(),
+			myReferee : $('input[name="myReferee"]').val(),
 			reference : $('input[name="reference"]').val()
 		}
 
@@ -154,6 +162,10 @@ $(function() {
 			}
 		})
 
+	})
+
+	$('#j-back-control').on('click',function(){
+		window.history.go(-1);
 	})
 
 	$('#j-cancel-control').on('click', function() {

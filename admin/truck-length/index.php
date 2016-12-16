@@ -14,12 +14,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="topbar">
-    <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
     <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+        <a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> |  <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
     </div>
 </div>
 <div class="content">
@@ -56,10 +52,10 @@ $this->params['breadcrumbs'][] = $this->title;
 //                                        ]);
                                 },
                                 'update' => function ($url, $model) {
-//                                    return Html::a('更新', $url, [
-//                                        'class' => 'btn-xs btn-info',
-//                                        'title' => Yii::t('yii', 'Update'),
-//                                        ]);
+                                    return Html::a('更新', $url, [
+                                        'class' => 'btn-xs btn-info',
+                                        'title' => Yii::t('yii', 'Update'),
+                                        ]);
                                 },
                             ],
                         ],
@@ -71,6 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 <?php $this->beginBlock("bottomcode");  ?>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 
 </script>

@@ -12,13 +12,13 @@ $Path = \Yii::$app->request->hostInfo;
 ?>
 
 <div class="topbar">
-    <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" id="search_submit" />
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
-    <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
-    </div>
+	<div class="search">
+		<input type="text" class="search-text" name="search" value="" placeholder="搜索" />
+		<i class="glyphicon glyphicon-search"></i>
+	</div>
+	<div class="username">
+		<a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+	</div>
 </div>
 
 <div class="content mb60">
@@ -43,6 +43,8 @@ $Path = \Yii::$app->request->hostInfo;
 					<th>总件数</th>
 					<th>总吨数</th>
 					<th>几装几卸</th>
+					<th>公司名称</th>
+					<th>联系人</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -71,7 +73,7 @@ $Path = \Yii::$app->request->hostInfo;
 		<div class="popup-breadcrumb">
 			<div class="breadcrumbBox">
 				<ul class="breadcrumb">
-					<li>调度员列表</li>
+					<li>交易员列表</li>
 					<li>转发</li>
 				</ul>
 				<a href="javascript:;" class="btn btn-primary" id="shipper-complete" title="确认">确认</a>
@@ -89,7 +91,7 @@ $Path = \Yii::$app->request->hostInfo;
 					</thead>
 					<tbody></tbody>
 				</table>
-				<div class="shipperPages"><ul class="pagination" id="popupPages"></ul></div>
+<!--				<div class="shipperPages"><ul class="pagination" id="popupPages"></ul></div>-->
 			</div>
 		</div>
 	</div>
@@ -97,35 +99,32 @@ $Path = \Yii::$app->request->hostInfo;
 
 
 <?php $this->beginBlock("bottomcode");  ?>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
-    // 获取搜索栏内容
-    $(document).on('change','#search_submit',function(){
-        var search_val = $('#search_submit').val();
-        getData(search_val);
+	var actKey = '';
+	actKey = $('.search-text').val();
+	function getData() {
 
-    })
-
-	function getData(search_val) {
-        if (!search_val) {
-            search_val = '';
-        }
 		$.ajax({
 			type : "GET",
 			url : "<?= $Path;?>/sched/order/new",
             data : {
-			    search_val:search_val
+				actKey : actKey
 			},
 			dataType : "json",
 			success : function(data) {
 				if(data.code == "0") {
-					var c = $('#listContent').find('tbody');
-					c.empty();
+					var $listContent = $('#listContent').find('tbody');
+					var htmlCont = '';
+					$listContent.empty();
 					$.each(data.data, function(i,o) {
+						var shipperName = (o.shipper.nickname || '暂无');
+						var shipperCompany = (o.shipper.company || '暂无');
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+ Sched.status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-default j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-default j-relay" href="javascript:;" data-key="'+o.orderNo+'">转发</a></td></tr>';
-						c.append(h)
+						htmlCont += '<tr><td><div class="form-group"><div class="checkbox"><label><input type="checkbox" data-num="'+o._id+'"><span class="checkbox-material"><span class="check"></span></span>'+ Sched.status[o.status]+'</label></div></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td>'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td>'+o.provinceTo+o.cityTo+o.districtTo+'</td><td><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td>'+o.totalWeight+'</td><td>'+o.pickupDrop+'</td><td>'+ shipperCompany +'</td><td>'+ shipperName +'</td><td width="250"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail?id='+o._id+'">查看详情</a><a class="btn-default j-publish" href="javascript:;" data-key="'+o._id+'">发布</a><a class="btn-default j-relay" href="javascript:;" data-key="'+o.orderNo+'">转发</a></td></tr>';
 					})
+					$listContent.append(htmlCont)
 					_global.badge();
 				}
 			}
@@ -168,34 +167,44 @@ $(function() {
 
 	$(document).on('click', '.j-publish',function() {
 		var k = $(this).data('key');
-
-		$.ajax({
-			type : "GET",
-			url : "<?= $Path;?>/sched/order/publish?orderId="+k,
-			success : function(data) {
-				// console.log(data);
-				if(data.code == "0") {
-					alert('发布成功！');
-					getData()
-					_global.badge();
+		if(confirm("确定发布吗？")) {
+			$.ajax({
+				type: "GET",
+				url: "<?= $Path;?>/sched/order/publish?orderId=" + k,
+				success: function (data) {
+					// console.log(data);
+					if (data.code == "0") {
+						alert('发布成功！');
+						getData()
+						_global.badge();
+					}
+					else {
+						alert('发布失败，请重试！');
+						getData()
+						_global.badge();
+					}
+				},
+				error: function () {
+					alert("发布失败，请检查网络后重试！");
 				}
-				else {
-					alert('发布失败，请重试！');
-					getData()
-					_global.badge();
-				}
-			},
-			error : function() {
-				alert("发布失败，请检查网络后重试！");
-			}
-		})
+			})
+		}
 	})
 
 	$(document).on('click', '.j-relay', function() {
-		//console.log(this);
 		var orderNo = $(this).data('key');
+		var mainheight = $(document).height()+30;
+		$("#mask").css({height:mainheight + 'px',width:'100%',display:'block'});
+		$("#mask").show();
 		$('.shipper-pop').show();
 		getSchedRouter(orderNo);
+	})
+
+	$('.close-btn').on('click', function() {
+		$('#orderDetails').find('tbody').empty()
+		$("#mask").hide();
+		$(this).parents('.popup').hide();
+		$('.overlay:eq(0)').hide();
 	})
 
 	$(document).on('click', '.btn-option', function() {
@@ -240,6 +249,7 @@ $(function() {
 				dataId.push($(o).data('num'));
 			}
 		})
+
 
 		if(dataId.length) {
 			$.ajax({
@@ -336,19 +346,17 @@ $(function() {
 		$('.batch-control').hide();
 	})
 
-	$('.close-btn').on('click', function() {
-		$('#orderDetails').find('tbody').empty()
-		$(this).parents('.popup').hide();
-		$('.overlay:eq(0)').hide();
-	})
-
-	/*setInterval(function() {
-		getData()
-	}, 30000)*/
 
 	var listTimer = setInterval(function() {
 		getData()
 	}, 30000)
+
+	$(document).on('keypress','.search-text', function(e) {
+		if(e.keyCode == 13) {
+			actKey = $(this).val(), actPage = 1;
+			getData()
+		}
+	})
 
 
 })

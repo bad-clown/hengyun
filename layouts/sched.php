@@ -52,6 +52,7 @@ $isContentPage = !isset($this->context->notContentPage);
 <link href="<?= $Path;?>/static/css/index.css" rel="stylesheet">
 </head>
 <body <?= isset($_GET["fullscreen"])?' class="fullscreen" ':"" ?> >
+<div id="mask" class="mask"></div>
 
 <?php
 if($isContentPage){
@@ -60,6 +61,8 @@ if($isContentPage){
 <?php
 }else{ // is not contentpage
 ?>
+    <!--隐藏按钮 -->
+    <button class="btn btn-primary" id="hide-btn" style="position: fixed;top:2px;left:-30px; z-index: 9999;width: 5%">隐藏</button>
 <div class="wrapper">
     <div class="side-nav">
         <div class="title">
@@ -71,7 +74,7 @@ if($isContentPage){
         <div class="nav-list">
             <ul>
                 <li>
-                    <a href="javascript:;" target="mainframe" class="cur">调度中心<span class="badge" id="total-cnt">0</span></a>
+                    <a href="javascript:;" target="mainframe" class="cur">调度中心<span class="badge" id="total-cnt">0</span><i class="glyphicon glyphicon-time" ></i></a>
                     <ul class="sub-nav">
                         <li>
                             <a href="/sched/order-web/new?sort=-time" target="mainframe">发布管理<span class="badge" id="new-cnt">0</span></a>
@@ -82,10 +85,21 @@ if($isContentPage){
                         <li>
                             <a href="/sched/order-web/transport-list" target="mainframe">运输管理<span class="badge" id="trans-cnt">0</span></a>
                         </li>
+                        <li>
+                            <a href="/sched/order-web/reject-list" target="mainframe">报价失败列表<span class="badge" id="reject-cnt">0</span></a>
+                        </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="/finance/order-web/order-list" target="mainframe" class="nav">订单管理</a>
+                    <a href="javascript:;" target="mainframe" class=" cur">订单管理<i class="glyphicon glyphicon-list-alt" ></i></a>
+                    <ul class="sub-nav" >
+                        <li>
+                            <a href="/finance/order-web/order-list" target="mainframe" >我的交易</a>
+                        </li>
+                        <li>
+                            <a href="/finance/order-web/recommend" target="mainframe" >我的托管</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -129,6 +143,32 @@ $(function() {
     $('.sub-nav a').on('click', function() {
         $('.sub-nav a').removeClass('cur')
         $(this).addClass('cur');
+    })
+
+    $('.bid-nav').on('click', function() {
+        if($(this).hasClass('cur')) {
+            $(this).removeClass('cur')
+            $(this).next('.sub-nav').hide();
+        }
+        else {
+            $('#j-nav .nav').removeClass('cur')
+            $(this).addClass('cur')
+            $(this).next('.sub-nav').show();
+        }
+    })
+
+    // 隐藏按钮
+    $('#hide-btn').click(function(){
+        if ($('.side-nav').prop('deep') == 'hide') {
+            $('.side-nav').toggle('show').prop('deep','show');
+            $('#hide-btn').html('隐藏');
+            $('.main').css('margin-left', '270px');
+        } else {
+            $('#hide-btn').html('显示');
+            $('.side-nav').toggle('show').prop('deep','hide');
+            $('.main').css('margin-left', '0px');
+        }
+
     })
 });
 </script>

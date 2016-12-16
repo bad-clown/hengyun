@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索" />
         <i class="glyphicon glyphicon-search"></i>
     </div>
     <div class="username">

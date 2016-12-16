@@ -12,13 +12,13 @@ $Path = \Yii::$app->request->hostInfo;
 ?>
 
 <div class="topbar">
-    <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" />
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
-    <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
-    </div>
+	<div class="search">
+		<input type="text" class="search-text" name="search" value="" placeholder="搜索"  />
+		<i class="glyphicon glyphicon-search sou" ></i>
+	</div>
+	<div class="username">
+		<a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+	</div>
 </div>
 
 <div class="content">
@@ -27,7 +27,7 @@ $Path = \Yii::$app->request->hostInfo;
 			<li><a href="<?= $Path;?>/finance/bill-driver-web/list">账单管理</a></li>
 			<li class="active">新增账单</li>
 		</ul>
-		<a href="javascript:;" id="j-save-control" class="btn save-control">保存</a>
+		<a href="javascript:;" id="j-save-control" class="btn save-control">提交</a>
 		<a href="<?= $Path;?>/finance/bill-driver-web/list" class="btn back-control">返回</a>
 	</div>
 
@@ -38,9 +38,9 @@ $Path = \Yii::$app->request->hostInfo;
 		<div class="clearfix" id="J-bill-detail">
 			<div class="form-group label-floating select-menu">
 				<label for="status" class="control-label">账单状态</label>
-				<select id="status" name="status" class="form-control">
-					<option value="0">未支付</option>
-					<option value="1">支付中</option>
+				<select id="status" name="status" class="form-control" disabled="disabled">
+					<option value="0" selected>待审批</option>
+					<option value="1">待支付</option>
 					<option value="2">已支付</option>
 				</select>
 			</div>
@@ -56,7 +56,14 @@ $Path = \Yii::$app->request->hostInfo;
 				<label class="control-label">订单个数</label>
 				<input class="form-control" readonly="readonly" name="orderCnt" value="" type="text">
 			</div>
-
+			<div class="form-group label-floating">
+				<label class="control-label">运费</label>
+				<input class="form-control" readonly="readonly" name="realTotalMoney" value="" type="text">
+			</div>
+			<div class="form-group label-floating">
+				<label class="control-label">代付款</label>
+				<input class="form-control" readonly="readonly" name="daifu" value="" type="text">
+			</div>
 		</div>
         <div class="detail-label">
             <span class="label label-default">订单明细</span>
@@ -169,7 +176,7 @@ $Path = \Yii::$app->request->hostInfo;
 
 						<tr class="key<?=$value["_id"];?>" data-key="<?=$value["_id"];?>">
 							<td><?=$value["orderNo"];?></td>
-							<td><?=$value["deliverTime"];?></td>
+							<td><?= date('Y-m-d H:i:s', $value["deliverTime"]);?></td>
 							<td><?=$value["provinceFrom"];?><?=$value["cityFrom"];?><?=$value["districtFrom"];?></td>
 							<td><?=$value["provinceTo"];?><?=$value["cityTo"];?><?=$value["districtTo"];?></td>
 							<td><?=$value["goodsCnt"];?>件</td>
@@ -193,6 +200,7 @@ $Path = \Yii::$app->request->hostInfo;
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript" src="<?= $Path;?>/static/laydate/laydate.js"></script>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
 	/*laydate({
@@ -228,7 +236,6 @@ $(function() {
 		$orderDetailList.each(function(i, o) {
 			if($(o).hasClass('has')) {
 				var $td = $(o).find('td');
-
 				var html = '<tr data-key="'+$(o).data("key")+'"><td>'+$td.eq(0).text()+'</td><td>'+$td.eq(1).text()+'</td><td>'+$td.eq(2).text()+'</td><td>'+$td.eq(3).text()+'</td><td>'+$td.eq(4).text()+'</td><td>'+$td.eq(5).text()+'</td><td>'+$td.eq(6).text()+'</td><td class="totalMoney">'+ $td.eq(7).text() +'</td><td>'+$td.eq(8).text()+'</td><td class="daifu">'+ $td.eq(9).text() +'</td><td width="100"><a class="btn-danger j-delete" href="javascript:;" data-key="'+$(o).data("key")+'">删除</a></td></tr>';
 				$orderList.append(html);
 				$(o).removeClass('has');
@@ -239,12 +246,15 @@ $(function() {
 		var $td = $orderList.find(".totalMoney");
 		var $daifu = $orderList.find(".daifu");
 		var totalMoney = 0;
+		var daifu = 0;
 		for(var n=0;n<$td.length;n++) {
-
-			totalMoney += parseFloat($td.eq(n).text()*1+$daifu.eq(n).text()*1);
+			totalMoney += parseFloat($td.eq(n).text()*1);
+			daifu += parseFloat($daifu.eq(n).text()*1);
 		}
-		$('input[name="totalMoney"]').val(totalMoney)
+		$('input[name="totalMoney"]').val(totalMoney + daifu)
 		$('input[name="orderCnt"]').val($orderList.find("tr").length)
+		$('input[name="realTotalMoney"]').val(totalMoney).change()
+		$('input[name="daifu"]').val(daifu).change()
 		$('input[name="totalMoney"]').change()
 		$('input[name="orderCnt"]').change()
 		$('.close-btn').click();
@@ -289,16 +299,17 @@ $(function() {
 			data : data,
 			dataType : 'json',
 			success : function(data) {
+
 				if(data.code == '0') {
-					alert('保存成功！');
+					alert('提交成功！');
 					window.location.href="<?= $Path;?>/finance/bill-driver-web/list";
 				}
 				else {
-					alert('保存失败，请检查账单后重试！');
+					alert('提交失败，请检查账单后重试！');
 				}
 			},
 			erroe : function() {
-				alert("保存失败，请检查网络后重试！");
+				alert("提交失败，请检查网络后重试！");
 			}
 		})
 	})

@@ -11,13 +11,13 @@ $Path = \Yii::$app->request->hostInfo;
 
 ?>
 <div class="topbar">
-    <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索订单" id="search_submit"/>
-        <i class="glyphicon glyphicon-search"></i>
-    </div>
-    <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
-    </div>
+	<div class="search">
+		<input type="text" class="search-text" name="search" value="" placeholder="搜索" />
+		<i class="glyphicon glyphicon-search"></i>
+	</div>
+	<div class="username">
+		<a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+	</div>
 </div>
 <div class="content">
 	<div class="breadcrumbBox">
@@ -41,7 +41,7 @@ $Path = \Yii::$app->request->hostInfo;
 					<th>几装几卸</th>
 					<th>司机报价</th>
 					<th>货主的价格</th>
-					<th>调度员</th>
+					<th>交易员</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -52,29 +52,25 @@ $Path = \Yii::$app->request->hostInfo;
 </div>
 
 <?php $this->beginBlock("bottomcode");  ?>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
-    $(document).bind('change','#search_submit',function(){
-        var search_val = $('#search_submit').val();
-        getData(search_val);
-    });
-	function getData(search_val) {
-	    var obj = {};
-        if (!search_val) {
-            search_val = '';
-        }
+   var actKey = '';
+	actKey = $('.search-text').val();
+	function getData() {
+
 		$.ajax({
 			type : "GET",
 			url : "<?= $Path;?>/sched/order/transport-list",
             data: {
-                search_val:search_val
+				actKey : actKey
             },
 			dataType : "json",
 			success : function(data) {
-				// console.log(data)
 				if(data.code == "0") {
-					var c = $('#listContent').find('tbody');
-					c.empty();
+					var $listContent = $('#listContent').find('tbody');
+					var htmlCont = '';
+					$listContent.empty();
 					$.each(data.data, function(i,o) {
 						if(!o.driverBid) {
 							var driverBid = '暂无司机报价';
@@ -90,10 +86,9 @@ $(function() {
 						}
 
 						var t = _global.FormatTime(o.deliverTime);
-						var h = '<tr><td><div class="form-group"><label>'+Sched.status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+driverBid+'</td><td>'+bidPrice+'</td><td>'+ o.scheduler +'</td><td width="100"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail-trans?id='+o._id+'">查看详情</a></td></tr>';
-
-						c.append(h)
+						htmlCont += '<tr><td><div class="form-group"><label>'+Sched.status[o.status]+'</label></div></td><td>'+o.orderNo+'</td><td>'+t+'</td><td class="from">'+o.provinceFrom+o.cityFrom+o.districtFrom+'</td><td class="to">'+o.provinceTo+o.cityTo+o.districtTo+'</td><td class="cnt"><a href="javascript:;" data-key="'+o.orderNo+'">'+o.goodsCnt+'件</a></td><td class="weight">'+(o.realTotalWeight || 0)+'</td><td class="drop">'+o.pickupDrop+'</td><td>'+driverBid+'</td><td>'+bidPrice+'</td><td>'+ o.scheduler +'</td><td width="100"><a class="btn-default" href="<?= $Path;?>/sched/order-web/detail-trans?id='+o._id+'">查看详情</a></td></tr>';
 					})
+					$listContent.append(htmlCont)
 					_global.badge();
 				}
 			}
@@ -101,9 +96,25 @@ $(function() {
 	}
 	getData()
 
-	setInterval(function() {
+	$(document).on('focus', '.search-text', function () {
+		clearInterval(timer);
+	});
+	$(document).on('blur', '.search-text', function () {
+		timer = setInterval(function () {
+			getData()
+		}, 30000);
+
+	});
+	var timer =  setInterval(function () {
 		getData()
-	}, 30000)
+	}, 30000);
+
+	$(document).on('keypress','.search-text', function(e) {
+		if(e.keyCode == 13) {
+			actKey = $(this).val();
+			getData()
+		}
+	})
 })
 </script>
 <?php $this->endBlock();  ?>

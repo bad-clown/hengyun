@@ -15,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="topbar">
     <div class="search">
-        <input type="text" class="search-text" name="search" value="" placeholder="搜索用户" />
-        <i class="glyphicon glyphicon-search"></i>
+        <input type="text" class="search-text" name="search" value="" placeholder="搜索"  />
+        <i class="glyphicon glyphicon-search sou" ></i>
     </div>
     <div class="username">
-        <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
+        <a href="#"><span><?= \Yii::$app->user->identity->type;?></span></a> | <a href="#"><?= \Yii::$app->user->identity->phone;?></a> | <a href="<?= $Path;?>/user/logout-web" target="_parent" data-method="post">安全退出</a>
     </div>
 </div>
 <div class="content">
@@ -103,10 +103,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php $this->beginBlock("bottomcode");  ?>
 <script type="text/javascript" src="/assets/8c065db/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?= $Path;?>/static/js/search.js"></script>
 <script type="text/javascript">
 $(function() {
     var actPage = 1, actStatus = "", actType = "", actKey = "";
-
+    actKey = $('.search-text').val();
     function getData() {
         var type = {
             driver : "司机",
@@ -122,6 +123,7 @@ $(function() {
             0 : "（公司）",
             1 : "（个人/车队）"
         }
+
         $.ajax({
             type : "GET",
             url : "<?= $Path;?>/admin/user/app-users",
@@ -143,7 +145,7 @@ $(function() {
                         var company = (o.company || '暂无');
                         var name = (o.name || '暂无');
                         var t = _global.FormatTime(o.created_at);
-                        var h = '<tr><td align="center">'+status[o.authStatus]+'</td><td>'+ o.phone +'</td><td align="center">'+(o.name || "暂无")+'</td><td align="center">'+(o.nickname || "暂无")+'</td><td align="center">'+type[o.type]+(category[o.category] || "")+'</td><td align="center">'+t+'</td><td>'+ company  +'</td><td>'+ name +'</td><td>'+ (o.reference || '暂无') +'</td><td width="180"><a class="btn-default" href="<?= $Path;?>/admin/user-web/app-user-detail?id='+o._id+'">查看详情</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a></td></tr>';
+                        var h = '<tr><td align="center">'+status[o.authStatus]+'</td><td>'+ o.phone +'</td><td align="center">'+(o.name || "暂无")+'</td><td align="center">'+(o.nickname || "暂无")+'</td><td align="center">'+type[o.type]+(category[o.category] || "")+'</td><td align="center">'+t+'</td><td>'+ company  +'</td><td>'+ name +'</td><td>'+ (o.refCode || '暂无') +'</td><td width="180"><a class="btn-default" href="<?= $Path;?>/admin/user-web/app-user-detail?id='+o._id+'">查看详情</a><a class="btn-danger j-block" href="javascript:;" data-block="'+block+'" data-key="'+o._id+'">'+block+'</a></td></tr>';
                         c.append(h)
                     })
                 }
@@ -153,6 +155,9 @@ $(function() {
                     var h = '<tr><td align="center" colspan="6">暂无数据</td></tr>';
                     c.append(h)
                 }
+
+                $('#userCnt').html(data.cnt);
+
             }
         })
     }
@@ -161,6 +166,18 @@ $(function() {
     $(document).on("click", '.pagination a', function() {
         actPage = $(this).data("page");
         getData()
+    })
+
+    $(document).on('click', '#toPage', function() {
+        var pageNum = parseInt($('#pageNum').val());
+
+        if(!(pageNum > $(this).data('max'))) {
+            actPage = pageNum
+            getData()
+        }
+        else {
+            alert('前往页数大与总页数！')
+        }
     })
 
     $('#StatusFilter a').on('click', function() {
@@ -215,19 +232,6 @@ $(function() {
                     }
                 }
             })
-        }
-    })
-
-    $.ajax({
-        type : 'get',
-        url : '<?= $Path;?>/admin/user/app-user-cnt',
-        success : function(data) {
-            if(data.code == '0') {
-                $('#userCnt').html(data['data']['cnt']);
-            }
-            else {
-                $('#userCnt').html(0);
-            }
         }
     })
 

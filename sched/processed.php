@@ -108,7 +108,6 @@ $(function() {
 			var x = 4;
 			this.getPages();
 
-			console.log()
 
 			if(this.total > x) {
 				var index = this.current <= Math.ceil(x / 2) ? 1 : (this.current) >= this.total - Math.ceil(x / 2) ? this.total - x : (this.current - Math.ceil(x / 2));
